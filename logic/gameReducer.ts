@@ -77,6 +77,16 @@ export function effectiveCosts(
       return { ...effect, delta: 0 };
     }
 
+    // DR-09: Cirra mengurangi biaya Power kartu ini menjadi 0.
+    if (
+      card.id === 'DR-09' &&
+      effect.meter === 'power' &&
+      (effect.delta ?? 0) < 0 &&
+      assignedIds.includes('cirra')
+    ) {
+      return { ...effect, delta: 0 };
+    }
+
     if (effect.meter === 'power' && (effect.delta ?? 0) < 0) {
       let amount = Math.abs(effect.delta ?? 0);
       if (assignedIds.includes('cirra')) {
@@ -310,49 +320,69 @@ function resolveCard(
     );
   }
 
+  let nextExplorationRiskReduction = state.nextExplorationRiskReduction;
+  if (card.id === 'DR-08') {
+    nextExplorationRiskReduction = Math.max(
+      nextExplorationRiskReduction,
+      0.2,
+    );
+  }
+
   // Risiko radiasi EVA (GDD 3) dan dampak lanjutan SEP pada Sol berikutnya.
-  if (
-    card.category === 'exploration' &&
-    assignedIds.length > 0 &&
-    !state.permanentModifiers.unwellImmunity
-  ) {
-    const shieldValue = meters.shielding.value;
-    const safeThreshold = state.permanentModifiers.shieldEvaThreshold ?? 50;
-    let risk = 0;
+  if (card.category === 'exploration') {
+    const temporaryReduction = nextExplorationRiskReduction;
+    nextExplorationRiskReduction = 0;
 
-    if (shieldValue < 30) risk = 0.5;
-    else if (shieldValue < safeThreshold) risk = 0.4;
-
-    if (
-      state.evaUnwellRiskUntilSol !== null &&
-      state.sol <= state.evaUnwellRiskUntilSol
-    ) {
-      risk = Math.max(risk, 0.5);
-    }
-
-    risk = Math.max(
-      0,
-      risk - (state.permanentModifiers.explorationUnwellReduction ?? 0),
+    const sepImmune = Boolean(
+      state.permanentModifiers.sepUnwellImmunity ||
+        state.permanentModifiers.sepUnwellImmunityFirst,
     );
 
-    if (risk > 0) {
-      const roll = nextRandom(rngState);
-      rngState = roll.rngState;
-      if (roll.value < risk) {
-        const pickup = nextRandom(rngState);
-        rngState = pickup.rngState;
-        const target =
-          assignedIds[
-            Math.min(
-              assignedIds.length - 1,
-              Math.floor(pickup.value * assignedIds.length),
-            )
-          ];
-        cosmonauts = cosmonauts.map(crew =>
-          crew.id === target
-            ? withAvailability({ ...crew, condition: 'unwell' })
-            : crew,
-        );
+    if (
+      assignedIds.length > 0 &&
+      !state.permanentModifiers.unwellImmunity &&
+      !sepImmune
+    ) {
+      const shieldValue = meters.shielding.value;
+      const safeThreshold = state.permanentModifiers.shieldEvaThreshold ?? 50;
+      let risk = 0;
+
+      if (shieldValue < 30) risk = 0.5;
+      else if (shieldValue < safeThreshold) risk = 0.4;
+
+      if (
+        state.evaUnwellRiskUntilSol !== null &&
+        state.sol <= state.evaUnwellRiskUntilSol
+      ) {
+        risk = Math.max(risk, 0.5);
+      }
+
+      risk = Math.max(
+        0,
+        risk -
+          (state.permanentModifiers.explorationUnwellReduction ?? 0) -
+          temporaryReduction,
+      );
+
+      if (risk > 0) {
+        const roll = nextRandom(rngState);
+        rngState = roll.rngState;
+        if (roll.value < risk) {
+          const pickup = nextRandom(rngState);
+          rngState = pickup.rngState;
+          const target =
+            assignedIds[
+              Math.min(
+                assignedIds.length - 1,
+                Math.floor(pickup.value * assignedIds.length),
+              )
+            ];
+          cosmonauts = cosmonauts.map(crew =>
+            crew.id === target
+              ? withAvailability({ ...crew, condition: 'unwell' })
+              : crew,
+          );
+        }
       }
     }
   }
@@ -390,6 +420,7 @@ function resolveCard(
         state.permanentModifiers,
         card.permanent,
       ),
+      nextExplorationRiskReduction,
       pendingEffects,
       disasterFollowUps,
       pendingExtraRations: extra,
@@ -487,19 +518,40 @@ function applyDisasterImpact(
   let rations = state.rations;
   let cosmonauts = state.cosmonauts;
   let rngState = state.rngState;
+  let permanentModifiers = state.permanentModifiers;
 
   if (id === 'dustStorm') {
     meters = applyMeterEffects(meters, [{ meter: 'power', delta: -20 }]);
   } else if (id === 'solarParticle') {
     const wasBelowThreshold = meters.shielding.value < 50;
-    meters = applyMeterEffects(meters, [{ meter: 'shielding', delta: -22 }]);
+    const sepDamage = Math.max(
+      0,
+      22 - (permanentModifiers.sepDamageReduction ?? 0),
+    );
+    meters = applyMeterEffects(meters, [
+      { meter: 'shielding', delta: -sepDamage },
+    ]);
+
+    const permanentImmunity = Boolean(
+      permanentModifiers.sepUnwellImmunity,
+    );
+    const firstImmunity = Boolean(
+      permanentModifiers.sepUnwellImmunityFirst,
+    );
+    const immune = permanentImmunity || firstImmunity;
+
     cosmonauts = cosmonauts.map(crew =>
       withAvailability({
         ...crew,
-        condition: wasBelowThreshold ? 'unwell' : 'stressed',
+        condition: wasBelowThreshold && !immune ? 'unwell' : 'stressed',
         fullRationNights: 0,
       }),
     );
+
+    if (firstImmunity && !permanentImmunity) {
+      const { sepUnwellImmunityFirst, ...rest } = permanentModifiers;
+      permanentModifiers = rest;
+    }
   } else if (id === 'airlockLeak') {
     meters = applyMeterEffects(meters, [{ meter: 'lifeSupport', delta: -20 }]);
     const pool = cosmonauts.slice();
@@ -526,7 +578,7 @@ function applyDisasterImpact(
 
   const choiceCount =
     balance.repairChoices +
-    (state.permanentModifiers.repairChoicesBonus ?? 0);
+    (permanentModifiers.repairChoicesBonus ?? 0);
   const repairDraw = drawRepairChoices(
     content.cards,
     id,
@@ -539,6 +591,7 @@ function applyDisasterImpact(
     meters,
     rations,
     cosmonauts,
+    permanentModifiers,
     rngState: repairDraw.rngState,
     disasterHistory: [
       ...state.disasterHistory,
@@ -688,9 +741,19 @@ function confirmMorning(
     .map(id => state.morningGroups.flat().find(card => card.id === id))
     .filter((card): card is Card => card !== undefined);
 
+  if (picked.length !== state.morningPicks.length) return state;
+
+  // Jangan membuang kartu diam-diam: minta pemain mengosongkan Command Hand
+  // terlebih dahulu jika kapasitas tidak cukup.
+  if (
+    state.commandHand.length + picked.length >
+    content.balance.commandHandSize
+  ) {
+    return state;
+  }
+
   const commandHand = state.commandHand.slice();
   for (const card of picked) {
-    if (commandHand.length >= content.balance.commandHandSize) break;
     commandHand.push({
       card,
       expiresSol: state.sol + (card.validitySol ?? 1) - 1,

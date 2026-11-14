@@ -14,6 +14,7 @@ import {
   createInitialState,
   DEFAULT_CONTENT,
   drawMorningGroups,
+  effectiveCosts,
   evaluateMissionCharacters,
   resolveOutcome,
   transition,
@@ -207,8 +208,24 @@ describe('CRATER GDD engine', () => {
       );
     }, full);
 
-    const confirmed = transition(withPicks, { type: 'CONFIRM_MORNING' }, content);
+    const blocked = transition(withPicks, { type: 'CONFIRM_MORNING' }, content);
+    expect(blocked.commandHand).toHaveLength(2);
+    expect(blocked.cycle).toBe('morning');
+
+    const discarded = transition(
+      blocked,
+      { type: 'DISCARD_HAND_CARD', cardId: blocked.commandHand[0].card.id },
+      content,
+    );
+    expect(discarded.commandHand).toHaveLength(1);
+
+    const confirmed = transition(
+      discarded,
+      { type: 'CONFIRM_MORNING' },
+      content,
+    );
     expect(confirmed.commandHand).toHaveLength(4);
+    expect(confirmed.cycle).toBe('afternoon');
   });
 
   it('draws the correct categories for afternoon and evening', () => {
@@ -329,6 +346,119 @@ describe('CRATER GDD engine', () => {
 
     // 10 - 4 konsumsi + 3 produksi - 1 irigasi = 8, +1 efek tertunda.
     expect(state.rations.water).toBeGreaterThanOrEqual(8);
+  });
+
+  it('keeps DR-08 as a next-Exploration modifier, not a permanent upgrade', () => {
+    const base = makeTestContent();
+    const content: GameContent = {
+      ...base,
+      cards: base.cards.map(card =>
+        card.deck === 'research'
+          ? { ...card, deck: 'exploration', category: 'exploration' }
+          : card,
+      ),
+    };
+
+    const dr08 = CARD_LIBRARY.find(card => card.id === 'DR-08')!;
+    let state = start(1234, content);
+    state = confirmMorning(state, content);
+
+    const crew = state.cosmonauts.find(candidate => candidate.available)!;
+    state = {
+      ...state,
+      commandHand: [{ card: dr08, expiresSol: state.sol }],
+    };
+
+    state = transition(
+      state,
+      { type: 'PLAY_HAND_CARD', cardId: dr08.id, cosmonautIds: [crew.id] },
+      content,
+    );
+
+    expect(state.nextExplorationRiskReduction).toBe(0.2);
+    expect(
+      state.permanentModifiers.explorationUnwellReduction,
+    ).toBeUndefined();
+
+    const exploration = state.hand.find(card => card.category === 'exploration')!;
+    state = transition(
+      state,
+      { type: 'SELECT_CARD', cardId: exploration.id },
+      content,
+    );
+    const explorer = state.cosmonauts.find(candidate => candidate.available)!;
+    state = transition(
+      state,
+      { type: 'ASSIGN', cosmonautId: explorer.id },
+      content,
+    );
+    state = transition(state, { type: 'EXECUTE_CARD' }, content);
+
+    expect(state.nextExplorationRiskReduction).toBe(0);
+  });
+
+  it('applies DR-09 Power cost as 0 when Cirra is assigned', () => {
+    const dr09 = CARD_LIBRARY.find(card => card.id === 'DR-09')!;
+
+    expect(effectiveCosts(dr09, [], {})[0].delta).toBe(-2);
+    expect(effectiveCosts(dr09, ['cirra'], {})[0].delta).toBe(0);
+  });
+
+  it('applies SEP damage reduction and SEP Unwell immunity', () => {
+    const content: GameContent = {
+      ...DEFAULT_CONTENT,
+      balance: {
+        ...DEFAULT_CONTENT.balance,
+        disasterChances: {
+          morning: 0,
+          afternoon: 1,
+          evening: 0,
+          night: 0,
+        },
+      },
+    };
+
+    const findSolarDisaster = (
+      modifiers: GameState['permanentModifiers'],
+      shielding: number,
+    ): GameState | undefined => {
+      for (let seed = 0; seed < 300; seed += 1) {
+        let state = start(seed, content);
+        state = {
+          ...state,
+          permanentModifiers: modifiers,
+          meters: {
+            ...state.meters,
+            shielding: { ...state.meters.shielding, value: shielding },
+          },
+        };
+        state = confirmMorning(state, content);
+        if (state.activeDisaster?.id === 'solarParticle') return state;
+      }
+      return undefined;
+    };
+
+    const reduced = findSolarDisaster({ sepDamageReduction: 8 }, 80);
+    expect(reduced).toBeDefined();
+    expect(reduced!.meters.shielding.value).toBe(66);
+
+    const permanentImmune = findSolarDisaster({ sepUnwellImmunity: true }, 40);
+    expect(permanentImmune).toBeDefined();
+    expect(
+      permanentImmune!.cosmonauts.every(crew => crew.condition === 'stressed'),
+    ).toBe(true);
+
+    const firstImmune = findSolarDisaster(
+      { sepUnwellImmunityFirst: true },
+      40,
+    );
+    expect(firstImmune).toBeDefined();
+    expect(
+      firstImmune!.cosmonauts.every(crew => crew.condition === 'stressed'),
+    ).toBe(true);
+    expect(
+      firstImmune!.permanentModifiers.sepUnwellImmunityFirst,
+    ).toBeUndefined();
   });
 
   it('applies the GDD meter-threshold effects at night', () => {

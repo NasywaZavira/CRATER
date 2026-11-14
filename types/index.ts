@@ -113,7 +113,10 @@ export interface PermanentModifiers {
   dustPenaltyImmunity?: boolean;
   evaTiredImmunity?: boolean;
   sepDamageReduction?: number;
+  /** BL-08: imun permanen terhadap Unwell akibat SEP. */
   sepUnwellImmunity?: boolean;
+  /** RS-09: imun terhadap SEP pertama saja. */
+  sepUnwellImmunityFirst?: boolean;
   unwellImmunity?: boolean;
   repairChoicesBonus?: number;
   explorationUnwellReduction?: number;
@@ -227,6 +230,8 @@ export interface GameState {
   commandHand: StoredCard[];
 
   permanentModifiers: PermanentModifiers;
+  /** DR-08: pengurangan risiko EVA untuk Exploration berikutnya. */
+  nextExplorationRiskReduction: number;
   pendingEffects: PendingEffect[];
   pendingExtraRations: Rations;
   pendingNightPenalty: number;

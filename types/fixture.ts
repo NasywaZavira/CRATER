@@ -132,6 +132,7 @@ export const mockGameState: GameState = {
   commandHand: [],
 
   permanentModifiers: {},
+  nextExplorationRiskReduction: 0,
   pendingEffects: [],
   pendingExtraRations: { food: 0, water: 0 },
   pendingNightPenalty: 0,
