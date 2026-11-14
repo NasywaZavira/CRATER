@@ -7,7 +7,7 @@ berdasarkan `CRATER-GDD.docx`.
 
 | Fase | Aktivitas | Aturan |
 | --- | --- | --- |
-| Pagi | Daily Routine | 9 kartu dalam 3 kelompok; ambil 1 per kelompok. Kartu yang dipilih harus langsung dipakai melalui `playNow`; yang tidak dipakai hangus. |
+| Pagi | Daily Routine | 9 kartu dalam 3 kelompok; ambil 1 per kelompok. Kartu dipakai langsung lewat `playNow` atau disimpan lewat `store` di Command Hand (maks 4, berlaku 1–2 Sol); sisanya hangus. |
 | Siang | Research / Exploration | 3 kartu; pilih 1, jalankan misi atau terima penalti penolakan. |
 | Sore | Building / Upgrade | 3 kartu; pilih 1, jalankan proyek atau terima penalti. |
 | Malam | Sol Evaluation | Ration, produksi, pemulihan surya, penurunan pasif, efek tertunda, cek hasil. |
