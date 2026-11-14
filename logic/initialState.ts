@@ -1,6 +1,6 @@
-import type { GameState, Meters } from '../types';
+import type { GameState, Meters, Rations } from '../types';
 import { createCosmonauts, DEFAULT_CONTENT, type GameContent } from './content';
-import { drawHand } from './draw';
+import { drawMorningGroups } from './draw';
 import { clamp, METER_KEYS } from './meters';
 import { normalizeSeed } from './rng';
 import { SCHEMA_VERSION } from './version';
@@ -18,7 +18,7 @@ export function createInitialMeters(
       id: key,
       label: definition.label,
       value: clamp(
-        Math.round(definition.initial),
+        Math.round(content.balance.startingMeters || definition.initial),
         definition.min,
         definition.max,
       ),
@@ -30,6 +30,12 @@ export function createInitialMeters(
   return meters;
 }
 
+export function createInitialRations(
+  content: GameContent = DEFAULT_CONTENT,
+): Rations {
+  return { ...content.balance.startingRations };
+}
+
 export function createInitialState(
   content: GameContent = DEFAULT_CONTENT,
 ): GameState {
@@ -39,18 +45,33 @@ export function createInitialState(
     sol: 0,
     cycle: 'morning',
     phase: 'idle',
+    phaseState: 'selecting',
 
     meters: createInitialMeters(content),
+    rations: createInitialRations(content),
     cosmonauts: createCosmonauts(content),
+
     hand: [],
+    morningGroups: [],
+    morningPicks: [],
     selectedCardIds: [],
     assignments: [],
 
-    shuffleUsed: false,
-    cardCooldowns: {},
+    commandHand: [],
+
+    permanentModifiers: {},
+    pendingEffects: [],
+    pendingExtraRations: { food: 0, water: 0 },
+    pendingNightPenalty: 0,
+
+    disasterHistory: [],
+    activeDisaster: null,
+    disasterFollowUps: [],
+    lastDisasterPhase: null,
+    explorationBlockedUntilSol: null,
+    evaUnwellRiskUntilSol: null,
 
     rngState: 0,
-    activeEvent: null,
     outcome: null,
   };
 }
@@ -64,20 +85,22 @@ export function startGame(
   const normalizedSeed = normalizeSeed(seed);
   const base = createInitialState(content);
 
-  const draw = drawHand({
-    cards: content.cards,
-    cycle: 'morning',
-    handSize: content.balance.handSize.morning,
-    rngState: normalizedSeed,
-    cooldowns: base.cardCooldowns,
-  });
+  // Sol 1 pagi tidak pernah memunculkan bencana (GDD 6.1).
+  const draw = drawMorningGroups(
+    content.cards,
+    content.balance.dailyGroups,
+    content.balance.dailyPerGroup,
+    normalizedSeed,
+  );
 
   return {
     ...base,
     seed: normalizedSeed,
     sol: 1,
     phase: 'playing',
-    hand: draw.hand,
+    phaseState: 'selecting',
+    morningGroups: draw.groups,
+    morningPicks: draw.groups.map(() => null),
     rngState: draw.rngState,
   };
 }

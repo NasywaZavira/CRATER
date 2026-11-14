@@ -1,28 +1,28 @@
-import type { Card, Cosmonaut, CosmonautRole, MeterKey } from '../types';
+import type { Card, Cosmonaut, CosmonautRole, Specialty } from '../types';
 import {
   BALANCE,
   METER_DEFINITIONS,
   type BalanceConfig,
   type MeterDefinition,
 } from '../data/balance';
-import cardsJson from '../data/cards.json';
+import { CARD_LIBRARY } from '../data/cards';
 import cosmonautsJson from '../data/cosmonauts.json';
 
 export interface CosmonautRosterEntry {
   id: string;
   name: string;
   role: CosmonautRole;
+  specialty: Specialty;
 }
 
 export interface GameContent {
   cards: readonly Card[];
   roster: readonly CosmonautRosterEntry[];
-  meterDefinitions: Record<MeterKey, MeterDefinition>;
+  meterDefinitions: Record<keyof typeof METER_DEFINITIONS, MeterDefinition>;
   balance: BalanceConfig;
 }
 
-// TODO(Paran): angka efek di data/cards.json masih placeholder Day 1.
-export const CARD_LIBRARY: readonly Card[] = cardsJson as unknown as Card[];
+export { CARD_LIBRARY };
 
 export const COSMONAUT_ROSTER: readonly CosmonautRosterEntry[] =
   cosmonautsJson as unknown as CosmonautRosterEntry[];
@@ -41,7 +41,11 @@ export function createCosmonauts(
     id: entry.id,
     name: entry.name,
     role: entry.role,
+    specialty: entry.specialty,
+    condition: 'ready',
     cooldown: 0,
     available: true,
+    ration: { food: true, water: true },
+    fullRationNights: 0,
   }));
 }

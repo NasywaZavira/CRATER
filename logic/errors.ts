@@ -21,7 +21,7 @@ export class DrawError extends Error {
     super(
       `Cannot draw ${details.requested} card(s) for ${details.cycle}: ` +
         `only ${details.available} eligible card(s) available${ids}. ` +
-        'Check data/cards.json and card cooldowns.',
+        'Check data/cards.ts and the eligible deck for this phase.',
     );
 
     this.name = 'DrawError';

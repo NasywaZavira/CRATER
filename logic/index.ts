@@ -9,25 +9,40 @@ export type { DrawErrorDetails } from './errors';
 export {
   CYCLES,
   CYCLE_CATEGORIES,
+  CYCLE_LABELS,
+  cycleIndex,
   getNextCycle,
   isCardAllowedInCycle,
 } from './cycle';
 
-export { drawHand, eligibleCards } from './draw';
-export type { DrawHandParams, DrawHandResult } from './draw';
+export {
+  drawHand,
+  drawMorningGroups,
+  drawRepairChoices,
+  eligibleCards,
+} from './draw';
+export type {
+  DrawHandParams,
+  DrawHandResult,
+  MorningDrawResult,
+} from './draw';
 
 export {
   METER_KEYS,
   clamp,
-  applyEffects,
+  applyMeterEffects,
+  applyRationEffects,
   areMetersDepleted,
+  canAfford,
+  isMeterEffect,
+  isRationEffect,
 } from './meters';
 
-export { evaluateCharacterEffects } from './characterEffects';
+export { evaluateMissionCharacters } from './characterEffects';
 export type {
   CharacterEffectEvent,
-  CharacterEffectResolution,
   CharacterEffectSource,
+  MissionCharacterResult,
 } from './characterEffects';
 
 export {
@@ -43,9 +58,34 @@ export type {
 
 export {
   createInitialMeters,
+  createInitialRations,
   createInitialState,
   startGame,
 } from './initialState';
 
-export { transition, gameReducer } from './gameReducer';
+export {
+  effectiveCosts,
+  resolveOutcome,
+  transition,
+  gameReducer,
+} from './gameReducer';
+export type { OutcomeInput } from './gameReducer';
+
 export { validateBalance } from './validateBalance';
+
+export {
+  BALANCE,
+  DISASTER_IDS,
+  DISASTER_LABELS,
+  METER_DEFINITIONS,
+  METER_LABELS,
+  PASSIVE_DECAY,
+  SOLAR_RECOVERY,
+  CHARACTER_RULES,
+} from '../data/balance';
+export type {
+  BalanceConfig,
+  CharacterRules,
+  MeterDefinition,
+  ProductionRule,
+} from '../data/balance';
