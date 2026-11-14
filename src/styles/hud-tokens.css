@@ -1,0 +1,24 @@
+/* src/styles/hud-tokens.css
+   HUD = spaceship monitor: muted grey-navy chrome, color only on the 4 meters.
+   Colors follow the team's "Quick Reference Table" (screenshot), slightly
+   desaturated vs. the wireframe so the HUD is not overwhelming.            */
+:root {
+  /* chrome (grey, "ship computer") */
+  --hud-panel: rgb(18 26 46 / 0.88);
+  --hud-panel-border: rgb(148 163 184 / 0.25);
+  --hud-text: #cbd5e1;
+  --hud-text-dim: #94a3b8;
+  --hud-track: rgb(255 255 255 / 0.10);
+
+  /* resources (primary color from the table) */
+  --res-shielding: #8b5cf6;    /* deep violet  (metallic grey is the chrome itself) */
+  --res-food: #4ade80;         /* vibrant green */
+  --res-life-support: #38bdf8; /* light blue / cyan */
+  --res-power: #facc15;        /* bright yellow */
+
+  /* secondary accents from the table (use for low/critical states, glow, delta) */
+  --res-shielding-accent: #a1a1aa;
+  --res-food-accent: #fb923c;
+  --res-life-support-accent: #ffffff;
+  --res-power-accent: #f59e0b;
+}
