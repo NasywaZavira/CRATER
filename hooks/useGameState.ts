@@ -14,13 +14,25 @@ export interface UseGameStateResult {
 
   start: (seed: number) => void;
   restart: (seed: number) => void;
+
+  selectDaily: (groupIndex: number, cardId: string) => void;
+  confirmMorning: () => void;
+
   selectCard: (cardId: string) => void;
   assign: (cosmonautId: string) => void;
-  shuffle: () => void;
+  unassign: (cosmonautId: string) => void;
+  executeCard: () => void;
+  rejectCard: () => void;
+
+  selectRepair: (cardId: string, cosmonautIds?: string[]) => void;
+  skipRepair: () => void;
+
+  playHandCard: (cardId: string, cosmonautIds?: string[]) => void;
+  discardHandCard: (cardId: string) => void;
+
+  setRation: (cosmonautId: string, food: boolean, water: boolean) => void;
   advanceCycle: () => void;
   endSol: () => void;
-  resolveEvent: (eventId: string, optionId: string) => void;
-  eventTimeout: (eventId: string) => void;
 }
 
 export function useGameState(): UseGameStateResult {
@@ -40,6 +52,17 @@ export function useGameState(): UseGameStateResult {
     [dispatch],
   );
 
+  const selectDaily = useCallback(
+    (groupIndex: number, cardId: string) => {
+      dispatch({ type: 'SELECT_DAILY', groupIndex, cardId });
+    },
+    [dispatch],
+  );
+
+  const confirmMorning = useCallback(() => {
+    dispatch({ type: 'CONFIRM_MORNING' });
+  }, [dispatch]);
+
   const selectCard = useCallback(
     (cardId: string) => {
       dispatch({ type: 'SELECT_CARD', cardId });
@@ -54,9 +77,52 @@ export function useGameState(): UseGameStateResult {
     [dispatch],
   );
 
-  const shuffle = useCallback(() => {
-    dispatch({ type: 'SHUFFLE' });
+  const unassign = useCallback(
+    (cosmonautId: string) => {
+      dispatch({ type: 'UNASSIGN', cosmonautId });
+    },
+    [dispatch],
+  );
+
+  const executeCard = useCallback(() => {
+    dispatch({ type: 'EXECUTE_CARD' });
   }, [dispatch]);
+
+  const rejectCard = useCallback(() => {
+    dispatch({ type: 'REJECT_CARD' });
+  }, [dispatch]);
+
+  const selectRepair = useCallback(
+    (cardId: string, cosmonautIds?: string[]) => {
+      dispatch({ type: 'SELECT_REPAIR', cardId, cosmonautIds });
+    },
+    [dispatch],
+  );
+
+  const skipRepair = useCallback(() => {
+    dispatch({ type: 'SKIP_REPAIR' });
+  }, [dispatch]);
+
+  const playHandCard = useCallback(
+    (cardId: string, cosmonautIds?: string[]) => {
+      dispatch({ type: 'PLAY_HAND_CARD', cardId, cosmonautIds });
+    },
+    [dispatch],
+  );
+
+  const discardHandCard = useCallback(
+    (cardId: string) => {
+      dispatch({ type: 'DISCARD_HAND_CARD', cardId });
+    },
+    [dispatch],
+  );
+
+  const setRation = useCallback(
+    (cosmonautId: string, food: boolean, water: boolean) => {
+      dispatch({ type: 'SET_RATION', cosmonautId, food, water });
+    },
+    [dispatch],
+  );
 
   const advanceCycle = useCallback(() => {
     dispatch({ type: 'ADVANCE_CYCLE' });
@@ -66,31 +132,24 @@ export function useGameState(): UseGameStateResult {
     dispatch({ type: 'END_SOL' });
   }, [dispatch]);
 
-  const resolveEvent = useCallback(
-    (eventId: string, optionId: string) => {
-      dispatch({ type: 'RESOLVE_EVENT', eventId, optionId });
-    },
-    [dispatch],
-  );
-
-  const eventTimeout = useCallback(
-    (eventId: string) => {
-      dispatch({ type: 'EVENT_TIMEOUT', eventId });
-    },
-    [dispatch],
-  );
-
   return {
     state,
     dispatch,
     start,
     restart,
+    selectDaily,
+    confirmMorning,
     selectCard,
     assign,
-    shuffle,
+    unassign,
+    executeCard,
+    rejectCard,
+    selectRepair,
+    skipRepair,
+    playHandCard,
+    discardHandCard,
+    setRation,
     advanceCycle,
     endSol,
-    resolveEvent,
-    eventTimeout,
   };
 }
