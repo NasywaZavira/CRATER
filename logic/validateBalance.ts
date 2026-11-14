@@ -20,9 +20,6 @@ export function validateBalance(balance: BalanceConfig): void {
     throw new Error('phaseCardCount must be at least 1.');
   }
 
-  if (balance.commandHandSize < 1) {
-    throw new Error('commandHandSize must be at least 1.');
-  }
 
   if (balance.disasterMinPhaseGap < 1) {
     throw new Error('disasterMinPhaseGap must be at least 1.');
