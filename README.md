@@ -1,4 +1,4 @@
-# ENAM — OutpostScene + Bridge (BASE-14 s/d BASE-19, milik Akbar)
+# ENAM — OutpostScene + Bridge (BASE-14 s/d BASE-19)
 
     npm install
     npm run dev        # harness dengan fixture + tombol Day/Cycle/Unmount
