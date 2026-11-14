@@ -162,7 +162,7 @@ export const CARD_LIBRARY: readonly Card[] = [
   }),
   daily('DR-03', 'Lampu Kabin Pengatur Ritme Tidur', 'Lampu kabin berubah menjadi cahaya hangat menjelang malam.', {
     costs: [meter('power', -2)],
-    effects: [heal('tired', 'all', 2)],
+    effects: [],
     durationCycles: 0,
     requiresCrew: false,
     validitySol: 1,
@@ -263,6 +263,10 @@ export const CARD_LIBRARY: readonly Card[] = [
     recommendedCrewIds: ['cirra', 'toria'],
     validitySol: 2,
     clearsFollowUp: true,
+    requirements: {
+      minMeter: { meter: 'shielding', value: 40 },
+      blockedByDisaster: ['dustStorm'],
+    },
     fact: 'Debu Mars dapat menutupi panel surya dan mengurangi energi yang dihasilkan.',
     source: 'NASA JPL - InSight Power Generation',
     limit: 'InSight tidak memiliki kru; pembersihan manual membawa risiko EVA.',

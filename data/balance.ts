@@ -159,6 +159,8 @@ export interface BalanceConfig {
   dailyPerGroup: number;
   /** Siang/sore: 3 kartu, pilih 1. */
   phaseCardCount: number;
+  /** Command Hand maksimum (GDD §2.1). */
+  commandHandCapacity: number;
 
   solarRecovery: number[];
   passiveDecay: Record<MeterKey, number>;
@@ -211,6 +213,7 @@ export const BALANCE: BalanceConfig = {
   dailyGroups: 3,
   dailyPerGroup: 3,
   phaseCardCount: 3,
+  commandHandCapacity: 4,
 
   solarRecovery: SOLAR_RECOVERY,
   passiveDecay: PASSIVE_DECAY,
