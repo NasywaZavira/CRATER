@@ -1,0 +1,218 @@
+[
+  {
+    "id": "m01",
+    "name": "Regolith Spectroscopy",
+    "description": "Analyze regolith samples to tune life-support filters.",
+    "category": "research",
+    "cycles": ["morning"],
+    "effects": [
+      { "meter": "lifeSupport", "delta": 4 },
+      { "meter": "power", "delta": -1 }
+    ]
+  },
+  {
+    "id": "m02",
+    "name": "Dust Storm Telemetry",
+    "description": "Track dust-storm telemetry to harden the shielding plan.",
+    "category": "research",
+    "cycles": ["morning"],
+    "effects": [
+      { "meter": "shielding", "delta": 3 },
+      { "meter": "power", "delta": -1 }
+    ]
+  },
+  {
+    "id": "m03",
+    "name": "Water Ice Mapping",
+    "description": "Map subsurface water ice to improve food planning.",
+    "category": "research",
+    "cycles": ["morning"],
+    "effects": [
+      { "meter": "food", "delta": 3 },
+      { "meter": "power", "delta": -1 }
+    ]
+  },
+  {
+    "id": "m04",
+    "name": "Radiation Log Review",
+    "description": "Review radiation logs and adjust crew exposure limits.",
+    "category": "research",
+    "cycles": ["morning"],
+    "effects": [
+      { "meter": "shielding", "delta": 4 },
+      { "meter": "power", "delta": -2 }
+    ]
+  },
+  {
+    "id": "m05",
+    "name": "North Rim Survey",
+    "description": "Survey the north rim for stable surface routes.",
+    "category": "exploration",
+    "cycles": ["morning"],
+    "effects": [
+      { "meter": "food", "delta": 2 },
+      { "meter": "lifeSupport", "delta": 1 }
+    ]
+  },
+  {
+    "id": "m06",
+    "name": "Lava Tube Recon",
+    "description": "Recon a lava tube as a potential shielded shelter.",
+    "category": "exploration",
+    "cycles": ["morning"],
+    "effects": [
+      { "meter": "shielding", "delta": 5 },
+      { "meter": "power", "delta": -2 }
+    ]
+  },
+  {
+    "id": "m07",
+    "name": "Dust Devil Tracking",
+    "description": "Track dust devils to optimize array cleaning.",
+    "category": "exploration",
+    "cycles": ["morning"],
+    "effects": [
+      { "meter": "power", "delta": 4 },
+      { "meter": "lifeSupport", "delta": -1 }
+    ]
+  },
+  {
+    "id": "m08",
+    "name": "Ice Deposit Sampling",
+    "description": "Sample an ice deposit and estimate extraction yield.",
+    "category": "exploration",
+    "cycles": ["morning"],
+    "effects": [
+      { "meter": "food", "delta": 3 },
+      { "meter": "shielding", "delta": -1 }
+    ]
+  },
+  {
+    "id": "a01",
+    "name": "Solar Array Expansion",
+    "description": "Expand the solar array to raise power output.",
+    "category": "build",
+    "cycles": ["afternoon"],
+    "effects": [
+      { "meter": "power", "delta": 6 },
+      { "meter": "lifeSupport", "delta": -1 }
+    ]
+  },
+  {
+    "id": "a02",
+    "name": "Hab Seal Repair",
+    "description": "Repair habitat seals to reduce life-support loss.",
+    "category": "build",
+    "cycles": ["afternoon"],
+    "effects": [
+      { "meter": "lifeSupport", "delta": 4 },
+      { "meter": "power", "delta": -1 }
+    ]
+  },
+  {
+    "id": "a03",
+    "name": "Dust Filtration Rig",
+    "description": "Install a dust-filtration rig for cleaner cabin air.",
+    "category": "build",
+    "cycles": ["afternoon"],
+    "effects": [
+      { "meter": "lifeSupport", "delta": 5 },
+      { "meter": "power", "delta": -2 }
+    ]
+  },
+  {
+    "id": "a04",
+    "name": "Emergency Shelter",
+    "description": "Build an emergency shelter to improve shielding.",
+    "category": "build",
+    "cycles": ["afternoon"],
+    "effects": [
+      { "meter": "shielding", "delta": 5 },
+      { "meter": "power", "delta": -1 }
+    ]
+  },
+  {
+    "id": "a05",
+    "name": "Reclaimer Efficiency",
+    "description": "Upgrade the water reclaimer for better efficiency.",
+    "category": "upgrade",
+    "cycles": ["afternoon"],
+    "effects": [
+      { "meter": "lifeSupport", "delta": 5 },
+      { "meter": "power", "delta": -3 }
+    ]
+  },
+  {
+    "id": "a06",
+    "name": "Battery Bank",
+    "description": "Add battery capacity to stabilize the power budget.",
+    "category": "upgrade",
+    "cycles": ["afternoon"],
+    "effects": [
+      { "meter": "power", "delta": 6 },
+      { "meter": "shielding", "delta": -1 }
+    ]
+  },
+  {
+    "id": "a07",
+    "name": "Ration Fortification",
+    "description": "Fortify ration packing to extend food supply.",
+    "category": "upgrade",
+    "cycles": ["afternoon"],
+    "effects": [
+      { "meter": "food", "delta": 5 },
+      { "meter": "lifeSupport", "delta": -1 }
+    ]
+  },
+  {
+    "id": "n01",
+    "name": "Dust Sweep",
+    "description": "Sweep dust from critical surfaces.",
+    "category": "daily",
+    "cycles": ["night"],
+    "effects": [
+      { "meter": "power", "delta": 2 }
+    ]
+  },
+  {
+    "id": "n02",
+    "name": "Hydroponics Check",
+    "description": "Check hydroponics and adjust nutrient flow.",
+    "category": "daily",
+    "cycles": ["night"],
+    "effects": [
+      { "meter": "food", "delta": 3 }
+    ]
+  },
+  {
+    "id": "n03",
+    "name": "Hull Inspection",
+    "description": "Inspect the hull for micro-fractures.",
+    "category": "daily",
+    "cycles": ["night"],
+    "effects": [
+      { "meter": "shielding", "delta": 2 }
+    ]
+  },
+  {
+    "id": "n04",
+    "name": "Crew Rest",
+    "description": "Schedule a short crew rest period.",
+    "category": "daily",
+    "cycles": ["night"],
+    "effects": [
+      { "meter": "lifeSupport", "delta": 2 }
+    ]
+  },
+  {
+    "id": "n05",
+    "name": "Ice Melt Run",
+    "description": "Run a small ice-melt batch for extra water.",
+    "category": "daily",
+    "cycles": ["night"],
+    "effects": [
+      { "meter": "food", "delta": 2 },
+      { "meter": "power", "delta": -1 }
+    ]
+  }
+]
