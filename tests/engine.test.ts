@@ -5,10 +5,12 @@ import type {
   GameAction,
   GameState,
   Meters,
+  MorningPlay,
 } from '../types';
 import {
   areMetersDepleted,
   CARD_LIBRARY,
+  canConfirmMorning,
   createCosmonauts,
   createInitialMeters,
   createInitialState,
@@ -113,6 +115,7 @@ function start(
 function confirmMorning(
   state: GameState,
   content: GameContent,
+  playNow: MorningPlay[] = [],
 ): GameState {
   let next = state;
   for (let group = 0; group < content.balance.dailyGroups; group += 1) {
@@ -123,7 +126,26 @@ function confirmMorning(
       content,
     );
   }
-  return transition(next, { type: 'CONFIRM_MORNING' }, content);
+  return transition(next, { type: 'CONFIRM_MORNING', playNow }, content);
+}
+
+function pickMorningCard(
+  state: GameState,
+  content: GameContent,
+  targetId: string,
+): GameState {
+  let next = state;
+  for (let group = 0; group < content.balance.dailyGroups; group += 1) {
+    const card =
+      next.morningGroups[group].find(candidate => candidate.id === targetId) ??
+      next.morningGroups[group][0];
+    next = transition(
+      next,
+      { type: 'SELECT_DAILY', groupIndex: group, cardId: card.id },
+      content,
+    );
+  }
+  return next;
 }
 
 function rejectCurrentCard(
@@ -169,63 +191,92 @@ describe('CRATER GDD engine', () => {
     expect(new Set(ids).size).toBe(9);
   });
 
-  it('stores one pick per morning group in the Command Hand', () => {
-    const content = makeTestContent();
-    let state = start(1234, content);
-
-    const confirmed = confirmMorning(state, content);
-    state = confirmed;
-
-    expect(state.cycle).toBe('afternoon');
-    expect(state.commandHand).toHaveLength(3);
-    expect(state.commandHand.every(item => item.expiresSol === 1)).toBe(true);
-    expect(state.hand).toHaveLength(3);
-    expect(
-      state.hand.every(card =>
-        ['research', 'exploration'].includes(card.category),
-      ),
-    ).toBe(true);
-  });
-
-  it('caps the Command Hand at four cards', () => {
-    const content = makeTestContent();
-    const base = start(1234, content);
-
-    // Isi Command Hand sampai penuh, lalu simpan tiga kartu pagi lagi.
-    const full: GameState = {
+  it('plays selected morning cards immediately and forfeits unplayed cards', () => {
+    const base = makeTestContent();
+    const content: GameContent = {
       ...base,
-      commandHand: [
-        { card: CARD_LIBRARY.find(card => card.id === 'DR-04')!, expiresSol: 2 },
-        { card: CARD_LIBRARY.find(card => card.id === 'DR-05')!, expiresSol: 2 },
-      ],
+      cards: base.cards.map(card => {
+        if (card.id === 'T-DR-1') {
+          return {
+            ...card,
+            costs: [{ meter: 'power', delta: -1 }],
+            effects: [{ meter: 'lifeSupport', delta: 4 }],
+            durationCycles: 1,
+            requiresCrew: true,
+          };
+        }
+        if (card.deck === 'daily') {
+          return {
+            ...card,
+            effects: [{ meter: 'lifeSupport', delta: 100 }],
+          };
+        }
+        return card;
+      }),
     };
 
-    const withPicks = full.morningGroups.reduce((current, group, index) => {
-      return transition(
-        current,
-        { type: 'SELECT_DAILY', groupIndex: index, cardId: group[0].id },
+    let state = start(1234, content);
+    state = pickMorningCard(state, content, 'T-DR-1');
+
+    const crew = state.cosmonauts[0];
+    const playNow: MorningPlay[] = [
+      { cardId: 'T-DR-1', cosmonautIds: [crew.id] },
+    ];
+
+    expect(canConfirmMorning(state, playNow, content)).toEqual({
+      ok: true,
+      reasons: [],
+    });
+
+    const beforeLifeSupport = state.meters.lifeSupport.value;
+    state = transition(
+      state,
+      { type: 'CONFIRM_MORNING', playNow },
+      content,
+    );
+
+    expect(state.cycle).toBe('afternoon');
+    expect(state.meters.lifeSupport.value).toBe(beforeLifeSupport + 4);
+    expect(state.meters.power.value).toBe(79);
+    expect(state.morningPicks).toEqual([]);
+    expect(state.hand).toHaveLength(3);
+  });
+
+  it('reports crew-required for a selected card without crew', () => {
+    const base = makeTestContent();
+    const content: GameContent = {
+      ...base,
+      cards: base.cards.map(card =>
+        card.id === 'T-DR-1'
+          ? { ...card, requiresCrew: true, durationCycles: 1 }
+          : card,
+      ),
+    };
+
+    let state = start(1234, content);
+    state = pickMorningCard(state, content, 'T-DR-1');
+
+    expect(
+      canConfirmMorning(state, [{ cardId: 'T-DR-1' }], content).reasons,
+    ).toContain('crew-required');
+  });
+
+  it('reports morning rejection reasons through canConfirmMorning', () => {
+    const content = makeTestContent();
+    const fresh = start(1234, content);
+
+    expect(canConfirmMorning(fresh, [], content).reasons).toContain(
+      'morning-incomplete',
+    );
+
+    const picked = pickMorningCard(fresh, content, 'T-DR-1');
+    expect(
+      canConfirmMorning(
+        picked,
+        [{ cardId: 'tidak-ada' }],
         content,
-      );
-    }, full);
-
-    const blocked = transition(withPicks, { type: 'CONFIRM_MORNING' }, content);
-    expect(blocked.commandHand).toHaveLength(2);
-    expect(blocked.cycle).toBe('morning');
-
-    const discarded = transition(
-      blocked,
-      { type: 'DISCARD_HAND_CARD', cardId: blocked.commandHand[0].card.id },
-      content,
-    );
-    expect(discarded.commandHand).toHaveLength(1);
-
-    const confirmed = transition(
-      discarded,
-      { type: 'CONFIRM_MORNING' },
-      content,
-    );
-    expect(confirmed.commandHand).toHaveLength(4);
-    expect(confirmed.cycle).toBe('afternoon');
+      ).reasons,
+    ).toContain('unknown-card');
   });
 
   it('draws the correct categories for afternoon and evening', () => {
@@ -311,67 +362,62 @@ describe('CRATER GDD engine', () => {
     expect(state.meters.shielding.value).toBe(78);
     expect(state.meters.power.value).toBe(80);
     expect(state.meters.food.value).toBe(78);
-    expect(state.commandHand).toHaveLength(0);
   });
 
-  it('applies delayed Water Ration effects at night', () => {
-    const content = makeTestContent();
+  it('applies delayed Water Ration effects from a morning card at night', () => {
+    const base = makeTestContent();
     const card = simpleCard('daily', 'T-DR-DELAYED', {
       delayedEffects: [{ ration: 'water', rationDelta: 1 }],
       durationCycles: 0,
       requiresCrew: false,
     });
-    const withDelayed: GameContent = {
-      ...content,
-      cards: [...content.cards, card],
+    const content: GameContent = {
+      ...base,
+      cards: base.cards.map(item =>
+        item.id === 'T-DR-1' ? card : item,
+      ),
     };
 
-    let state = start(999, withDelayed);
-    state = confirmMorning(state, withDelayed);
-
-    // Mainkan kartu delayed dari Command Hand pada fase sore.
-    const stored = state.commandHand.find(
-      item => item.card.id === 'T-DR-DELAYED',
+    let state = start(999, content);
+    state = pickMorningCard(state, content, 'T-DR-DELAYED');
+    state = transition(
+      state,
+      { type: 'CONFIRM_MORNING', playNow: ['T-DR-DELAYED'] },
+      content,
     );
-    if (stored) {
-      state = transition(
-        state,
-        { type: 'PLAY_HAND_CARD', cardId: stored.card.id, cosmonautIds: [] },
-        withDelayed,
-      );
-    }
 
-    state = rejectCurrentCard(state, withDelayed);
-    state = transition(state, { type: 'END_SOL' }, withDelayed);
+    state = rejectCurrentCard(state, content);
+    state = rejectCurrentCard(state, content);
+    state = transition(state, { type: 'END_SOL' }, content);
 
     // 10 - 4 konsumsi + 3 produksi - 1 irigasi = 8, +1 efek tertunda.
-    expect(state.rations.water).toBeGreaterThanOrEqual(8);
+    expect(state.rations.water).toBe(9);
   });
 
   it('keeps DR-08 as a next-Exploration modifier, not a permanent upgrade', () => {
     const base = makeTestContent();
+    const dr08 = CARD_LIBRARY.find(card => card.id === 'DR-08')!;
     const content: GameContent = {
       ...base,
-      cards: base.cards.map(card =>
-        card.deck === 'research'
-          ? { ...card, deck: 'exploration', category: 'exploration' }
-          : card,
-      ),
+      cards: base.cards.map(card => {
+        if (card.id === 'T-DR-1') return dr08;
+        if (card.deck === 'research') {
+          return { ...card, deck: 'exploration', category: 'exploration' };
+        }
+        return card;
+      }),
     };
 
-    const dr08 = CARD_LIBRARY.find(card => card.id === 'DR-08')!;
     let state = start(1234, content);
-    state = confirmMorning(state, content);
+    state = pickMorningCard(state, content, dr08.id);
 
     const crew = state.cosmonauts.find(candidate => candidate.available)!;
-    state = {
-      ...state,
-      commandHand: [{ card: dr08, expiresSol: state.sol }],
-    };
-
     state = transition(
       state,
-      { type: 'PLAY_HAND_CARD', cardId: dr08.id, cosmonautIds: [crew.id] },
+      {
+        type: 'CONFIRM_MORNING',
+        playNow: [{ cardId: dr08.id, cosmonautIds: [crew.id] }],
+      },
       content,
     );
 

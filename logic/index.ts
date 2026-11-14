@@ -64,12 +64,20 @@ export {
 } from './initialState';
 
 export {
+  canConfirmMorning,
   effectiveCosts,
   resolveOutcome,
   transition,
   gameReducer,
 } from './gameReducer';
 export type { OutcomeInput } from './gameReducer';
+
+export type {
+  MorningConfirmationCheck,
+  MorningConfirmationReason,
+  MorningPlay,
+  MorningPlayInput,
+} from '../types';
 
 export { validateBalance } from './validateBalance';
 

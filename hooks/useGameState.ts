@@ -2,7 +2,11 @@
 
 import type { Dispatch } from 'react';
 import { useCallback, useReducer } from 'react';
-import type { GameAction, GameState } from '../types';
+import type {
+  GameAction,
+  GameState,
+  MorningPlayInput,
+} from '../types';
 import { gameReducer } from '../logic/gameReducer';
 import { createInitialState } from '../logic/initialState';
 
@@ -16,7 +20,7 @@ export interface UseGameStateResult {
   restart: (seed: number) => void;
 
   selectDaily: (groupIndex: number, cardId: string) => void;
-  confirmMorning: () => void;
+  confirmMorning: (playNow?: MorningPlayInput[]) => void;
 
   selectCard: (cardId: string) => void;
   assign: (cosmonautId: string) => void;
@@ -26,9 +30,6 @@ export interface UseGameStateResult {
 
   selectRepair: (cardId: string, cosmonautIds?: string[]) => void;
   skipRepair: () => void;
-
-  playHandCard: (cardId: string, cosmonautIds?: string[]) => void;
-  discardHandCard: (cardId: string) => void;
 
   setRation: (cosmonautId: string, food: boolean, water: boolean) => void;
   advanceCycle: () => void;
@@ -59,9 +60,12 @@ export function useGameState(): UseGameStateResult {
     [dispatch],
   );
 
-  const confirmMorning = useCallback(() => {
-    dispatch({ type: 'CONFIRM_MORNING' });
-  }, [dispatch]);
+  const confirmMorning = useCallback(
+    (playNow: MorningPlayInput[] = []) => {
+      dispatch({ type: 'CONFIRM_MORNING', playNow });
+    },
+    [dispatch],
+  );
 
   const selectCard = useCallback(
     (cardId: string) => {
@@ -103,20 +107,6 @@ export function useGameState(): UseGameStateResult {
     dispatch({ type: 'SKIP_REPAIR' });
   }, [dispatch]);
 
-  const playHandCard = useCallback(
-    (cardId: string, cosmonautIds?: string[]) => {
-      dispatch({ type: 'PLAY_HAND_CARD', cardId, cosmonautIds });
-    },
-    [dispatch],
-  );
-
-  const discardHandCard = useCallback(
-    (cardId: string) => {
-      dispatch({ type: 'DISCARD_HAND_CARD', cardId });
-    },
-    [dispatch],
-  );
-
   const setRation = useCallback(
     (cosmonautId: string, food: boolean, water: boolean) => {
       dispatch({ type: 'SET_RATION', cosmonautId, food, water });
@@ -146,8 +136,6 @@ export function useGameState(): UseGameStateResult {
     rejectCard,
     selectRepair,
     skipRepair,
-    playHandCard,
-    discardHandCard,
     setRation,
     advanceCycle,
     endSol,

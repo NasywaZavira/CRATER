@@ -9,6 +9,10 @@ import type {
   GameOutcome,
   GameState,
   Meters,
+  MorningConfirmationCheck,
+  MorningConfirmationReason,
+  MorningPlay,
+  MorningPlayInput,
   Rations,
 } from '../types';
 import type { BalanceConfig } from '../data/balance';
@@ -723,55 +727,144 @@ function selectDaily(
   };
 }
 
-function confirmMorning(
+function pickedMorningCards(state: GameState): Card[] | null {
+  if (
+    state.morningPicks.length !== state.morningGroups.length ||
+    state.morningPicks.some(id => id === null)
+  ) {
+    return null;
+  }
+
+  const pool = state.morningGroups.flat();
+  const picked = state.morningPicks.map(id =>
+    id === null ? undefined : pool.find(card => card.id === id),
+  );
+
+  return picked.every((card): card is Card => card !== undefined)
+    ? picked
+    : null;
+}
+
+interface MorningPlaySimulation {
+  state: GameState | null;
+  reasons: MorningConfirmationReason[];
+}
+
+function simulateMorningPlays(
   state: GameState,
+  playNow: readonly MorningPlayInput[],
   content: GameContent,
-): GameState {
+): MorningPlaySimulation {
   if (
     state.phase !== 'playing' ||
     state.cycle !== 'morning' ||
     state.phaseState !== 'selecting'
   ) {
-    return state;
+    return { state: null, reasons: ['morning-incomplete'] };
   }
 
-  if (state.morningPicks.some(id => id === null)) return state;
+  const picked = pickedMorningCards(state);
+  if (!picked) return { state: null, reasons: ['morning-incomplete'] };
 
-  const picked = state.morningPicks
-    .map(id => state.morningGroups.flat().find(card => card.id === id))
-    .filter((card): card is Card => card !== undefined);
+  const pickedById = new Map(picked.map(card => [card.id, card]));
+  const reasons: MorningConfirmationReason[] = [];
+  const usedCardIds = new Set<string>();
+  const usedCrewIds = new Set<string>();
 
-  if (picked.length !== state.morningPicks.length) return state;
+  let next = state;
 
-  // Jangan membuang kartu diam-diam: minta pemain mengosongkan Command Hand
-  // terlebih dahulu jika kapasitas tidak cukup.
-  if (
-    state.commandHand.length + picked.length >
-    content.balance.commandHandSize
-  ) {
-    return state;
+  for (const play of playNow) {
+    const playCard: MorningPlay =
+      typeof play === 'string' ? { cardId: play } : play;
+
+    if (usedCardIds.has(playCard.cardId)) {
+      reasons.push('duplicate-card');
+      continue;
+    }
+    usedCardIds.add(playCard.cardId);
+
+    const card = pickedById.get(playCard.cardId);
+    if (!card) {
+      reasons.push('unknown-card');
+      continue;
+    }
+
+    const assignedIds = card.requiresCrew
+      ? (playCard.cosmonautIds ?? [])
+      : [];
+
+    if (card.requiresCrew && assignedIds.length === 0) {
+      reasons.push('crew-required');
+      continue;
+    }
+
+    let crewAvailable = true;
+    for (const id of assignedIds) {
+      const crew = next.cosmonauts.find(candidate => candidate.id === id);
+      if (!crew || !crewCanWork(crew, card) || usedCrewIds.has(id)) {
+        crewAvailable = false;
+        break;
+      }
+    }
+
+    if (!crewAvailable) {
+      reasons.push('crew-unavailable');
+      continue;
+    }
+
+    const result = resolveCard(next, card, assignedIds, content);
+    if (!result) {
+      reasons.push('unaffordable');
+      continue;
+    }
+
+    next = applyImmediateLoss(result.state);
+    if (next.phase === 'ended') {
+      return { state: next, reasons: [] };
+    }
+
+    for (const id of assignedIds) usedCrewIds.add(id);
   }
 
-  const commandHand = state.commandHand.slice();
-  for (const card of picked) {
-    commandHand.push({
-      card,
-      expiresSol: state.sol + (card.validitySol ?? 1) - 1,
-    });
-  }
+  if (reasons.length > 0) return { state: null, reasons };
 
-  return enterPhase(
-    {
-      ...state,
-      cosmonauts: tickCrew(state.cosmonauts),
-      commandHand,
-      morningGroups: [],
-      morningPicks: [],
-      selectedCardIds: [],
-    },
-    'afternoon',
-    content,
-  );
+  // Semua kartu yang tidak ada di playNow hangus; tidak ada Command Hand.
+  return {
+    state: enterPhase(
+      {
+        ...next,
+        cosmonauts: tickCrew(next.cosmonauts),
+        morningGroups: [],
+        morningPicks: [],
+        selectedCardIds: [],
+        assignments: [],
+      },
+      'afternoon',
+      content,
+    ),
+    reasons: [],
+  };
+}
+
+export function canConfirmMorning(
+  state: GameState,
+  playNow: readonly MorningPlayInput[] = [],
+  content: GameContent = DEFAULT_CONTENT,
+): MorningConfirmationCheck {
+  const simulation = simulateMorningPlays(state, playNow, content);
+
+  return {
+    ok: simulation.reasons.length === 0,
+    reasons: simulation.reasons,
+  };
+}
+
+function confirmMorning(
+  state: GameState,
+  playNow: readonly MorningPlayInput[],
+  content: GameContent,
+): GameState {
+  return simulateMorningPlays(state, playNow, content).state ?? state;
 }
 
 function selectCard(state: GameState, cardId: string): GameState {
@@ -926,45 +1019,6 @@ function rejectCard(state: GameState, content: GameContent): GameState {
   });
 }
 
-function playHandCard(
-  state: GameState,
-  cardId: string,
-  cosmonautIds: readonly string[],
-  content: GameContent,
-): GameState {
-  if (state.phase !== 'playing') return state;
-
-  const stored = state.commandHand.find(item => item.card.id === cardId);
-  if (!stored) return state;
-  if (stored.expiresSol < state.sol) return state;
-
-  const card = stored.card;
-  if (card.requiresCrew && cosmonautIds.length === 0) return state;
-
-  const assignedIds = card.requiresCrew ? cosmonautIds : [];
-
-  for (const id of assignedIds) {
-    const crew = state.cosmonauts.find(candidate => candidate.id === id);
-    if (!crew || !crewCanWork(crew, card)) return state;
-  }
-
-  const result = resolveCard(state, card, assignedIds, content);
-  if (!result) return state;
-
-  return applyImmediateLoss({
-    ...result.state,
-    commandHand: result.state.commandHand.filter(
-      item => item.card.id !== cardId,
-    ),
-  });
-}
-
-function discardHandCard(state: GameState, cardId: string): GameState {
-  return {
-    ...state,
-    commandHand: state.commandHand.filter(item => item.card.id !== cardId),
-  };
-}
 
 function selectRepair(
   state: GameState,
@@ -1523,9 +1577,6 @@ function endSol(state: GameState, content: GameContent): GameState {
     meters,
     rations,
     cosmonauts: tickCrew(cosmonauts),
-    commandHand: state.commandHand.filter(
-      stored => stored.expiresSol >= nextSol,
-    ),
     pendingEffects,
     pendingExtraRations: { food: 0, water: 0 },
     pendingNightPenalty: 0,
@@ -1575,7 +1626,7 @@ export function transition(
       return selectDaily(state, action.groupIndex, action.cardId);
 
     case 'CONFIRM_MORNING':
-      return confirmMorning(state, content);
+      return confirmMorning(state, action.playNow ?? [], content);
 
     case 'SELECT_CARD':
       return selectCard(state, action.cardId);
@@ -1602,17 +1653,6 @@ export function transition(
 
     case 'SKIP_REPAIR':
       return skipRepair(state, content);
-
-    case 'PLAY_HAND_CARD':
-      return playHandCard(
-        state,
-        action.cardId,
-        action.cosmonautIds ?? [],
-        content,
-      );
-
-    case 'DISCARD_HAND_CARD':
-      return discardHandCard(state, action.cardId);
 
     case 'SET_RATION':
       return setRation(

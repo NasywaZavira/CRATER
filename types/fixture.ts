@@ -129,8 +129,6 @@ export const mockGameState: GameState = {
   selectedCardIds: ['mock-m01'],
   assignments: [{ cardId: 'mock-m01', cosmonautIds: ['corin'] }],
 
-  commandHand: [],
-
   permanentModifiers: {},
   nextExplorationRiskReduction: 0,
   pendingEffects: [],

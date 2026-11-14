@@ -156,9 +156,25 @@ export interface Assignment {
   cosmonautIds: string[];
 }
 
-export interface StoredCard {
-  card: Card;
-  expiresSol: number;
+export interface MorningPlay {
+  cardId: string;
+  cosmonautIds?: string[];
+}
+
+/** `playNow` dapat berupa ID kartu atau objek dengan penugasan kru. */
+export type MorningPlayInput = string | MorningPlay;
+
+export type MorningConfirmationReason =
+  | 'morning-incomplete'
+  | 'unknown-card'
+  | 'duplicate-card'
+  | 'crew-required'
+  | 'crew-unavailable'
+  | 'unaffordable';
+
+export interface MorningConfirmationCheck {
+  ok: boolean;
+  reasons: MorningConfirmationReason[];
 }
 
 export interface ActiveDisaster {
@@ -226,9 +242,6 @@ export interface GameState {
   selectedCardIds: string[];
   assignments: Assignment[];
 
-  /** Command Hand maksimal 4 kartu Daily Routine. */
-  commandHand: StoredCard[];
-
   permanentModifiers: PermanentModifiers;
   /** DR-08: pengurangan risiko EVA untuk Exploration berikutnya. */
   nextExplorationRiskReduction: number;
@@ -251,7 +264,7 @@ export type GameAction =
   | { type: 'START'; seed: number }
   | { type: 'RESTART'; seed: number }
   | { type: 'SELECT_DAILY'; groupIndex: number; cardId: string }
-  | { type: 'CONFIRM_MORNING' }
+  | { type: 'CONFIRM_MORNING'; playNow?: MorningPlayInput[] }
   | { type: 'SELECT_CARD'; cardId: string }
   | { type: 'ASSIGN'; cosmonautId: string }
   | { type: 'UNASSIGN'; cosmonautId: string }
@@ -259,8 +272,6 @@ export type GameAction =
   | { type: 'REJECT_CARD' }
   | { type: 'SELECT_REPAIR'; cardId: string; cosmonautIds?: string[] }
   | { type: 'SKIP_REPAIR' }
-  | { type: 'PLAY_HAND_CARD'; cardId: string; cosmonautIds?: string[] }
-  | { type: 'DISCARD_HAND_CARD'; cardId: string }
   | { type: 'SET_RATION'; cosmonautId: string; food: boolean; water: boolean }
   | { type: 'ADVANCE_CYCLE' }
   | { type: 'END_SOL' };

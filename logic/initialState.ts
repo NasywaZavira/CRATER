@@ -57,8 +57,6 @@ export function createInitialState(
     selectedCardIds: [],
     assignments: [],
 
-    commandHand: [],
-
     permanentModifiers: {},
     nextExplorationRiskReduction: 0,
     pendingEffects: [],
