@@ -128,9 +128,17 @@ export const mockGameState: GameState = {
   morningPicks: [],
   selectedCardIds: ['mock-m01'],
   assignments: [{ cardId: 'mock-m01', cosmonautIds: ['corin'] }],
+  commandHand: [],
+
+  activeBuffs: [],
+  dayForecast: null,
+  todayLog: [],
+  todayPlayedCardIds: [],
+  todayRejectedCardIds: [],
+  solReports: [],
+  activeMissions: [],
 
   permanentModifiers: {},
-  nextExplorationRiskReduction: 0,
   pendingEffects: [],
   pendingExtraRations: { food: 0, water: 0 },
   pendingNightPenalty: 0,

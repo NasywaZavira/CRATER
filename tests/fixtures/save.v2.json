@@ -1,0 +1,88 @@
+{
+  "format": "crater-save",
+  "schemaVersion": 2,
+  "savedAt": "2026-01-01T00:00:00.000Z",
+  "state": {
+    "schemaVersion": 2,
+    "seed": 1234,
+    "sol": 1,
+    "cycle": "morning",
+    "phase": "playing",
+    "phaseState": "selecting",
+    "meters": {
+      "lifeSupport": { "id": "lifeSupport", "label": "Life Support", "value": 80, "min": 0, "max": 100 },
+      "shielding": { "id": "shielding", "label": "Radiation Shielding", "value": 80, "min": 0, "max": 100 },
+      "power": { "id": "power", "label": "Power", "value": 80, "min": 0, "max": 100 },
+      "food": { "id": "food", "label": "Food System", "value": 80, "min": 0, "max": 100 }
+    },
+    "rations": { "food": 10, "water": 10 },
+    "cosmonauts": [
+      {
+        "id": "toria",
+        "name": "Toria",
+        "role": "mechanicalEngineer",
+        "specialty": "build",
+        "condition": "ready",
+        "cooldown": 0,
+        "available": true,
+        "ration": { "food": true, "water": true },
+        "fullRationNights": 0
+      },
+      {
+        "id": "cirra",
+        "name": "Cirra",
+        "role": "electricalEngineer",
+        "specialty": "upgrade",
+        "condition": "ready",
+        "cooldown": 0,
+        "available": true,
+        "ration": { "food": true, "water": true },
+        "fullRationNights": 0
+      },
+      {
+        "id": "corin",
+        "name": "Corin",
+        "role": "medicalOfficer",
+        "specialty": "research",
+        "condition": "ready",
+        "cooldown": 0,
+        "available": true,
+        "ration": { "food": true, "water": true },
+        "fullRationNights": 0
+      },
+      {
+        "id": "sylvan",
+        "name": "Sylvan",
+        "role": "botanist",
+        "specialty": "exploration",
+        "condition": "ready",
+        "cooldown": 0,
+        "available": true,
+        "ration": { "food": true, "water": true },
+        "fullRationNights": 0
+      }
+    ],
+    "hand": [],
+    "morningGroups": [
+      ["DR-01", "DR-02", "DR-03"],
+      ["DR-04", "DR-05", "DR-06"],
+      ["DR-07", "DR-08", "DR-09"]
+    ],
+    "morningPicks": [null, null, null],
+    "selectedCardIds": [],
+    "assignments": [],
+    "permanentModifiers": {},
+    "nextExplorationRiskReduction": 0,
+    "pendingEffects": [],
+    "pendingExtraRations": { "food": 0, "water": 0 },
+    "pendingNightPenalty": 0,
+    "disasterHistory": [],
+    "activeDisaster": null,
+    "disasterFollowUps": [],
+    "lastDisasterPhase": null,
+    "explorationBlockedUntilSol": null,
+    "evaUnwellRiskUntilSol": null,
+    "rngState": 1234,
+    "outcome": null
+  }
+}
