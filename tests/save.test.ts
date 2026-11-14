@@ -12,6 +12,7 @@ import {
   type GameContent,
 } from '../logic';
 import v2Save from './fixtures/save.v2.json';
+import v3Singleton from './fixtures/save.v3-singleton.json';
 
 const SAVED_AT = '2026-01-01T00:00:00.000Z';
 
@@ -167,6 +168,13 @@ describe('save schema v3', () => {
           expiresAfterSol: 2,
         },
       ],
+      dayForecast: {
+        sol: 1,
+        plan: [
+          { cycle: 'afternoon', id: 'dustStorm' },
+          { cycle: 'evening', id: null },
+        ],
+      },
     };
     expect(roundTrip(withNewFields)).toEqual(withNewFields);
 
@@ -310,5 +318,17 @@ describe('save schema v3', () => {
     expect(parsed.state.activeBuffs).toEqual([]);
     expect(parsed.state.activeMissions).toEqual([]);
     expect(parsed.state.solReports).toEqual([]);
+  });
+
+  it('migrates a legacy v3 singleton dayForecast to a full plan', () => {
+    const parsed = parseSave(JSON.stringify(v3Singleton));
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) return;
+    expect(parsed.migratedFrom).toBe(3);
+    expect(parsed.state.dayForecast).toEqual({
+      sol: 1,
+      plan: [{ cycle: 'afternoon', id: 'dustStorm' }],
+    });
   });
 });

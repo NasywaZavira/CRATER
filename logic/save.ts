@@ -4,12 +4,15 @@ import type {
   Card,
   CrewCondition,
   Cycle,
+  DayForecast,
+  DayForecastPlanEntry,
   GamePhase,
   GameState,
   MeterKey,
   PhaseState,
   SolReport,
 } from '../types';
+import { DISASTER_IDS } from '../data/balance';
 import { CARD_LIBRARY } from './content';
 import { COSMONAUT_ROSTER } from './content';
 import { SCHEMA_VERSION } from './version';
@@ -239,6 +242,71 @@ function validateCommandHand(
   return result;
 }
 
+function normalizeDayForecast(value: unknown): unknown {
+  if (!isRecord(value) || Array.isArray(value.plan)) return value;
+
+  if (typeof value.sol === 'number' && typeof value.cycle === 'string') {
+    return {
+      sol: value.sol,
+      plan: [
+        {
+          cycle: value.cycle,
+          id: typeof value.id === 'string' ? value.id : null,
+        },
+      ],
+    };
+  }
+
+  return value;
+}
+
+function validateDayForecast(
+  value: unknown,
+): DayForecast | null | undefined {
+  if (value === null) return null;
+  if (!isRecord(value)) return undefined;
+  if (
+    typeof value.sol !== 'number' ||
+    !Number.isInteger(value.sol) ||
+    value.sol < 1 ||
+    value.sol > 8 ||
+    !Array.isArray(value.plan)
+  ) {
+    return undefined;
+  }
+
+  const plan: DayForecastPlanEntry[] = [];
+  const cycles = new Set<Cycle>();
+
+  for (const entry of value.plan) {
+    if (!isRecord(entry)) return undefined;
+    if (
+      typeof entry.cycle !== 'string' ||
+      !CYCLES.includes(entry.cycle as Cycle) ||
+      entry.cycle === 'night' ||
+      cycles.has(entry.cycle as Cycle)
+    ) {
+      return undefined;
+    }
+    cycles.add(entry.cycle as Cycle);
+
+    if (
+      entry.id !== null &&
+      (typeof entry.id !== 'string' ||
+        !DISASTER_IDS.includes(entry.id as (typeof DISASTER_IDS)[number]))
+    ) {
+      return undefined;
+    }
+
+    plan.push({
+      cycle: entry.cycle as Cycle,
+      id: entry.id as (typeof DISASTER_IDS)[number] | null,
+    });
+  }
+
+  return { sol: value.sol, plan };
+}
+
 function validateBuffs(value: unknown): ActiveBuff[] | null {
   if (!Array.isArray(value)) return null;
 
@@ -355,7 +423,8 @@ function validateState(rawState: unknown, capacity: number): GameState | null {
 
   const activeBuffs = validateBuffs(rawState.activeBuffs);
   const solReports = validateReports(rawState.solReports);
-  if (!activeBuffs || !solReports) return null;
+  const dayForecast = validateDayForecast(rawState.dayForecast);
+  if (!activeBuffs || !solReports || dayForecast === undefined) return null;
 
   if (!Array.isArray(rawState.activeMissions)) return null;
   if (!Array.isArray(rawState.todayLog)) return null;
@@ -377,6 +446,7 @@ function validateState(rawState: unknown, capacity: number): GameState | null {
     commandHand,
     activeBuffs,
     solReports,
+    dayForecast,
   };
 }
 
@@ -470,23 +540,32 @@ export function parseSave(
     return { ok: false, error: 'invalid-shape' };
   }
 
-  let rawState = parsed.state;
-  if (!isRecord(rawState)) {
+  const parsedState = parsed.state;
+  if (!isRecord(parsedState)) {
     return { ok: false, error: 'invalid-shape' };
   }
 
+  let rawRecord: Record<string, unknown> = parsedState;
+
   let migratedFrom: number | undefined;
   if (version < SCHEMA_VERSION) {
-    const sol = typeof rawState.sol === 'number' ? rawState.sol : 1;
-    rawState = migrateV2(rawState, sol);
+    const sol = typeof rawRecord.sol === 'number' ? rawRecord.sol : 1;
+    rawRecord = migrateV2(rawRecord, sol);
     migratedFrom = version;
   }
 
-  if (findUnknownCardId(rawState as Record<string, unknown>)) {
+  const dayForecastBefore = rawRecord.dayForecast;
+  const normalizedDayForecast = normalizeDayForecast(dayForecastBefore);
+  if (normalizedDayForecast !== dayForecastBefore) {
+    migratedFrom = migratedFrom ?? version;
+  }
+  rawRecord = { ...rawRecord, dayForecast: normalizedDayForecast };
+
+  if (findUnknownCardId(rawRecord)) {
     return { ok: false, error: 'unknown-card' };
   }
 
-  const state = validateState(rawState, capacity);
+  const state = validateState(rawRecord, capacity);
   if (!state) {
     return { ok: false, error: 'invalid-shape' };
   }
