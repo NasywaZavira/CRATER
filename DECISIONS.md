@@ -22,10 +22,13 @@ Catatan ambiguitas yang dipertahankan/ditafsirkan tanpa menambah mekanik baru.
   Corin termasuk kru yang ditugaskan.
 - DR-08 dipindahkan dari field khusus ke `activeBuffs` dengan kind
   `exploration-risk-reduction`.
-- DR-11 meramal satu bencana pertama pada fase tersisa di Sol yang sama.
-  `dayForecast` hanya menyimpan satu entri sesuai permintaan; fase sebelum
-  entri tersebut tetap memakai roll normal. Jika roll normal memunculkan
-  bencana lebih awal, entri ramalan tidak dihapus (ambiguitas GDD).
+- DR-11 meramal seluruh fase non-malam yang tersisa di Sol yang sama.
+  `dayForecast.plan` berisi satu entri per fase, termasuk `id: null` untuk
+  fase yang dipastikan tidak mengalami bencana. `enterPhase` memakai rencana
+  tersebut tanpa roll ulang. Rencana dihapus saat Sol berganti atau saat
+  memasuki malam.
+- Save v3 lama yang menyimpan `dayForecast` sebagai satu objek `{ sol, cycle, id }`
+  dimigrasikan menjadi `{ sol, plan: [{ cycle, id }] }` saat load.
 - DR-12 memakai `requirements.minMeter` Radiation Shielding ≥ 40 dan
   `blockedByDisaster: ['dustStorm']`.
 
