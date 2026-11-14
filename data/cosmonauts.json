@@ -1,7 +1,26 @@
 [
-  { "id": "toria", "name": "Toria", "role": "commander" },
-  { "id": "cirra", "name": "Cirra", "role": "engineer" },
-  { "id": "corin", "name": "Corin", "role": "medic" },
-  { "id": "sylvan", "name": "Sylvan", "role": "geologist" },
-  { "id": "vega", "name": "Vega", "role": "pilot" }
+  {
+    "id": "toria",
+    "name": "Toria",
+    "role": "mechanicalEngineer",
+    "specialty": "build"
+  },
+  {
+    "id": "cirra",
+    "name": "Cirra",
+    "role": "electricalEngineer",
+    "specialty": "upgrade"
+  },
+  {
+    "id": "corin",
+    "name": "Corin",
+    "role": "medicalOfficer",
+    "specialty": "research"
+  },
+  {
+    "id": "sylvan",
+    "name": "Sylvan",
+    "role": "botanist",
+    "specialty": "exploration"
+  }
 ]
