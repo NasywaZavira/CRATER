@@ -1,7 +1,7 @@
 'use client';
 
 import type { Dispatch } from 'react';
-import { useCallback, useReducer } from 'react';
+import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import type {
   GameAction,
   GameState,
@@ -9,6 +9,12 @@ import type {
 } from '../types';
 import { gameReducer } from '../logic/gameReducer';
 import { createInitialState } from '../logic/initialState';
+import {
+  parseSave,
+  serializeSave,
+  type ParseSaveResult,
+} from '../logic/save';
+import { createLocalStorageSaveStorage } from '../logic/storage';
 
 const INITIAL_STATE = createInitialState();
 
@@ -20,7 +26,10 @@ export interface UseGameStateResult {
   restart: (seed: number) => void;
 
   selectDaily: (groupIndex: number, cardId: string) => void;
-  confirmMorning: (playNow?: MorningPlayInput[]) => void;
+  confirmMorning: (
+    playNow?: MorningPlayInput[],
+    store?: string[],
+  ) => void;
 
   selectCard: (cardId: string) => void;
   assign: (cosmonautId: string) => void;
@@ -31,13 +40,26 @@ export interface UseGameStateResult {
   selectRepair: (cardId: string, cosmonautIds?: string[]) => void;
   skipRepair: () => void;
 
+  useStored: (cardId: string, cosmonautIds?: string[]) => void;
   setRation: (cosmonautId: string, food: boolean, water: boolean) => void;
   advanceCycle: () => void;
   endSol: () => void;
+
+  loadGame: () => ParseSaveResult | null;
+  clearSave: () => void;
 }
 
 export function useGameState(): UseGameStateResult {
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
+  const storage = useMemo(() => createLocalStorageSaveStorage(), []);
+
+  useEffect(() => {
+    if (state.phase === 'playing' || state.phase === 'ended') {
+      storage.save(serializeSave(state, new Date().toISOString()));
+    }
+    // Save only at phase boundaries (sol, cycle, or phase changes).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.seed, state.sol, state.cycle, state.phase, storage]);
 
   const start = useCallback(
     (seed: number) => {
@@ -61,8 +83,8 @@ export function useGameState(): UseGameStateResult {
   );
 
   const confirmMorning = useCallback(
-    (playNow: MorningPlayInput[] = []) => {
-      dispatch({ type: 'CONFIRM_MORNING', playNow });
+    (playNow: MorningPlayInput[] = [], store: string[] = []) => {
+      dispatch({ type: 'CONFIRM_MORNING', playNow, store });
     },
     [dispatch],
   );
@@ -107,6 +129,13 @@ export function useGameState(): UseGameStateResult {
     dispatch({ type: 'SKIP_REPAIR' });
   }, [dispatch]);
 
+  const useStored = useCallback(
+    (cardId: string, cosmonautIds?: string[]) => {
+      dispatch({ type: 'USE_STORED', cardId, cosmonautIds });
+    },
+    [dispatch],
+  );
+
   const setRation = useCallback(
     (cosmonautId: string, food: boolean, water: boolean) => {
       dispatch({ type: 'SET_RATION', cosmonautId, food, water });
@@ -122,6 +151,21 @@ export function useGameState(): UseGameStateResult {
     dispatch({ type: 'END_SOL' });
   }, [dispatch]);
 
+  const loadGame = useCallback((): ParseSaveResult | null => {
+    const json = storage.load();
+    if (!json) return null;
+
+    const result = parseSave(json);
+    if (result.ok) {
+      dispatch({ type: 'LOAD_STATE', state: result.state });
+    }
+    return result;
+  }, [dispatch, storage]);
+
+  const clearSave = useCallback(() => {
+    storage.clear();
+  }, [storage]);
+
   return {
     state,
     dispatch,
@@ -136,8 +180,11 @@ export function useGameState(): UseGameStateResult {
     rejectCard,
     selectRepair,
     skipRepair,
+    useStored,
     setRation,
     advanceCycle,
     endSol,
+    loadGame,
+    clearSave,
   };
 }

@@ -1,6 +1,8 @@
 import type {
+  ActiveBuff,
   Card,
   CardEffect,
+  CharacterEventSource,
   Cosmonaut,
   CrewCondition,
   MeterKey,
@@ -9,14 +11,7 @@ import type {
 import type { CharacterRules } from '../data/balance';
 import { nextRandom } from './rng';
 
-export type CharacterEffectSource =
-  | 'clash'
-  | 'corinAnxiety'
-  | 'sylvanSolo'
-  | 'sylvanOverdrive'
-  | 'toriaMasterBuilder'
-  | 'cirraOptimizer'
-  | 'corinAnalyst';
+export type CharacterEffectSource = CharacterEventSource;
 
 export interface CharacterEffectEvent {
   source: CharacterEffectSource;
@@ -33,6 +28,7 @@ export interface MissionCharacterResult {
   durationDelta: number;
   anxiety: boolean;
   evaFatigueImmune: boolean;
+  tiredImmunity: number;
   events: CharacterEffectEvent[];
 }
 
@@ -80,6 +76,7 @@ export function evaluateMissionCharacters(
   rngState: number,
   rules: CharacterRules,
   _permanent: PermanentModifiers = {},
+  activeBuffs: readonly ActiveBuff[] = [],
 ): MissionCharacterResult {
   const ids = Array.from(new Set(assignedCosmonautIds));
   const byId = new Map(cosmonauts.map(crew => [crew.id, crew]));
@@ -91,6 +88,15 @@ export function evaluateMissionCharacters(
   const anyStressed = ids.some(
     id => byId.get(id)?.condition === 'stressed',
   );
+  const negativeRiskReduction = activeBuffs
+    .filter(buff => buff.kind === 'negative-trait-risk-reduction')
+    .reduce((sum, buff) => sum + buff.value, 0);
+  const clashImmune = activeBuffs.some(
+    buff => buff.kind === 'toria-cirra-immunity',
+  );
+  const tiredImmunity = activeBuffs
+    .filter(buff => buff.kind === 'tired-immunity')
+    .reduce((sum, buff) => sum + buff.value, 0);
 
   // Diminishing returns: 100%, +50%, +25%, +10%.
   const contributions = [1, 0.5, 0.25, 0.1];
@@ -171,12 +177,14 @@ export function evaluateMissionCharacters(
 
   // Konflik Toria-Cirra.
   const [clashA, clashB] = rules.clash.cosmonautIds;
-  if (ids.includes(clashA) && ids.includes(clashB)) {
+  if (!clashImmune && ids.includes(clashA) && ids.includes(clashB)) {
     const roll = nextRandom(state);
     state = roll.rngState;
-    const chance = anyStressed
-      ? rules.clash.stressedChance
-      : rules.clash.chance;
+    const chance = Math.max(
+      0,
+      (anyStressed ? rules.clash.stressedChance : rules.clash.chance) -
+        negativeRiskReduction,
+    );
 
     if (roll.value < chance) {
       flatEffects.push(...rules.clash.effects);
@@ -198,9 +206,11 @@ export function evaluateMissionCharacters(
     const stressed = corinCrew?.condition === 'stressed';
     const roll = nextRandom(state);
     state = roll.rngState;
-    const chance = stressed
-      ? corinRule.stressedChance
-      : corinRule.chance;
+    const chance = Math.max(
+      0,
+      (stressed ? corinRule.stressedChance : corinRule.chance) -
+        negativeRiskReduction,
+    );
 
     if (roll.value < chance) {
       anxiety = true;
@@ -254,9 +264,12 @@ export function evaluateMissionCharacters(
       const roll = nextRandom(state);
       state = roll.rngState;
       const stressed = sylvan.condition === 'stressed';
-      const chance = stressed
-        ? rules.sylvanOverdrive.stressedChance
-        : rules.sylvanOverdrive.chance;
+      const chance = Math.max(
+        0,
+        (stressed
+          ? rules.sylvanOverdrive.stressedChance
+          : rules.sylvanOverdrive.chance) - negativeRiskReduction,
+      );
 
       if (roll.value < chance) {
         flatEffects.push(...rules.sylvanOverdrive.effects);
@@ -277,6 +290,7 @@ export function evaluateMissionCharacters(
     durationDelta,
     anxiety,
     evaFatigueImmune,
+    tiredImmunity,
     events,
   };
 }

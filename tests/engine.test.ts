@@ -15,9 +15,12 @@ import {
   createInitialMeters,
   createInitialState,
   DEFAULT_CONTENT,
+  DISASTER_DAMAGE,
   drawMorningGroups,
   effectiveCosts,
+  ENDING_TITLES,
   evaluateMissionCharacters,
+  getDayForecast,
   resolveOutcome,
   transition,
   type GameContent,
@@ -148,6 +151,26 @@ function pickMorningCard(
   return next;
 }
 
+function pickMorningCards(
+  state: GameState,
+  content: GameContent,
+  targetIds: readonly string[],
+): GameState {
+  let next = state;
+  for (let group = 0; group < content.balance.dailyGroups; group += 1) {
+    const card =
+      next.morningGroups[group].find(candidate =>
+        targetIds.includes(candidate.id),
+      ) ?? next.morningGroups[group][0];
+    next = transition(
+      next,
+      { type: 'SELECT_DAILY', groupIndex: group, cardId: card.id },
+      content,
+    );
+  }
+  return next;
+}
+
 function rejectCurrentCard(
   state: GameState,
   content: GameContent,
@@ -191,6 +214,7 @@ describe('CRATER GDD engine', () => {
     expect(new Set(ids).size).toBe(9);
   });
 
+  // E1: pagi memakai playNow + store; kartu yang tidak dipakai/di-store hangus.
   it('plays selected morning cards immediately and forfeits unplayed cards', () => {
     const base = makeTestContent();
     const content: GameContent = {
@@ -223,7 +247,7 @@ describe('CRATER GDD engine', () => {
       { cardId: 'T-DR-1', cosmonautIds: [crew.id] },
     ];
 
-    expect(canConfirmMorning(state, playNow, content)).toEqual({
+    expect(canConfirmMorning(state, playNow, [], content)).toEqual({
       ok: true,
       reasons: [],
     });
@@ -257,7 +281,7 @@ describe('CRATER GDD engine', () => {
     state = pickMorningCard(state, content, 'T-DR-1');
 
     expect(
-      canConfirmMorning(state, [{ cardId: 'T-DR-1' }], content).reasons,
+      canConfirmMorning(state, [{ cardId: 'T-DR-1' }], [], content).reasons,
     ).toContain('crew-required');
   });
 
@@ -265,7 +289,7 @@ describe('CRATER GDD engine', () => {
     const content = makeTestContent();
     const fresh = start(1234, content);
 
-    expect(canConfirmMorning(fresh, [], content).reasons).toContain(
+    expect(canConfirmMorning(fresh, [], [], content).reasons).toContain(
       'morning-incomplete',
     );
 
@@ -274,6 +298,7 @@ describe('CRATER GDD engine', () => {
       canConfirmMorning(
         picked,
         [{ cardId: 'tidak-ada' }],
+        [],
         content,
       ).reasons,
     ).toContain('unknown-card');
@@ -394,6 +419,7 @@ describe('CRATER GDD engine', () => {
     expect(state.rations.water).toBe(9);
   });
 
+  // E2: DR-08 dipindah dari field khusus ke activeBuffs.
   it('keeps DR-08 as a next-Exploration modifier, not a permanent upgrade', () => {
     const base = makeTestContent();
     const dr08 = CARD_LIBRARY.find(card => card.id === 'DR-08')!;
@@ -421,7 +447,12 @@ describe('CRATER GDD engine', () => {
       content,
     );
 
-    expect(state.nextExplorationRiskReduction).toBe(0.2);
+    expect(
+      state.activeBuffs.some(
+        buff =>
+          buff.kind === 'exploration-risk-reduction' && buff.value === 0.2,
+      ),
+    ).toBe(true);
     expect(
       state.permanentModifiers.explorationUnwellReduction,
     ).toBeUndefined();
@@ -440,7 +471,11 @@ describe('CRATER GDD engine', () => {
     );
     state = transition(state, { type: 'EXECUTE_CARD' }, content);
 
-    expect(state.nextExplorationRiskReduction).toBe(0);
+    expect(
+      state.activeBuffs.some(
+        buff => buff.kind === 'exploration-risk-reduction',
+      ),
+    ).toBe(false);
   });
 
   it('applies DR-09 Power cost as 0 when Cirra is assigned', () => {
@@ -931,5 +966,579 @@ describe('CRATER GDD engine', () => {
 
     expect(a.groups).toEqual(b.groups);
     expect(a.groups).not.toEqual(c.groups);
+  });
+
+  it('stores morning cards in Command Hand and uses them later', () => {
+    const base = makeTestContent();
+    const content: GameContent = {
+      ...base,
+      cards: base.cards.map(card =>
+        card.id === 'T-DR-1'
+          ? {
+              ...card,
+              costs: [],
+              effects: [{ meter: 'lifeSupport', delta: 4 }],
+              durationCycles: 0,
+              requiresCrew: false,
+              validitySol: 2,
+            }
+          : card,
+      ),
+    };
+
+    let state = start(1234, content);
+    state = pickMorningCard(state, content, 'T-DR-1');
+    const before = state.meters.lifeSupport.value;
+
+    state = transition(
+      state,
+      { type: 'CONFIRM_MORNING', store: ['T-DR-1'] },
+      content,
+    );
+    expect(state.commandHand).toEqual([
+      { cardId: 'T-DR-1', remainingSols: 2 },
+    ]);
+
+    state = transition(
+      state,
+      { type: 'USE_STORED', cardId: 'T-DR-1' },
+      content,
+    );
+    expect(state.commandHand).toHaveLength(0);
+    expect(state.meters.lifeSupport.value).toBe(before + 4);
+  });
+
+  it('reports hand-full and expires stored cards', () => {
+    const content = makeTestContent();
+    let state = start(1234, content);
+    state = pickMorningCard(state, content, 'T-DR-1');
+    const picks = state.morningPicks.filter(
+      (id): id is string => id !== null,
+    );
+
+    const full: GameState = {
+      ...state,
+      commandHand: [
+        { cardId: 'DR-01', remainingSols: 1 },
+        { cardId: 'DR-02', remainingSols: 1 },
+        { cardId: 'DR-03', remainingSols: 1 },
+      ],
+    };
+    expect(
+      canConfirmMorning(full, [], picks.slice(0, 2), content).reasons,
+    ).toContain('hand-full');
+
+    state = transition(
+      state,
+      { type: 'CONFIRM_MORNING', store: ['T-DR-1'] },
+      content,
+    );
+    expect(state.commandHand).toHaveLength(1);
+    state = rejectCurrentCard(state, content);
+    state = rejectCurrentCard(state, content);
+    state = transition(state, { type: 'END_SOL' }, content);
+    expect(state.commandHand).toHaveLength(0);
+  });
+
+  it('enforces DR-12 requirements', () => {
+    const base = makeTestContent();
+    const dr12 = CARD_LIBRARY.find(card => card.id === 'DR-12')!;
+    const content: GameContent = {
+      ...base,
+      cards: base.cards.map(card =>
+        card.id === 'T-DR-1' ? dr12 : card,
+      ),
+    };
+
+    let state = start(1234, content);
+    state = pickMorningCard(state, content, dr12.id);
+    const crew = state.cosmonauts.find(candidate => candidate.available)!;
+    const playNow: MorningPlay[] = [
+      { cardId: dr12.id, cosmonautIds: [crew.id] },
+    ];
+
+    const low: GameState = {
+      ...state,
+      meters: {
+        ...state.meters,
+        shielding: { ...state.meters.shielding, value: 39 },
+      },
+    };
+    expect(
+      canConfirmMorning(low, playNow, [], content).reasons,
+    ).toContain('requirements-unmet');
+
+    const ok: GameState = {
+      ...state,
+      meters: {
+        ...state.meters,
+        shielding: { ...state.meters.shielding, value: 40 },
+      },
+    };
+    expect(canConfirmMorning(ok, playNow, [], content).reasons).not.toContain(
+      'requirements-unmet',
+    );
+  });
+
+  it('implements DR-01, DR-02, and DR-06 active buffs', () => {
+    const base = makeTestContent();
+    const dr01 = CARD_LIBRARY.find(card => card.id === 'DR-01')!;
+    const dr02 = CARD_LIBRARY.find(card => card.id === 'DR-02')!;
+    const dr06 = CARD_LIBRARY.find(card => card.id === 'DR-06')!;
+    const content: GameContent = {
+      ...base,
+      cards: base.cards.map(card =>
+        card.id === 'T-DR-1'
+          ? dr01
+          : card.id === 'T-DR-2'
+            ? dr02
+            : card.id === 'T-DR-3'
+              ? dr06
+              : card,
+      ),
+    };
+
+    let state = start(1234, content);
+    const fillers = state.morningGroups
+      .flat()
+      .filter(card => ![dr01.id, dr02.id, dr06.id].includes(card.id));
+    state = {
+      ...state,
+      morningGroups: [
+        [dr01, fillers[0], fillers[1]],
+        [dr02, fillers[2], fillers[3]],
+        [dr06, fillers[4], fillers[5]],
+      ],
+      morningPicks: [null, null, null],
+    };
+    state = pickMorningCards(state, content, [dr01.id, dr02.id, dr06.id]);
+
+    const crew = state.cosmonauts
+      .filter(candidate => candidate.available)
+      .slice(0, 3);
+    const playNow: MorningPlay[] = [
+      { cardId: dr01.id, cosmonautIds: [crew[0].id] },
+      { cardId: dr02.id, cosmonautIds: [crew[1].id] },
+      { cardId: dr06.id, cosmonautIds: [crew[2].id] },
+    ];
+
+    state = transition(
+      state,
+      { type: 'CONFIRM_MORNING', playNow },
+      content,
+    );
+
+    expect(
+      state.activeBuffs.some(buff => buff.kind === 'next-physical-bonus'),
+    ).toBe(true);
+    expect(
+      state.activeBuffs.some(
+        buff => buff.kind === 'negative-trait-risk-reduction',
+      ),
+    ).toBe(true);
+    expect(
+      state.activeBuffs.some(buff => buff.kind === 'tired-immunity'),
+    ).toBe(true);
+  });
+
+  it('moves DR-03 recovery to night and blocks the Toria-Cirra clash', () => {
+    const content = makeTestContent();
+    let state = start(1234, content);
+    state = confirmMorning(state, content);
+    state = rejectCurrentCard(state, content);
+    state = rejectCurrentCard(state, content);
+
+    state = {
+      ...state,
+      cosmonauts: state.cosmonauts.map((crew, index) =>
+        index === 0
+          ? { ...crew, condition: 'tired' as const, available: true }
+          : crew,
+      ),
+      activeBuffs: [
+        {
+          id: 'dr03-night',
+          cardId: 'DR-03',
+          kind: 'night-recovery',
+          value: 2,
+          expiresAfterSol: state.sol,
+        },
+      ],
+    };
+
+    state = transition(state, { type: 'END_SOL' }, content);
+    expect(state.cosmonauts[0].condition).toBe('ready');
+
+    const rules = DEFAULT_CONTENT.balance.characterRules;
+    const immunity = evaluateMissionCharacters(
+      DEFAULT_CONTENT.cards.find(card => card.id === 'BL-01')!,
+      ['toria', 'cirra'],
+      createCosmonauts(),
+      0,
+      rules,
+      {},
+      [
+        {
+          id: 'dr03-clash',
+          cardId: 'DR-03',
+          kind: 'toria-cirra-immunity',
+          value: 1,
+          expiresAfterSol: 1,
+        },
+      ],
+    );
+    expect(immunity.events.some(event => event.source === 'clash')).toBe(false);
+  });
+
+  it('forecasts the next disaster with DR-11 and reuses it in enterPhase', () => {
+    const base = makeTestContent();
+    const dr11 = CARD_LIBRARY.find(card => card.id === 'DR-11')!;
+    const content: GameContent = {
+      ...base,
+      cards: base.cards.map(card =>
+        card.id === 'T-DR-1' ? dr11 : card,
+      ),
+      balance: {
+        ...base.balance,
+        disasterChances: {
+          morning: 0,
+          afternoon: 0,
+          evening: 1,
+          night: 0,
+        },
+      },
+    };
+
+    let state = start(1234, content);
+    state = pickMorningCard(state, content, dr11.id);
+    state = transition(
+      state,
+      { type: 'CONFIRM_MORNING', store: [dr11.id] },
+      content,
+    );
+
+    const crew = state.cosmonauts.find(candidate => candidate.available)!;
+    state = transition(
+      state,
+      { type: 'USE_STORED', cardId: dr11.id, cosmonautIds: [crew.id] },
+      content,
+    );
+
+    const forecast = getDayForecast(state);
+    expect(forecast).not.toBeNull();
+    expect(forecast?.cycle).toBe('evening');
+
+    const card = state.hand[0];
+    state = transition(state, { type: 'SELECT_CARD', cardId: card.id }, content);
+    state = transition(state, { type: 'REJECT_CARD' }, content);
+    state = transition(state, { type: 'ADVANCE_CYCLE' }, content);
+
+    expect(state.cycle).toBe('evening');
+    expect(state.activeDisaster?.id).toBe(forecast?.id);
+  });
+
+  it('keeps already-Unwell crew Unwell during SEP', () => {
+    const content: GameContent = {
+      ...DEFAULT_CONTENT,
+      balance: {
+        ...DEFAULT_CONTENT.balance,
+        disasterChances: {
+          morning: 0,
+          afternoon: 1,
+          evening: 0,
+          night: 0,
+        },
+      },
+    };
+
+    for (let seed = 0; seed < 200; seed += 1) {
+      let state = start(seed, content);
+      state = {
+        ...state,
+        meters: {
+          ...state.meters,
+          shielding: { ...state.meters.shielding, value: 40 },
+        },
+        cosmonauts: state.cosmonauts.map((crew, index) =>
+          index === 0
+            ? { ...crew, condition: 'unwell' as const, available: false }
+            : crew,
+        ),
+      };
+      state = confirmMorning(state, content);
+
+      if (state.activeDisaster?.id === 'solarParticle') {
+        expect(state.cosmonauts[0].condition).toBe('unwell');
+        return;
+      }
+    }
+  });
+
+  it('applies the SEP follow-up only next Sol and below 60 shielding', () => {
+    const base = makeTestContent();
+    const content: GameContent = {
+      ...base,
+      cards: base.cards.map(card =>
+        card.deck === 'research'
+          ? { ...card, deck: 'exploration', category: 'exploration' }
+          : card,
+      ),
+    };
+
+    const runExploration = (
+      seed: number,
+      sol: number,
+      until: number,
+      shielding = 55,
+    ) => {
+      let state = start(seed, content);
+      state = confirmMorning(state, content);
+      state = {
+        ...state,
+        sol,
+        evaUnwellRiskUntilSol: until,
+        meters: {
+          ...state.meters,
+          shielding: { ...state.meters.shielding, value: shielding },
+        },
+      };
+
+      const card = state.hand.find(item => item.category === 'exploration')!;
+      state = transition(state, { type: 'SELECT_CARD', cardId: card.id }, content);
+      const crew = state.cosmonauts.find(candidate => candidate.available)!;
+      state = transition(state, { type: 'ASSIGN', cosmonautId: crew.id }, content);
+      state = transition(state, { type: 'EXECUTE_CARD' }, content);
+
+      return (
+        state.cosmonauts.find(candidate => candidate.id === crew.id)
+          ?.condition === 'unwell'
+      );
+    };
+
+    let nextSolHits = 0;
+    for (let seed = 0; seed < 80; seed += 1) {
+      if (runExploration(seed, 2, 2)) nextSolHits += 1;
+    }
+    expect(nextSolHits).toBeGreaterThan(0);
+
+    for (let seed = 0; seed < 80; seed += 1) {
+      expect(runExploration(seed, 2, 1)).toBe(false);
+    }
+
+    // Old code also applied the follow-up in the same Sol and ignored >= 60.
+    for (let seed = 0; seed < 80; seed += 1) {
+      expect(runExploration(seed, 1, 2)).toBe(false);
+      expect(runExploration(seed, 2, 2, 65)).toBe(false);
+    }
+  });
+
+  it('blocks Exploration during a dust storm and the following Sol', () => {
+    const base = makeTestContent();
+    const content: GameContent = {
+      ...base,
+      cards: base.cards.map(card =>
+        card.deck === 'research'
+          ? { ...card, deck: 'exploration', category: 'exploration' }
+          : card,
+      ),
+    };
+
+    let state = start(1234, content);
+    state = confirmMorning(state, content);
+    state = { ...state, explorationBlockedUntilSol: 2 };
+
+    const card = state.hand.find(item => item.category === 'exploration')!;
+    state = transition(state, { type: 'SELECT_CARD', cardId: card.id }, content);
+    const crew = state.cosmonauts.find(candidate => candidate.available)!;
+    state = transition(state, { type: 'ASSIGN', cosmonautId: crew.id }, content);
+
+    const blocked = transition(state, { type: 'EXECUTE_CARD' }, content);
+    expect(blocked.phaseState).toBe('selecting');
+
+    const storedState: GameState = {
+      ...state,
+      commandHand: [{ cardId: card.id, remainingSols: 2 }],
+    };
+    const stored = transition(
+      storedState,
+      { type: 'USE_STORED', cardId: card.id, cosmonautIds: [crew.id] },
+      content,
+    );
+    expect(stored).toEqual(storedState);
+  });
+
+  it('rejects SKIP_REPAIR when a repair card is affordable', () => {
+    const content: GameContent = {
+      ...DEFAULT_CONTENT,
+      balance: {
+        ...DEFAULT_CONTENT.balance,
+        disasterChances: {
+          morning: 0,
+          afternoon: 1,
+          evening: 0,
+          night: 0,
+        },
+      },
+    };
+
+    let state = start(42, content);
+    state = confirmMorning(state, content);
+    expect(state.activeDisaster).not.toBeNull();
+
+    const skipped = transition(state, { type: 'SKIP_REPAIR' }, content);
+    expect(skipped).toBe(state);
+
+    const repair = state.activeDisaster!.repairChoices[0];
+    const crewIds = repair.requiresCrew
+      ? state.cosmonauts
+          .filter(crew => crew.available && crew.condition !== 'unwell')
+          .map(crew => crew.id)
+      : [];
+    const resolved = transition(
+      state,
+      { type: 'SELECT_REPAIR', cardId: repair.id, cosmonautIds: crewIds },
+      content,
+    );
+    expect(resolved.phaseState).toBe('executed');
+  });
+
+  it('builds a Sol report with played, rejected, and character data', () => {
+    const content = makeTestContent();
+    let state = start(1234, content);
+    state = confirmMorning(state, content);
+
+    const afternoonCard = state.hand[0];
+    state = transition(
+      state,
+      { type: 'SELECT_CARD', cardId: afternoonCard.id },
+      content,
+    );
+    const crew = state.cosmonauts.find(candidate => candidate.available)!;
+    state = transition(state, { type: 'ASSIGN', cosmonautId: crew.id }, content);
+    state = transition(state, { type: 'EXECUTE_CARD' }, content);
+    state = transition(state, { type: 'ADVANCE_CYCLE' }, content);
+
+    const eveningCard = state.hand[0];
+    state = transition(
+      state,
+      { type: 'SELECT_CARD', cardId: eveningCard.id },
+      content,
+    );
+    state = transition(state, { type: 'REJECT_CARD' }, content);
+    state = transition(state, { type: 'ADVANCE_CYCLE' }, content);
+    state = transition(state, { type: 'END_SOL' }, content);
+
+    expect(state.solReports).toHaveLength(1);
+    const report = state.solReports[0];
+    expect(report.playedCardIds).toContain(afternoonCard.id);
+    expect(report.rejectedCardIds).toContain(eveningCard.id);
+    expect(report.disasters).toEqual([]);
+    expect(Object.keys(report.conditions)).toHaveLength(4);
+  });
+
+  // E4: Stressed menutup Silver; Bronze dipakai untuk kerusakan/tekanan.
+  it('applies exact ending boundaries and titles', () => {
+    const meters = createInitialMeters();
+    const crew = createCosmonauts();
+
+    const outcome = (
+      meterValue: number,
+      food: number,
+      conditions = crew,
+    ) => {
+      const customMeters = {
+        ...meters,
+        food: { ...meters.food, value: meterValue },
+      };
+      return resolveOutcome(
+        {
+          meters: customMeters,
+          rations: { food, water: 10 },
+          cosmonauts: conditions,
+          sol: 8,
+        },
+        8,
+      );
+    };
+
+    const medalOf = (value: ReturnType<typeof resolveOutcome>) =>
+      value?.status === 'won' ? value.medal : undefined;
+
+    expect(medalOf(outcome(70, 10))).toBe('gold');
+    expect(medalOf(outcome(69, 10))).toBe('silver');
+    expect(medalOf(outcome(40, 10))).toBe('silver');
+    expect(medalOf(outcome(39, 10))).toBe('bronze');
+    expect(medalOf(outcome(80, 9))).toBe('silver');
+
+    const stressed = crew.map((member, index) =>
+      index === 0
+        ? { ...member, condition: 'stressed' as const }
+        : member,
+    );
+    expect(medalOf(outcome(80, 10, stressed))).toBe('bronze');
+
+    const oneUnwell = crew.map((member, index) =>
+      index === 0 ? { ...member, condition: 'unwell' as const } : member,
+    );
+    expect(medalOf(outcome(80, 10, oneUnwell))).toBe('bronze');
+
+    const unwell = crew.map(member => ({
+      ...member,
+      condition: 'unwell' as const,
+    }));
+    const lostCrew = outcome(80, 10, unwell);
+    expect(lostCrew?.status).toBe('lost');
+    expect(lostCrew?.status === 'lost' && lostCrew.endingId).toBe('abort');
+    expect(lostCrew?.status === 'lost' && lostCrew.failureText).toBe(
+      'Empat astronaut Tidak Sehat bersamaan pada malam hari.',
+    );
+
+    const zero = resolveOutcome(
+      {
+        meters: { ...meters, power: { ...meters.power, value: 0 } },
+        rations: { food: 10, water: 10 },
+        cosmonauts: crew,
+        sol: 8,
+      },
+      8,
+    );
+    expect(zero?.status).toBe('lost');
+    expect(zero?.status === 'lost' && zero.endingTitle).toBe(
+      ENDING_TITLES.abort,
+    );
+    expect(zero?.status === 'lost' && zero.failureText).toContain(
+      'Blackout total',
+    );
+  });
+
+  it('guards all actions when the game is not playing', () => {
+    const base = start();
+    const outcome = resolveOutcome(
+      { meters: base.meters, rations: base.rations, cosmonauts: base.cosmonauts, sol: 8 },
+      8,
+    )!;
+    const ended: GameState = { ...base, phase: 'ended', outcome };
+
+    expect(
+      transition(
+        ended,
+        { type: 'SET_RATION', cosmonautId: 'toria', food: false, water: false },
+      ),
+    ).toBe(ended);
+    expect(transition(ended, { type: 'SKIP_REPAIR' })).toBe(ended);
+    expect(
+      transition(ended, { type: 'RESTART', seed: 99 }).phase,
+    ).toBe('playing');
+    expect(
+      transition(ended, { type: 'LOAD_STATE', state: base }),
+    ).toBe(base);
+  });
+
+  it('keeps disaster damage numbers in data/disasters.ts', () => {
+    expect(DISASTER_DAMAGE.dustStorm.meters.power).toBe(-20);
+    expect(DISASTER_DAMAGE.solarParticle.meters.shielding).toBe(-22);
+    expect(DISASTER_DAMAGE.airlockLeak.meters.lifeSupport).toBe(-20);
+    expect(DISASTER_DAMAGE.waterPlantFailure.meters.food).toBe(-20);
+    expect(DISASTER_DAMAGE.waterPlantFailure.rations.water).toBe(-2);
   });
 });

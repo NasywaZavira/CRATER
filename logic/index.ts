@@ -66,6 +66,7 @@ export {
 export {
   canConfirmMorning,
   effectiveCosts,
+  getDayForecast,
   resolveOutcome,
   transition,
   gameReducer,
@@ -73,11 +74,40 @@ export {
 export type { OutcomeInput } from './gameReducer';
 
 export type {
+  ActiveBuff,
+  ActiveMission,
+  DayForecast,
+  EndingId,
   MorningConfirmationCheck,
   MorningConfirmationReason,
   MorningPlay,
   MorningPlayInput,
+  SolReport,
+  StoredCard,
 } from '../types';
+
+export { parseSave, serializeSave } from './save';
+export type { ParseSaveResult, SaveError, SaveFile } from './save';
+
+export {
+  createLocalStorageSaveStorage,
+  createMemorySaveStorage,
+} from './storage';
+export type { SaveStorage } from './storage';
+
+export {
+  DISASTER_DAMAGE,
+  DUST_STORM_POWER_RECOVERY_PENALTY,
+  SEP_FOLLOWUP_SHIELDING_THRESHOLD,
+  SEP_UNWELL_SHIELDING_THRESHOLD,
+} from '../data/disasters';
+export type { DisasterDamage } from '../data/disasters';
+
+export {
+  CREW_FAILURE_TEXT,
+  ENDING_TITLES,
+  METER_FAILURE_TEXT,
+} from '../data/endings';
 
 export { validateBalance } from './validateBalance';
 

@@ -1,9 +1,12 @@
 import type {
+  ActiveBuff,
   Card,
   CardEffect,
+  CharacterEventLog,
   Cosmonaut,
   CrewCondition,
   Cycle,
+  DayForecast,
   DisasterId,
   GameAction,
   GameOutcome,
@@ -13,13 +16,26 @@ import type {
   MorningConfirmationReason,
   MorningPlay,
   MorningPlayInput,
+  MeterKey,
   Rations,
+  SolReport,
 } from '../types';
 import type { BalanceConfig } from '../data/balance';
 import { DISASTER_IDS } from '../data/balance';
+import {
+  DISASTER_DAMAGE,
+  DUST_STORM_POWER_RECOVERY_PENALTY,
+  SEP_FOLLOWUP_SHIELDING_THRESHOLD,
+  SEP_UNWELL_SHIELDING_THRESHOLD,
+} from '../data/disasters';
+import {
+  CREW_FAILURE_TEXT,
+  ENDING_TITLES,
+  METER_FAILURE_TEXT,
+} from '../data/endings';
 import { evaluateMissionCharacters } from './characterEffects';
 import { DEFAULT_CONTENT, type GameContent } from './content';
-import { cycleIndex, getNextCycle } from './cycle';
+import { CYCLES, cycleIndex, getNextCycle } from './cycle';
 import { drawMorningGroups, drawRepairChoices, drawHand } from './draw';
 import { startGame } from './initialState';
 import {
@@ -229,6 +245,112 @@ function clearFollowUps(
   );
 }
 
+function mainPositiveMeter(card: Card): MeterKey | undefined {
+  const positives = card.effects.filter(
+    (effect): effect is CardEffect & { meter: MeterKey; delta: number } =>
+      isMeterEffect(effect) && effect.delta > 0,
+  );
+
+  if (positives.length === 0) return undefined;
+
+  return positives.reduce((best, effect) =>
+    effect.delta > best.delta ? effect : best,
+  ).meter;
+}
+
+function isPhysicalCategory(category: Card['category']): boolean {
+  return category === 'exploration' || category === 'build';
+}
+
+function pushUnique(values: readonly string[], value: string): string[] {
+  return values.includes(value) ? [...values] : [...values, value];
+}
+
+function buffTotal(
+  buffs: readonly ActiveBuff[],
+  kind: ActiveBuff['kind'],
+): number {
+  return buffs
+    .filter(buff => buff.kind === kind)
+    .reduce((sum, buff) => sum + buff.value, 0);
+}
+
+function removeBuffKind(
+  buffs: readonly ActiveBuff[],
+  kind: ActiveBuff['kind'],
+): ActiveBuff[] {
+  return buffs.filter(buff => buff.kind !== kind);
+}
+
+function makeBuff(
+  cardId: string,
+  kind: ActiveBuff['kind'],
+  value: number,
+  expiresAfterSol: number,
+  sequence: number,
+): ActiveBuff {
+  return {
+    id: `${cardId}:${kind}:${sequence}`,
+    cardId,
+    kind,
+    value,
+    expiresAfterSol,
+  };
+}
+
+function meetsRequirements(state: GameState, card: Card): boolean {
+  const requirements = card.requirements;
+  if (!requirements) return true;
+
+  if (requirements.minMeter) {
+    const { meter, value } = requirements.minMeter;
+    if (state.meters[meter].value < value) return false;
+  }
+
+  if (
+    requirements.blockedByDisaster &&
+    state.activeDisaster &&
+    !state.activeDisaster.resolved &&
+    requirements.blockedByDisaster.includes(state.activeDisaster.id)
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+function forecastRemainingDisasters(
+  state: GameState,
+  content: GameContent,
+): { forecast: DayForecast | null; rngState: number } {
+  let rngState = state.rngState;
+  const startIndex = cycleIndex(state.cycle);
+
+  for (let index = startIndex + 1; index < CYCLES.length; index += 1) {
+    const cycle = CYCLES[index];
+    if (cycle === 'night') break;
+
+    const roll = rollDisaster(
+      state.sol,
+      cycle,
+      state.disasterHistory,
+      state.lastDisasterPhase,
+      rngState,
+      content.balance,
+    );
+    rngState = roll.rngState;
+
+    if (roll.id) {
+      return {
+        forecast: { sol: state.sol, cycle, id: roll.id },
+        rngState,
+      };
+    }
+  }
+
+  return { forecast: null, rngState };
+}
+
 interface ResolutionResult {
   state: GameState;
 }
@@ -255,6 +377,7 @@ function resolveCard(
     state.rngState,
     content.balance.characterRules,
     state.permanentModifiers,
+    state.activeBuffs,
   );
 
   const immediateCardEffects = card.effects.filter(
@@ -264,16 +387,28 @@ function resolveCard(
     effect => effect.timing === 'delayed',
   );
 
+  const physicalMain = isPhysicalCategory(card.category)
+    ? mainPositiveMeter(card)
+    : undefined;
+  const physicalBonus = physicalMain
+    ? buffTotal(state.activeBuffs, 'next-physical-bonus')
+    : 0;
+  const bonusEffects: CardEffect[] =
+    physicalMain && physicalBonus > 0
+      ? [{ meter: physicalMain, delta: physicalBonus }]
+      : [];
+
   const combined = [
     ...costs,
     ...immediateCardEffects,
     ...character.effects,
+    ...bonusEffects,
   ];
 
   const scaled = [
     ...costs,
     ...scalePositiveEffects(
-      [...immediateCardEffects, ...character.effects],
+      [...immediateCardEffects, ...character.effects, ...bonusEffects],
       character.positiveMultiplier,
     ),
   ];
@@ -315,27 +450,40 @@ function resolveCard(
     character.evaFatigueImmune ||
     Boolean(state.permanentModifiers.evaTiredImmunity);
 
+  let activeBuffs = state.activeBuffs.slice();
+  const consumedTiredImmunity =
+    heavyWork && !evaImmune && assignedIds.length > 0 && character.tiredImmunity > 0;
+
   if (heavyWork && !evaImmune && assignedIds.length > 0) {
     const assigned = new Set(assignedIds);
-    cosmonauts = cosmonauts.map(crew =>
-      assigned.has(crew.id) && crew.condition === 'ready'
-        ? withAvailability({ ...crew, condition: 'tired' })
-        : crew,
-    );
+    let remainingTiredImmunity = character.tiredImmunity;
+    cosmonauts = cosmonauts.map(crew => {
+      if (!assigned.has(crew.id) || crew.condition !== 'ready') return crew;
+
+      if (remainingTiredImmunity > 0) {
+        remainingTiredImmunity -= 1;
+        return crew;
+      }
+
+      return withAvailability({ ...crew, condition: 'tired' });
+    });
   }
 
-  let nextExplorationRiskReduction = state.nextExplorationRiskReduction;
-  if (card.id === 'DR-08') {
-    nextExplorationRiskReduction = Math.max(
-      nextExplorationRiskReduction,
-      0.2,
-    );
+  if (consumedTiredImmunity) {
+    activeBuffs = removeBuffKind(activeBuffs, 'tired-immunity');
+  }
+
+  if (physicalBonus > 0) {
+    activeBuffs = removeBuffKind(activeBuffs, 'next-physical-bonus');
   }
 
   // Risiko radiasi EVA (GDD 3) dan dampak lanjutan SEP pada Sol berikutnya.
   if (card.category === 'exploration') {
-    const temporaryReduction = nextExplorationRiskReduction;
-    nextExplorationRiskReduction = 0;
+    const temporaryReduction = buffTotal(
+      activeBuffs,
+      'exploration-risk-reduction',
+    );
+    activeBuffs = removeBuffKind(activeBuffs, 'exploration-risk-reduction');
 
     const sepImmune = Boolean(
       state.permanentModifiers.sepUnwellImmunity ||
@@ -356,7 +504,8 @@ function resolveCard(
 
       if (
         state.evaUnwellRiskUntilSol !== null &&
-        state.sol <= state.evaUnwellRiskUntilSol
+        state.sol === state.evaUnwellRiskUntilSol &&
+        shieldValue < SEP_FOLLOWUP_SHIELDING_THRESHOLD
       ) {
         risk = Math.max(risk, 0.5);
       }
@@ -414,17 +563,77 @@ function resolveCard(
     extra.water += content.balance.characterRules.corinAnxiety.waterRations;
   }
 
+  let dayForecast = state.dayForecast;
+  if (card.id === 'DR-11') {
+    const forecast = forecastRemainingDisasters(
+      { ...state, rngState },
+      content,
+    );
+    dayForecast = forecast.forecast;
+    rngState = forecast.rngState;
+  }
+
+  const newBuffs: ActiveBuff[] = [];
+  let buffSequence = activeBuffs.length;
+  const addBuff = (
+    kind: ActiveBuff['kind'],
+    value: number,
+    expiresAfterSol: number,
+  ) => {
+    newBuffs.push(
+      makeBuff(card.id, kind, value, expiresAfterSol, buffSequence),
+    );
+    buffSequence += 1;
+  };
+
+  if (card.id === 'DR-01') {
+    addBuff(
+      'next-physical-bonus',
+      1,
+      state.sol + (card.validitySol ?? 1),
+    );
+  }
+  if (card.id === 'DR-02') {
+    addBuff('negative-trait-risk-reduction', 0.15, state.sol);
+  }
+  if (card.id === 'DR-03') {
+    addBuff('night-recovery', 2, state.sol);
+    addBuff('toria-cirra-immunity', 1, state.sol);
+  }
+  if (card.id === 'DR-06') {
+    addBuff(
+      'tired-immunity',
+      assignedIds.includes('corin') ? 2 : 1,
+      state.sol,
+    );
+  }
+  if (card.id === 'DR-08') {
+    addBuff('exploration-risk-reduction', 0.2, state.sol + 1);
+  }
+
+  const todayLog: CharacterEventLog[] = [
+    ...state.todayLog,
+    ...character.events.map(event => ({
+      source: event.source,
+      cosmonautIds: event.cosmonautIds,
+      message: event.message,
+    })),
+  ];
+
   return {
     state: {
       ...state,
       meters,
       rations,
       cosmonauts,
+      activeBuffs: [...activeBuffs, ...newBuffs],
+      dayForecast,
+      todayLog,
+      todayPlayedCardIds: pushUnique(state.todayPlayedCardIds, card.id),
       permanentModifiers: mergePermanent(
         state.permanentModifiers,
         card.permanent,
       ),
-      nextExplorationRiskReduction,
       pendingEffects,
       disasterFollowUps,
       pendingExtraRations: extra,
@@ -448,6 +657,11 @@ function applyImmediateLoss(state: GameState): GameState {
     phase: 'ended',
     outcome: {
       status: 'lost',
+      endingId: 'abort',
+      endingTitle: ENDING_TITLES.abort,
+      failureText: depleted
+        .map(meter => METER_FAILURE_TEXT[meter])
+        .join('; '),
       reason: 'meter-depleted',
       sol: state.sol,
       meters: depleted,
@@ -525,12 +739,20 @@ function applyDisasterImpact(
   let permanentModifiers = state.permanentModifiers;
 
   if (id === 'dustStorm') {
-    meters = applyMeterEffects(meters, [{ meter: 'power', delta: -20 }]);
+    meters = applyMeterEffects(
+      meters,
+      Object.entries(DISASTER_DAMAGE.dustStorm.meters).map(([meter, delta]) => ({
+        meter: meter as MeterKey,
+        delta: delta ?? 0,
+      })),
+    );
   } else if (id === 'solarParticle') {
-    const wasBelowThreshold = meters.shielding.value < 50;
+    const wasBelowThreshold =
+      meters.shielding.value < SEP_UNWELL_SHIELDING_THRESHOLD;
     const sepDamage = Math.max(
       0,
-      22 - (permanentModifiers.sepDamageReduction ?? 0),
+      Math.abs(DISASTER_DAMAGE.solarParticle.meters.shielding ?? 22) -
+        (permanentModifiers.sepDamageReduction ?? 0),
     );
     meters = applyMeterEffects(meters, [
       { meter: 'shielding', delta: -sepDamage },
@@ -547,7 +769,12 @@ function applyDisasterImpact(
     cosmonauts = cosmonauts.map(crew =>
       withAvailability({
         ...crew,
-        condition: wasBelowThreshold && !immune ? 'unwell' : 'stressed',
+        condition:
+          crew.condition === 'unwell'
+            ? 'unwell'
+            : wasBelowThreshold && !immune
+              ? 'unwell'
+              : 'stressed',
         fullRationNights: 0,
       }),
     );
@@ -557,7 +784,13 @@ function applyDisasterImpact(
       permanentModifiers = rest;
     }
   } else if (id === 'airlockLeak') {
-    meters = applyMeterEffects(meters, [{ meter: 'lifeSupport', delta: -20 }]);
+    meters = applyMeterEffects(
+      meters,
+      Object.entries(DISASTER_DAMAGE.airlockLeak.meters).map(([meter, delta]) => ({
+        meter: meter as MeterKey,
+        delta: delta ?? 0,
+      })),
+    );
     const pool = cosmonauts.slice();
     for (let i = 0; i < 2 && pool.length > 0; i += 1) {
       const roll = nextRandom(rngState);
@@ -571,8 +804,24 @@ function applyDisasterImpact(
       );
     }
   } else {
-    meters = applyMeterEffects(meters, [{ meter: 'food', delta: -20 }]);
-    rations = applyRationEffects(rations, [{ ration: 'water', rationDelta: -2 }]);
+    meters = applyMeterEffects(
+      meters,
+      Object.entries(DISASTER_DAMAGE.waterPlantFailure.meters).map(
+        ([meter, delta]) => ({
+          meter: meter as MeterKey,
+          delta: delta ?? 0,
+        }),
+      ),
+    );
+    rations = applyRationEffects(
+      rations,
+      Object.entries(DISASTER_DAMAGE.waterPlantFailure.rations).map(
+        ([ration, delta]) => ({
+          ration: ration as 'food' | 'water',
+          rationDelta: delta ?? 0,
+        }),
+      ),
+    );
   }
 
   const followUps = state.disasterFollowUps.slice();
@@ -608,6 +857,7 @@ function applyDisasterImpact(
       clearedFollowUp: false,
     },
     disasterFollowUps: followUps,
+    dayForecast: null,
     lastDisasterPhase: absolutePhase(state.sol, state.cycle),
     explorationBlockedUntilSol:
       id === 'dustStorm' ? state.sol + 1 : state.explorationBlockedUntilSol,
@@ -639,16 +889,32 @@ function enterPhase(
     activeDisaster: null,
   };
 
-  const disaster = rollDisaster(
-    state.sol,
-    cycle,
-    state.disasterHistory,
-    state.lastDisasterPhase,
-    state.rngState,
-    content.balance,
-  );
+  const forecastMatches =
+    state.dayForecast !== null &&
+    state.dayForecast.sol === state.sol &&
+    state.dayForecast.cycle === cycle;
 
-  const withRng: GameState = { ...cleared, rngState: disaster.rngState };
+  const disaster = forecastMatches
+    ? { id: state.dayForecast!.id, rngState: state.rngState }
+    : rollDisaster(
+        state.sol,
+        cycle,
+        state.disasterHistory,
+        state.lastDisasterPhase,
+        state.rngState,
+        content.balance,
+      );
+
+  const dayForecast =
+    state.dayForecast && state.dayForecast.sol === state.sol && !forecastMatches
+      ? state.dayForecast
+      : null;
+
+  const withRng: GameState = {
+    ...cleared,
+    rngState: disaster.rngState,
+    dayForecast,
+  };
 
   if (disaster.id) {
     return applyImmediateLoss(
@@ -688,6 +954,10 @@ function enterPhase(
   }
 
   return { ...withRng, phaseState: 'night' };
+}
+
+export function getDayForecast(state: GameState): DayForecast | null {
+  return state.dayForecast;
 }
 
 // ---------------------------------------------------------------------------
@@ -753,6 +1023,7 @@ interface MorningPlaySimulation {
 function simulateMorningPlays(
   state: GameState,
   playNow: readonly MorningPlayInput[],
+  store: readonly string[],
   content: GameContent,
 ): MorningPlaySimulation {
   if (
@@ -771,6 +1042,26 @@ function simulateMorningPlays(
   const usedCardIds = new Set<string>();
   const usedCrewIds = new Set<string>();
 
+  const storeIds = new Set<string>();
+  for (const cardId of store) {
+    if (storeIds.has(cardId)) {
+      reasons.push('duplicate-card');
+      continue;
+    }
+    storeIds.add(cardId);
+
+    if (!pickedById.has(cardId)) {
+      reasons.push('unknown-card');
+    }
+  }
+
+  if (
+    state.commandHand.length + storeIds.size >
+    content.balance.commandHandCapacity
+  ) {
+    reasons.push('hand-full');
+  }
+
   let next = state;
 
   for (const play of playNow) {
@@ -786,6 +1077,25 @@ function simulateMorningPlays(
     const card = pickedById.get(playCard.cardId);
     if (!card) {
       reasons.push('unknown-card');
+      continue;
+    }
+
+    if (storeIds.has(card.id)) {
+      reasons.push('duplicate-card');
+      continue;
+    }
+
+    if (!meetsRequirements(next, card)) {
+      reasons.push('requirements-unmet');
+      continue;
+    }
+
+    if (
+      card.category === 'exploration' &&
+      next.explorationBlockedUntilSol !== null &&
+      next.sol <= next.explorationBlockedUntilSol
+    ) {
+      reasons.push('exploration-blocked');
       continue;
     }
 
@@ -828,12 +1138,23 @@ function simulateMorningPlays(
 
   if (reasons.length > 0) return { state: null, reasons };
 
-  // Semua kartu yang tidak ada di playNow hangus; tidak ada Command Hand.
+  // Kartu terpilih yang tidak ada di playNow/store hangus.
+  const commandHand = next.commandHand.slice();
+  for (const cardId of storeIds) {
+    const card = pickedById.get(cardId);
+    if (!card) continue;
+    commandHand.push({
+      cardId,
+      remainingSols: card.validitySol ?? 1,
+    });
+  }
+
   return {
     state: enterPhase(
       {
         ...next,
         cosmonauts: tickCrew(next.cosmonauts),
+        commandHand,
         morningGroups: [],
         morningPicks: [],
         selectedCardIds: [],
@@ -849,9 +1170,10 @@ function simulateMorningPlays(
 export function canConfirmMorning(
   state: GameState,
   playNow: readonly MorningPlayInput[] = [],
+  store: readonly string[] = [],
   content: GameContent = DEFAULT_CONTENT,
 ): MorningConfirmationCheck {
-  const simulation = simulateMorningPlays(state, playNow, content);
+  const simulation = simulateMorningPlays(state, playNow, store, content);
 
   return {
     ok: simulation.reasons.length === 0,
@@ -862,9 +1184,10 @@ export function canConfirmMorning(
 function confirmMorning(
   state: GameState,
   playNow: readonly MorningPlayInput[],
+  store: readonly string[],
   content: GameContent,
 ): GameState {
-  return simulateMorningPlays(state, playNow, content).state ?? state;
+  return simulateMorningPlays(state, playNow, store, content).state ?? state;
 }
 
 function selectCard(state: GameState, cardId: string): GameState {
@@ -922,6 +1245,8 @@ function assignCosmonaut(state: GameState, cosmonautId: string): GameState {
 }
 
 function unassignCosmonaut(state: GameState, cosmonautId: string): GameState {
+  if (state.phase !== 'playing') return state;
+
   const card = selectedCard(state);
   if (!card) return state;
 
@@ -971,6 +1296,8 @@ function executeCard(state: GameState, content: GameContent): GameState {
     return state;
   }
 
+  if (!meetsRequirements(state, card)) return state;
+
   if (
     card.category === 'exploration' &&
     state.explorationBlockedUntilSol !== null &&
@@ -1015,10 +1342,84 @@ function rejectCard(state: GameState, content: GameContent): GameState {
     rations,
     cosmonauts: conditionResult.cosmonauts,
     rngState: conditionResult.rngState,
+    todayRejectedCardIds: pushUnique(
+      state.todayRejectedCardIds,
+      card.id,
+    ),
     phaseState: 'rejected',
   });
 }
 
+
+function canPayAnyRepair(state: GameState, content: GameContent): boolean {
+  const disaster = state.activeDisaster;
+  if (!disaster) return false;
+
+  const availableCrewIds = state.cosmonauts
+    .filter(crew => crew.condition !== 'unwell' && crew.cooldown <= 0)
+    .map(crew => crew.id);
+
+  return disaster.repairChoices.some(card => {
+    const assignedIds = card.requiresCrew ? availableCrewIds : [];
+    if (card.requiresCrew && assignedIds.length === 0) return false;
+
+    const costs = effectiveCosts(
+      card,
+      assignedIds,
+      state.permanentModifiers,
+    );
+    return canAfford(state.meters, state.rations, costs);
+  });
+}
+
+function useStored(
+  state: GameState,
+  cardId: string,
+  cosmonautIds: readonly string[],
+  content: GameContent,
+): GameState {
+  if (state.phase !== 'playing') return state;
+
+  const allowedCycle =
+    state.cycle === 'afternoon' ||
+    state.cycle === 'evening' ||
+    state.cycle === 'night';
+  if (!allowedCycle && state.phaseState !== 'repair') return state;
+
+  const stored = state.commandHand.find(item => item.cardId === cardId);
+  if (!stored) return state;
+
+  const card = content.cards.find(item => item.id === cardId);
+  if (!card) return state;
+
+  if (!meetsRequirements(state, card)) return state;
+
+  if (
+    card.category === 'exploration' &&
+    state.explorationBlockedUntilSol !== null &&
+    state.sol <= state.explorationBlockedUntilSol
+  ) {
+    return state;
+  }
+
+  const assignedIds = card.requiresCrew ? cosmonautIds : [];
+  if (card.requiresCrew && assignedIds.length === 0) return state;
+
+  for (const id of assignedIds) {
+    const crew = state.cosmonauts.find(candidate => candidate.id === id);
+    if (!crew || !crewCanWork(crew, card)) return state;
+  }
+
+  const result = resolveCard(state, card, assignedIds, content);
+  if (!result) return state;
+
+  return applyImmediateLoss({
+    ...result.state,
+    commandHand: result.state.commandHand.filter(
+      item => item.cardId !== cardId,
+    ),
+  });
+}
 
 function selectRepair(
   state: GameState,
@@ -1063,7 +1464,9 @@ function selectRepair(
 }
 
 function skipRepair(state: GameState, content: GameContent): GameState {
+  if (state.phase !== 'playing') return state;
   if (!state.activeDisaster || state.activeDisaster.resolved) return state;
+  if (canPayAnyRepair(state, content)) return state;
 
   return {
     ...state,
@@ -1080,6 +1483,8 @@ function setRation(
   food: boolean,
   water: boolean,
 ): GameState {
+  if (state.phase !== 'playing') return state;
+
   return {
     ...state,
     cosmonauts: state.cosmonauts.map(crew =>
@@ -1158,6 +1563,11 @@ export function resolveOutcome(
   if (depleted.length > 0) {
     return {
       status: 'lost',
+      endingId: 'abort',
+      endingTitle: ENDING_TITLES.abort,
+      failureText: depleted
+        .map(meter => METER_FAILURE_TEXT[meter])
+        .join('; '),
       reason: 'meter-depleted',
       sol: input.sol,
       meters: depleted,
@@ -1171,6 +1581,9 @@ export function resolveOutcome(
   if (allUnwell) {
     return {
       status: 'lost',
+      endingId: 'abort',
+      endingTitle: ENDING_TITLES.abort,
+      failureText: CREW_FAILURE_TEXT,
       reason: 'crew-unwell',
       sol: input.sol,
       meters: [],
@@ -1189,7 +1602,9 @@ export function resolveOutcome(
   );
 
   const allReady = input.cosmonauts.every(crew => crew.condition === 'ready');
-  const noUnwell = input.cosmonauts.every(crew => crew.condition !== 'unwell');
+  const noUnwellOrStressed = input.cosmonauts.every(
+    crew => crew.condition !== 'unwell' && crew.condition !== 'stressed',
+  );
   const allAtLeast = (value: number) =>
     METER_KEYS.every(key => input.meters[key].value >= value);
 
@@ -1201,12 +1616,15 @@ export function resolveOutcome(
     input.rations.water >= 10
   ) {
     medal = 'gold';
-  } else if (allAtLeast(40) && noUnwell) {
+  } else if (allAtLeast(40) && noUnwellOrStressed) {
+    // E4: Stressed menutup Silver dan masuk Bronze sesuai batas ending.
     medal = 'silver';
   }
 
   return {
     status: 'won',
+    endingId: medal,
+    endingTitle: ENDING_TITLES[medal],
     medal,
     sol: input.sol,
     meters: meterValues,
@@ -1224,11 +1642,12 @@ export function resolveOutcome(
 function consumeRations(
   cosmonauts: readonly Cosmonaut[],
   rations: Rations,
-): { cosmonauts: Cosmonaut[]; rations: Rations } {
+): { cosmonauts: Cosmonaut[]; rations: Rations; fullRationCrewIds: string[] } {
   const next = cosmonauts.map(crew => ({
     ...crew,
     ration: { ...crew.ration },
   }));
+  const fullRationCrewIds: string[] = [];
   let food = rations.food;
   let water = rations.water;
 
@@ -1238,6 +1657,8 @@ function consumeRations(
 
     const gotWater = crew.ration.water && water > 0;
     if (gotWater) water -= 1;
+
+    if (gotFood && gotWater) fullRationCrewIds.push(crew.id);
 
     if (!gotFood && !gotWater) {
       crew.condition = 'unwell';
@@ -1262,6 +1683,7 @@ function consumeRations(
       food: Math.max(0, food),
       water: Math.max(0, water),
     },
+    fullRationCrewIds,
   };
 }
 
@@ -1274,6 +1696,22 @@ function endSol(state: GameState, content: GameContent): GameState {
   const consumed = consumeRations(state.cosmonauts, state.rations);
   let cosmonauts = consumed.cosmonauts;
   let rations = consumed.rations;
+
+  // DR-03: pemulihan Lelah dilakukan malam ini, hanya untuk kru dengan ration lengkap.
+  let nightRecovery = buffTotal(state.activeBuffs, 'night-recovery');
+  if (nightRecovery > 0) {
+    cosmonauts = cosmonauts.map(crew => {
+      if (
+        nightRecovery > 0 &&
+        crew.condition === 'tired' &&
+        consumed.fullRationCrewIds.includes(crew.id)
+      ) {
+        nightRecovery -= 1;
+        return withAvailability({ ...crew, condition: 'ready' });
+      }
+      return crew;
+    });
+  }
 
   // Anxiety Corin: konsumsi tambahan.
   const extraFood = Math.min(rations.food, state.pendingExtraRations.food);
@@ -1388,7 +1826,7 @@ function endSol(state: GameState, content: GameContent): GameState {
     followUp => followUp.id === 'dustStorm',
   );
   if (dustPenalty && !state.permanentModifiers.dustPenaltyImmunity) {
-    solarRecovery -= 5;
+    solarRecovery -= DUST_STORM_POWER_RECOVERY_PENALTY;
   }
 
   meters = applyMeterEffects(meters, [
@@ -1538,10 +1976,51 @@ function endSol(state: GameState, content: GameContent): GameState {
     }
   }
 
-  // 6. Selesai: cek gagal/menang.
+  // 6. Laporan Sol.
+  const meterValues = METER_KEYS.reduce(
+    (result, key) => {
+      result[key] = meters[key].value;
+      return result;
+    },
+    {} as Record<MeterKey, number>,
+  );
+
+  const report: SolReport = {
+    sol: state.sol,
+    meters: meterValues,
+    rations: { ...rations },
+    conditions: cosmonauts.reduce(
+      (result, crew) => {
+        result[crew.id] = crew.condition;
+        return result;
+      },
+      {} as Record<string, CrewCondition>,
+    ),
+    playedCardIds: [...state.todayPlayedCardIds],
+    rejectedCardIds: [...state.todayRejectedCardIds],
+    disasters: state.disasterHistory
+      .filter(record => record.sol === state.sol)
+      .map(record => record.id),
+    characterEvents: state.todayLog.map(event => ({
+      ...event,
+      cosmonautIds: [...event.cosmonautIds],
+    })),
+  };
+  const solReports = [...state.solReports, report];
+
+  // 7. Selesai: cek gagal/menang, lalu kurangi cooldown dan masa berlaku.
   const outcome = resolveOutcome(
     { meters, rations, cosmonauts, sol: state.sol },
     balance.maxSols,
+  );
+
+  const nextSol = state.sol + 1;
+  const commandHand = state.commandHand
+    .map(item => ({ ...item, remainingSols: item.remainingSols - 1 }))
+    .filter(item => item.remainingSols > 0);
+  const expiresFromSol = outcome ? state.sol : nextSol;
+  const activeBuffs = state.activeBuffs.filter(
+    buff => buff.expiresAfterSol >= expiresFromSol,
   );
 
   if (outcome) {
@@ -1550,11 +2029,16 @@ function endSol(state: GameState, content: GameContent): GameState {
       meters,
       rations,
       cosmonauts: tickCrew(cosmonauts),
-      phase: outcome.status === 'lost' || state.sol >= balance.maxSols
-        ? 'ended'
-        : 'playing',
+      phase: 'ended',
       outcome,
       phaseState: 'night',
+      commandHand,
+      activeBuffs,
+      solReports,
+      todayLog: [],
+      todayPlayedCardIds: [],
+      todayRejectedCardIds: [],
+      dayForecast: null,
       pendingEffects,
       pendingExtraRations: { food: 0, water: 0 },
       pendingNightPenalty: 0,
@@ -1567,7 +2051,6 @@ function endSol(state: GameState, content: GameContent): GameState {
     };
   }
 
-  const nextSol = state.sol + 1;
   const nextState: GameState = {
     ...state,
     sol: nextSol,
@@ -1577,6 +2060,13 @@ function endSol(state: GameState, content: GameContent): GameState {
     meters,
     rations,
     cosmonauts: tickCrew(cosmonauts),
+    commandHand,
+    activeBuffs,
+    solReports,
+    todayLog: [],
+    todayPlayedCardIds: [],
+    todayRejectedCardIds: [],
+    dayForecast: null,
     pendingEffects,
     pendingExtraRations: { food: 0, water: 0 },
     pendingNightPenalty: 0,
@@ -1614,19 +2104,40 @@ export function transition(
   action: GameAction,
   content: GameContent = DEFAULT_CONTENT,
 ): GameState {
+  if (action.type === 'RESTART') {
+    return startGame(action.seed, content);
+  }
+
+  if (action.type === 'LOAD_STATE') {
+    return action.state;
+  }
+
+  if (action.type === 'START') {
+    if (state.phase !== 'idle') return state;
+    return startGame(action.seed, content);
+  }
+
+  if (state.phase !== 'playing') return state;
+
   switch (action.type) {
-    case 'START':
-      if (state.phase !== 'idle') return state;
-      return startGame(action.seed, content);
-
-    case 'RESTART':
-      return startGame(action.seed, content);
-
     case 'SELECT_DAILY':
       return selectDaily(state, action.groupIndex, action.cardId);
 
     case 'CONFIRM_MORNING':
-      return confirmMorning(state, action.playNow ?? [], content);
+      return confirmMorning(
+        state,
+        action.playNow ?? [],
+        action.store ?? [],
+        content,
+      );
+
+    case 'USE_STORED':
+      return useStored(
+        state,
+        action.cardId,
+        action.cosmonautIds ?? [],
+        content,
+      );
 
     case 'SELECT_CARD':
       return selectCard(state, action.cardId);

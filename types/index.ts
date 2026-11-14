@@ -125,6 +125,11 @@ export interface PermanentModifiers {
   foodProductionFloor?: number;
 }
 
+export interface CardRequirements {
+  minMeter?: { meter: MeterKey; value: number };
+  blockedByDisaster?: DisasterId[];
+}
+
 export interface Card {
   id: string;
   name: string;
@@ -144,6 +149,7 @@ export interface Card {
   /** Manfaat permanen setelah kartu selesai. */
   permanent?: PermanentModifiers;
   delayedEffects?: CardEffect[];
+  requirements?: CardRequirements;
   disasterId?: DisasterId;
   clearsFollowUp?: boolean;
   fact: string;
@@ -170,11 +176,73 @@ export type MorningConfirmationReason =
   | 'duplicate-card'
   | 'crew-required'
   | 'crew-unavailable'
-  | 'unaffordable';
+  | 'unaffordable'
+  | 'hand-full'
+  | 'requirements-unmet'
+  | 'exploration-blocked';
 
 export interface MorningConfirmationCheck {
   ok: boolean;
   reasons: MorningConfirmationReason[];
+}
+
+export interface StoredCard {
+  cardId: string;
+  remainingSols: number;
+}
+
+export type ActiveBuffKind =
+  | 'next-physical-bonus'
+  | 'negative-trait-risk-reduction'
+  | 'night-recovery'
+  | 'toria-cirra-immunity'
+  | 'tired-immunity'
+  | 'exploration-risk-reduction';
+
+export interface ActiveBuff {
+  id: string;
+  cardId: string;
+  kind: ActiveBuffKind;
+  value: number;
+  expiresAfterSol: number;
+}
+
+export interface DayForecast {
+  sol: number;
+  cycle: Cycle;
+  id: DisasterId;
+}
+
+export type CharacterEventSource =
+  | 'clash'
+  | 'corinAnxiety'
+  | 'sylvanSolo'
+  | 'sylvanOverdrive'
+  | 'toriaMasterBuilder'
+  | 'cirraOptimizer'
+  | 'corinAnalyst';
+
+export interface CharacterEventLog {
+  source: CharacterEventSource;
+  cosmonautIds: string[];
+  message: string;
+}
+
+export interface SolReport {
+  sol: number;
+  meters: Record<MeterKey, number>;
+  rations: Rations;
+  conditions: Record<string, CrewCondition>;
+  playedCardIds: string[];
+  rejectedCardIds: string[];
+  disasters: DisasterId[];
+  characterEvents: CharacterEventLog[];
+}
+
+export interface ActiveMission {
+  cardId: string;
+  cosmonautIds: string[];
+  dueAbsPhase: number;
 }
 
 export interface ActiveDisaster {
@@ -202,8 +270,13 @@ export interface DelayFollowUp {
 }
 
 
+export type EndingId = 'abort' | 'gold' | 'silver' | 'bronze';
+
 export interface LostOutcome {
   status: 'lost';
+  endingId: 'abort';
+  endingTitle: string;
+  failureText: string;
   reason: 'meter-depleted' | 'crew-unwell';
   sol: number;
   meters: MeterKey[];
@@ -212,6 +285,8 @@ export interface LostOutcome {
 
 export interface WonOutcome {
   status: 'won';
+  endingId: 'gold' | 'silver' | 'bronze';
+  endingTitle: string;
   medal: 'gold' | 'silver' | 'bronze';
   sol: number;
   meters: Record<MeterKey, number>;
@@ -241,10 +316,18 @@ export interface GameState {
   morningPicks: (string | null)[];
   selectedCardIds: string[];
   assignments: Assignment[];
+  /** Command Hand: kartu Daily Routine tersimpan. */
+  commandHand: StoredCard[];
+
+  activeBuffs: ActiveBuff[];
+  dayForecast: DayForecast | null;
+  todayLog: CharacterEventLog[];
+  todayPlayedCardIds: string[];
+  todayRejectedCardIds: string[];
+  solReports: SolReport[];
+  activeMissions: ActiveMission[];
 
   permanentModifiers: PermanentModifiers;
-  /** DR-08: pengurangan risiko EVA untuk Exploration berikutnya. */
-  nextExplorationRiskReduction: number;
   pendingEffects: PendingEffect[];
   pendingExtraRations: Rations;
   pendingNightPenalty: number;
@@ -264,7 +347,12 @@ export type GameAction =
   | { type: 'START'; seed: number }
   | { type: 'RESTART'; seed: number }
   | { type: 'SELECT_DAILY'; groupIndex: number; cardId: string }
-  | { type: 'CONFIRM_MORNING'; playNow?: MorningPlayInput[] }
+  | {
+      type: 'CONFIRM_MORNING';
+      playNow?: MorningPlayInput[];
+      store?: string[];
+    }
+  | { type: 'USE_STORED'; cardId: string; cosmonautIds?: string[] }
   | { type: 'SELECT_CARD'; cardId: string }
   | { type: 'ASSIGN'; cosmonautId: string }
   | { type: 'UNASSIGN'; cosmonautId: string }
@@ -274,4 +362,5 @@ export type GameAction =
   | { type: 'SKIP_REPAIR' }
   | { type: 'SET_RATION'; cosmonautId: string; food: boolean; water: boolean }
   | { type: 'ADVANCE_CYCLE' }
-  | { type: 'END_SOL' };
+  | { type: 'END_SOL' }
+  | { type: 'LOAD_STATE'; state: GameState };
