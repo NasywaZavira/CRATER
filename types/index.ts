@@ -207,10 +207,14 @@ export interface ActiveBuff {
   expiresAfterSol: number;
 }
 
+export interface DayForecastPlanEntry {
+  cycle: Cycle;
+  id: DisasterId | null;
+}
+
 export interface DayForecast {
   sol: number;
-  cycle: Cycle;
-  id: DisasterId;
+  plan: DayForecastPlanEntry[];
 }
 
 export type CharacterEventSource =

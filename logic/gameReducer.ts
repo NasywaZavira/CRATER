@@ -7,6 +7,7 @@ import type {
   CrewCondition,
   Cycle,
   DayForecast,
+  DayForecastPlanEntry,
   DisasterId,
   GameAction,
   GameOutcome,
@@ -324,6 +325,9 @@ function forecastRemainingDisasters(
   content: GameContent,
 ): { forecast: DayForecast | null; rngState: number } {
   let rngState = state.rngState;
+  const history = state.disasterHistory.slice();
+  let lastDisasterPhase = state.lastDisasterPhase;
+  const plan: DayForecastPlanEntry[] = [];
   const startIndex = cycleIndex(state.cycle);
 
   for (let index = startIndex + 1; index < CYCLES.length; index += 1) {
@@ -333,22 +337,24 @@ function forecastRemainingDisasters(
     const roll = rollDisaster(
       state.sol,
       cycle,
-      state.disasterHistory,
-      state.lastDisasterPhase,
+      history,
+      lastDisasterPhase,
       rngState,
       content.balance,
     );
     rngState = roll.rngState;
+    plan.push({ cycle, id: roll.id ?? null });
 
     if (roll.id) {
-      return {
-        forecast: { sol: state.sol, cycle, id: roll.id },
-        rngState,
-      };
+      history.push({ id: roll.id, sol: state.sol, cycle });
+      lastDisasterPhase = absolutePhase(state.sol, cycle);
     }
   }
 
-  return { forecast: null, rngState };
+  return {
+    forecast: plan.length > 0 ? { sol: state.sol, plan } : null,
+    rngState,
+  };
 }
 
 interface ResolutionResult {
@@ -857,7 +863,6 @@ function applyDisasterImpact(
       clearedFollowUp: false,
     },
     disasterFollowUps: followUps,
-    dayForecast: null,
     lastDisasterPhase: absolutePhase(state.sol, state.cycle),
     explorationBlockedUntilSol:
       id === 'dustStorm' ? state.sol + 1 : state.explorationBlockedUntilSol,
@@ -889,13 +894,14 @@ function enterPhase(
     activeDisaster: null,
   };
 
-  const forecastMatches =
-    state.dayForecast !== null &&
-    state.dayForecast.sol === state.sol &&
-    state.dayForecast.cycle === cycle;
+  const planEntry =
+    state.dayForecast && state.dayForecast.sol === state.sol
+      ? state.dayForecast.plan.find(entry => entry.cycle === cycle)
+      : undefined;
+  const planMatches = planEntry !== undefined;
 
-  const disaster = forecastMatches
-    ? { id: state.dayForecast!.id, rngState: state.rngState }
+  const disaster = planMatches
+    ? { id: planEntry!.id ?? undefined, rngState: state.rngState }
     : rollDisaster(
         state.sol,
         cycle,
@@ -905,10 +911,14 @@ function enterPhase(
         content.balance,
       );
 
-  const dayForecast =
-    state.dayForecast && state.dayForecast.sol === state.sol && !forecastMatches
-      ? state.dayForecast
-      : null;
+  let dayForecast = state.dayForecast;
+  if (cycle === 'night') {
+    dayForecast = null;
+  } else if (dayForecast && dayForecast.sol !== state.sol) {
+    dayForecast = null;
+  } else if (!planMatches && disaster.id) {
+    dayForecast = null;
+  }
 
   const withRng: GameState = {
     ...cleared,

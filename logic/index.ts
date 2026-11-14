@@ -77,6 +77,7 @@ export type {
   ActiveBuff,
   ActiveMission,
   DayForecast,
+  DayForecastPlanEntry,
   EndingId,
   MorningConfirmationCheck,
   MorningConfirmationReason,

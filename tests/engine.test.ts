@@ -1226,7 +1226,10 @@ describe('CRATER GDD engine', () => {
 
     const forecast = getDayForecast(state);
     expect(forecast).not.toBeNull();
-    expect(forecast?.cycle).toBe('evening');
+    const eveningPlan = forecast?.plan.find(
+      entry => entry.cycle === 'evening',
+    );
+    expect(eveningPlan).toBeDefined();
 
     const card = state.hand[0];
     state = transition(state, { type: 'SELECT_CARD', cardId: card.id }, content);
@@ -1234,7 +1237,94 @@ describe('CRATER GDD engine', () => {
     state = transition(state, { type: 'ADVANCE_CYCLE' }, content);
 
     expect(state.cycle).toBe('evening');
-    expect(state.activeDisaster?.id).toBe(forecast?.id);
+    expect(state.activeDisaster?.id ?? null).toBe(eveningPlan?.id ?? null);
+  });
+
+  it('keeps DR-11 forecast identical to actual disasters for 200 seeds', () => {
+    const content: GameContent = {
+      ...DEFAULT_CONTENT,
+      balance: {
+        ...DEFAULT_CONTENT.balance,
+        disasterChances: {
+          morning: 0,
+          afternoon: 0.6,
+          evening: 0.6,
+          night: 0,
+        },
+      },
+    };
+    const dr11 = CARD_LIBRARY.find(card => card.id === 'DR-11')!;
+
+    for (let seed = 0; seed < 200; seed += 1) {
+      let state = start(seed, content);
+      const fillers = state.morningGroups
+        .flat()
+        .filter(card => card.id !== dr11.id);
+      state = {
+        ...state,
+        morningGroups: [
+          [dr11, fillers[0], fillers[1]],
+          [fillers[2], fillers[3], fillers[4]],
+          [fillers[5], fillers[6], fillers[7]],
+        ],
+        morningPicks: [null, null, null],
+      };
+      state = pickMorningCards(state, content, [dr11.id]);
+
+      const crew = state.cosmonauts.find(candidate => candidate.available)!;
+      state = transition(
+        state,
+        {
+          type: 'CONFIRM_MORNING',
+          playNow: [{ cardId: dr11.id, cosmonautIds: [crew.id] }],
+        },
+        content,
+      );
+
+      const forecast = getDayForecast(state);
+      expect(forecast).not.toBeNull();
+      expect(forecast?.plan.map(entry => entry.cycle)).toEqual([
+        'afternoon',
+        'evening',
+      ]);
+
+      for (const entry of forecast!.plan) {
+        expect(state.cycle).toBe(entry.cycle);
+        expect(state.activeDisaster?.id ?? null).toBe(entry.id);
+
+        if (state.activeDisaster && !state.activeDisaster.resolved) {
+          const repair = state.activeDisaster.repairChoices[0];
+          const availableCrew = state.cosmonauts.filter(
+            candidate => candidate.available && candidate.condition !== 'unwell',
+          );
+          const crewIds = repair.requiresCrew
+            ? [availableCrew[0].id]
+            : [];
+          state = transition(
+            state,
+            {
+              type: 'SELECT_REPAIR',
+              cardId: repair.id,
+              cosmonautIds: crewIds,
+            },
+            content,
+          );
+        } else {
+          const card = state.hand[0];
+          state = transition(
+            state,
+            { type: 'SELECT_CARD', cardId: card.id },
+            content,
+          );
+          state = transition(state, { type: 'REJECT_CARD' }, content);
+        }
+
+        state = transition(state, { type: 'ADVANCE_CYCLE' }, content);
+      }
+
+      expect(state.cycle).toBe('night');
+      expect(getDayForecast(state)).toBeNull();
+    }
   });
 
   it('keeps already-Unwell crew Unwell during SEP', () => {
