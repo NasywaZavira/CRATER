@@ -15,7 +15,7 @@ function getLocalStorage(): StorageLike | null {
 }
 
 export function createLocalStorageSaveStorage(
-  key = 'crater:save:v3',
+  key = 'crater:save:v4',
 ): SaveStorage {
   return {
     load() {

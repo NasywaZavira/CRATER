@@ -1,304 +1,101 @@
-export type MeterKey = 'lifeSupport' | 'shielding' | 'power' | 'food';
+/** Satu-satunya sumber angka kartu adalah data/cards.json (addendum v4). */
+export type ResourceKey = 'lifeSupport' | 'shielding' | 'power' | 'food';
+export type MeterKey = ResourceKey;
+export type MeterEffects = Record<ResourceKey, number>;
+export type Localized = { en: string; id?: string };
+export type CardCategory = 'operations' | 'construction' | 'repair' | 'research';
 
-export type RationKind = 'food' | 'water';
-
-export interface Rations {
-  food: number;
-  water: number;
+export interface NasaFactSource {
+  dataset: string;
+  sourceName: string;
+  sourceUrl: string | null;
 }
 
+export interface CardDefinition {
+  id: string;
+  category: CardCategory;
+  title: Localized;
+  description: Localized;
+  artKey: string;
+  fact: NasaFactSource;
+  /** Delta langsung ke 4 meter; 0 ditampilkan sebagai em-dash (—). */
+  effects: MeterEffects;
+  /** Delta berikutnya diterapkan saat memasuki Sol (playedSol + afterSols). */
+  delayed?: { afterSols: number; effects: MeterEffects };
+}
+
+/** Alias migrasi sederhana, tidak mengembalikan properti kartu lama. */
+export type Card = CardDefinition;
+export const CATEGORY_LABEL: Record<CardCategory, string> = {
+  operations: 'DAILY ROUTINE',
+  construction: 'UPGRADE',
+  repair: 'FIX',
+  research: 'RESEARCH',
+};
+
+export type Cycle = 'morning' | 'afternoon' | 'evening' | 'night';
+export type GamePhase = 'idle' | 'playing' | 'ended';
+export type PhaseState = 'selecting' | 'resolved' | 'repair' | 'night';
+export type DisasterId = 'dustStorm' | 'solarParticle' | 'airlockLeak' | 'waterPlantFailure';
+export type CrewCondition = 'ready' | 'tired' | 'stressed' | 'unwell';
+
 export interface Meter {
-  id: MeterKey;
+  id: ResourceKey;
   label: string;
   value: number;
   min: number;
   max: number;
 }
-
-export type Meters = Record<MeterKey, Meter>;
-
-export type CosmonautRole =
-  | 'mechanicalEngineer'
-  | 'electricalEngineer'
-  | 'medicalOfficer'
-  | 'botanist';
-
-export type Specialty = 'research' | 'exploration' | 'build' | 'upgrade' | 'daily';
-
-/** GDD 4.1: Siap, Lelah, Tertekan, Tidak Sehat. */
-export type CrewCondition = 'ready' | 'tired' | 'stressed' | 'unwell';
-
+export type Meters = Record<ResourceKey, Meter>;
+export interface Rations { food: number; water: number }
 export interface Cosmonaut {
   id: string;
   name: string;
-  role: CosmonautRole;
-  specialty: Specialty;
+  role: string;
+  specialty: string;
   condition: CrewCondition;
-  cooldown: number;
-  available: boolean;
-  /** Ration yang dibagikan pemain untuk malam berikutnya. */
   ration: { food: boolean; water: boolean };
-  /** Jumlah malam berturut-turut dengan ration lengkap (untuk memulihkan Unwell). */
+  consecutiveMissedNights: number;
   fullRationNights: number;
 }
-
-export type CardCategory =
-  | 'daily'
-  | 'research'
-  | 'exploration'
-  | 'build'
-  | 'upgrade'
-  | 'repair';
-
-export type DeckId = CardCategory;
-
-/** GDD 2: Pagi, Siang, Sore, Malam. */
-export type Cycle = 'morning' | 'afternoon' | 'evening' | 'night';
-
-export type GamePhase = 'idle' | 'playing' | 'ended';
-
-export type PhaseState =
-  | 'selecting'
-  | 'executed'
-  | 'rejected'
-  | 'repair'
-  | 'night';
-
-export type DisasterId =
-  | 'dustStorm'
-  | 'solarParticle'
-  | 'airlockLeak'
-  | 'waterPlantFailure';
-
-export type ConditionTarget = 'assigned' | 'all' | 'one' | 'random';
-
-/**
- * Efek generik untuk kartu, biaya, penalti, dan efek karakter.
- * Satu objek dapat memuat efek meter, ration, atau kondisi kru.
- */
-export interface CardEffect {
-  meter?: MeterKey;
-  delta?: number;
-  ration?: RationKind;
-  rationDelta?: number;
-  fromCondition?: CrewCondition | 'any';
-  condition?: CrewCondition;
-  conditionTarget?: ConditionTarget;
-  conditionCount?: number;
-  timing?: 'immediate' | 'delayed';
-  delaySols?: number;
-}
-
-export interface PermanentModifiers {
-  /** Tambahan pemulihan Power malam. */
-  nightlyPower?: number;
-  /** Tambahan Water Ration malam. */
-  nightlyWater?: number;
-  /** Tambahan Food Ration malam. */
-  nightlyFood?: number;
-  /** Bonus produksi Food Ration. */
-  foodProductionBonus?: number;
-  /** Bonus produksi Water Ration. */
-  waterProductionBonus?: number;
-  /** Pengurangan penurunan pasif (angka positif = mengurangi decay). */
-  passiveLifeSupport?: number;
-  passiveShielding?: number;
-  passivePower?: number;
-  passiveFood?: number;
-  /** Override biaya irigasi malam. */
-  irrigationPowerCost?: number;
-  irrigationWaterCost?: number;
-  /** Diskon Power permanen untuk semua kartu. */
-  powerCostDiscount?: number;
-  dustPenaltyImmunity?: boolean;
-  evaTiredImmunity?: boolean;
-  sepDamageReduction?: number;
-  /** BL-08: imun permanen terhadap Unwell akibat SEP. */
-  sepUnwellImmunity?: boolean;
-  /** RS-09: imun terhadap SEP pertama saja. */
-  sepUnwellImmunityFirst?: boolean;
-  unwellImmunity?: boolean;
-  repairChoicesBonus?: number;
-  explorationUnwellReduction?: number;
-  shieldEvaThreshold?: number;
-  nightlyRemoveTired?: number;
-  foodProductionFloor?: number;
-}
-
-export interface CardRequirements {
-  minMeter?: { meter: MeterKey; value: number };
-  blockedByDisaster?: DisasterId[];
-}
-
-export interface Card {
-  id: string;
-  name: string;
-  description: string;
-  deck: DeckId;
-  category: CardCategory;
-  cycles: Cycle[];
-  costs: CardEffect[];
-  effects: CardEffect[];
-  rejectionPenalty: CardEffect[];
-  /** Durasi misi dalam cycle (0, 1, 2, atau 4). */
-  durationCycles: number;
-  requiresCrew: boolean;
-  recommendedCrewIds: string[];
-  /** Masa berlaku untuk kartu Daily Routine (1 atau 2 Sol). */
-  validitySol?: number;
-  /** Manfaat permanen setelah kartu selesai. */
-  permanent?: PermanentModifiers;
-  delayedEffects?: CardEffect[];
-  requirements?: CardRequirements;
-  disasterId?: DisasterId;
-  clearsFollowUp?: boolean;
-  fact: string;
-  source: string;
-  limit: string;
-}
-
-export interface Assignment {
+export interface PendingEffect {
   cardId: string;
-  cosmonautIds: string[];
+  playedSol: number;
+  dueSol: number;
+  effects: MeterEffects;
 }
-
-export interface MorningPlay {
-  cardId: string;
-  cosmonautIds?: string[];
-}
-
-/** `playNow` dapat berupa ID kartu atau objek dengan penugasan kru. */
-export type MorningPlayInput = string | MorningPlay;
-
-export type MorningConfirmationReason =
-  | 'morning-incomplete'
-  | 'unknown-card'
-  | 'duplicate-card'
-  | 'crew-required'
-  | 'crew-unavailable'
-  | 'unaffordable'
-  | 'hand-full'
-  | 'requirements-unmet'
-  | 'exploration-blocked';
-
-export interface MorningConfirmationCheck {
-  ok: boolean;
-  reasons: MorningConfirmationReason[];
-}
-
-export interface StoredCard {
-  cardId: string;
-  remainingSols: number;
-}
-
-export type ActiveBuffKind =
-  | 'next-physical-bonus'
-  | 'negative-trait-risk-reduction'
-  | 'night-recovery'
-  | 'toria-cirra-immunity'
-  | 'tired-immunity'
-  | 'exploration-risk-reduction';
-
-export interface ActiveBuff {
-  id: string;
-  cardId: string;
-  kind: ActiveBuffKind;
-  value: number;
-  expiresAfterSol: number;
-}
-
-export interface DayForecastPlanEntry {
-  cycle: Cycle;
-  id: DisasterId | null;
-}
-
-export interface DayForecast {
-  sol: number;
-  plan: DayForecastPlanEntry[];
-}
-
-export type CharacterEventSource =
-  | 'clash'
-  | 'corinAnxiety'
-  | 'sylvanSolo'
-  | 'sylvanOverdrive'
-  | 'toriaMasterBuilder'
-  | 'cirraOptimizer'
-  | 'corinAnalyst';
-
-export interface CharacterEventLog {
-  source: CharacterEventSource;
-  cosmonautIds: string[];
-  message: string;
-}
-
-export interface SolReport {
-  sol: number;
-  meters: Record<MeterKey, number>;
-  rations: Rations;
-  conditions: Record<string, CrewCondition>;
-  playedCardIds: string[];
-  rejectedCardIds: string[];
-  disasters: DisasterId[];
-  characterEvents: CharacterEventLog[];
-}
-
-export interface ActiveMission {
-  cardId: string;
-  cosmonautIds: string[];
-  dueAbsPhase: number;
-}
-
 export interface ActiveDisaster {
   id: DisasterId;
-  repairChoices: Card[];
-  resolved: boolean;
-  clearedFollowUp: boolean;
+  sol: number;
+  cycle: Cycle;
+  repairChoices: CardDefinition[];
 }
-
 export interface DisasterRecord {
   id: DisasterId;
   sol: number;
   cycle: Cycle;
 }
-
-export interface PendingEffect {
-  dueSol: number;
-  effects: CardEffect[];
-}
-
-export interface DelayFollowUp {
-  id: DisasterId;
-  dueSol: number;
-  cleared: boolean;
-}
-
-
-export type EndingId = 'abort' | 'gold' | 'silver' | 'bronze';
-
-export interface LostOutcome {
-  status: 'lost';
-  endingId: 'abort';
-  endingTitle: string;
-  failureText: string;
-  reason: 'meter-depleted' | 'crew-unwell';
+export interface CardPlayLog {
+  cardId: string;
   sol: number;
-  meters: MeterKey[];
-  crewIds?: string[];
+  cycle: Cycle;
+  category: CardCategory;
+  effects: MeterEffects;
+  delayedDueSol?: number;
 }
-
-export interface WonOutcome {
-  status: 'won';
-  endingId: 'gold' | 'silver' | 'bronze';
-  endingTitle: string;
-  medal: 'gold' | 'silver' | 'bronze';
+export interface SolReport {
   sol: number;
-  meters: Record<MeterKey, number>;
+  meters: Record<ResourceKey, number>;
   rations: Rations;
   conditions: Record<string, CrewCondition>;
+  cardIds: string[];
+  delayedCardIds: string[];
+  disasters: DisasterId[];
 }
-
-export type GameOutcome = LostOutcome | WonOutcome;
+export type EndingId = 'abort' | 'gold' | 'silver' | 'bronze';
+export type GameOutcome =
+  | { status: 'lost'; endingId: 'abort'; reason: 'meter-depleted' | 'crew-unwell'; sol: number; meters: ResourceKey[] }
+  | { status: 'won'; endingId: 'gold' | 'silver' | 'bronze'; sol: number; meters: Record<ResourceKey, number> };
 
 export interface GameState {
   schemaVersion: number;
@@ -307,42 +104,18 @@ export interface GameState {
   cycle: Cycle;
   phase: GamePhase;
   phaseState: PhaseState;
-
   meters: Meters;
   rations: Rations;
   cosmonauts: Cosmonaut[];
-
-  /** Tiga kartu siang/sore, atau 9 kartu pagi yang diratakan. */
-  hand: Card[];
-  /** Pagi: 3 kelompok x 3 kartu. */
-  morningGroups: Card[][];
-  /** Pagi: pilihan pemain per kelompok. */
-  morningPicks: (string | null)[];
-  selectedCardIds: string[];
-  assignments: Assignment[];
-  /** Command Hand: kartu Daily Routine tersimpan. */
-  commandHand: StoredCard[];
-
-  activeBuffs: ActiveBuff[];
-  dayForecast: DayForecast | null;
-  todayLog: CharacterEventLog[];
-  todayPlayedCardIds: string[];
-  todayRejectedCardIds: string[];
-  solReports: SolReport[];
-  activeMissions: ActiveMission[];
-
-  permanentModifiers: PermanentModifiers;
+  hand: CardDefinition[];
+  selectedCardId: string | null;
   pendingEffects: PendingEffect[];
-  pendingExtraRations: Rations;
-  pendingNightPenalty: number;
-
-  disasterHistory: DisasterRecord[];
+  playedCards: CardPlayLog[];
+  skippedCardIds: string[];
+  solReports: SolReport[];
   activeDisaster: ActiveDisaster | null;
-  disasterFollowUps: DelayFollowUp[];
+  disasterHistory: DisasterRecord[];
   lastDisasterPhase: number | null;
-  explorationBlockedUntilSol: number | null;
-  evaUnwellRiskUntilSol: number | null;
-
   rngState: number;
   outcome: GameOutcome | null;
 }
@@ -350,19 +123,10 @@ export interface GameState {
 export type GameAction =
   | { type: 'START'; seed: number }
   | { type: 'RESTART'; seed: number }
-  | { type: 'SELECT_DAILY'; groupIndex: number; cardId: string }
-  | {
-      type: 'CONFIRM_MORNING';
-      playNow?: MorningPlayInput[];
-      store?: string[];
-    }
-  | { type: 'USE_STORED'; cardId: string; cosmonautIds?: string[] }
   | { type: 'SELECT_CARD'; cardId: string }
-  | { type: 'ASSIGN'; cosmonautId: string }
-  | { type: 'UNASSIGN'; cosmonautId: string }
   | { type: 'EXECUTE_CARD' }
   | { type: 'REJECT_CARD' }
-  | { type: 'SELECT_REPAIR'; cardId: string; cosmonautIds?: string[] }
+  | { type: 'SELECT_REPAIR'; cardId: string }
   | { type: 'SKIP_REPAIR' }
   | { type: 'SET_RATION'; cosmonautId: string; food: boolean; water: boolean }
   | { type: 'ADVANCE_CYCLE' }
