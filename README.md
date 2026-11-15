@@ -1,120 +1,105 @@
-# CRATER - Junior Astronaut Mission Trainer
+# CRATER - Mars Outpost Mission Trainer
 
-**NASA Space Apps Challenge 2026 submission**  
-**Challenge: Build a Junior Astronaut Mission Trainer**
+**NASA Space Apps Challenge 2026 | Build a Junior Astronaut Mission Trainer**
 
-CRATER is an interactive Mars-outpost game that invites students to make the decisions a mission commander faces: keep life support, radiation shielding, power, and food systems working while caring for a crew far from Earth.
+CRATER is a playable Mars-outpost web game. The player receives messages from Mission Control, chooses actions for the crew, manages four outpost systems, and tries to complete an eight-Sol mission.
 
-## The challenge and our approach
+## What the website can do
 
-Space-mission trade-offs can be presented either too simply to feel meaningful or with more engineering detail than a young learner can follow. CRATER makes those trade-offs tangible through short, readable decisions. Students review a card, see its meter effects and science context, choose what to do, and observe how the outpost responds over an eight-Sol mission.
+- **Introduce the mission:** cinematic opening and a step-by-step briefing from Noe, Mission Control.
+- **Show an interactive outpost scene:** Phaser renders the habitat and crew while React displays the mission interface.
+- **Track the mission:** a HUD shows the current Sol, phase, and four system meters.
+- **Offer card decisions:** after a three-second transmission, choose one of three cards or skip the action. Cards show their category, description, meter effects, NASA dataset, and source details; some also show delayed effects.
+- **Run the daily cycle:** play phase-appropriate actions, then distribute food and water rations to individual crew members at night.
+- **Respond to hazards:** disasters damage the outpost and offer three repair (FIX) cards. The game includes dust storms, solar-particle events, airlock leaks, and water/plant-system failures.
+- **Show mission outcomes:** failure or completion is followed by a report with the Sol, final meter values, and number of cards played. Start a new mission with **PLAY AGAIN**.
+- **Play atmospheric audio:** background music starts after the first user interaction, following browser autoplay rules.
 
-The goal is not to model a real spacecraft precisely. It is to help players reason about connected systems, delayed consequences, limited supplies, and the risks of putting one need ahead of another.
+## A mission at a glance
 
-## Learning goals
+One mission lasts up to eight Sols (Martian days). Each begins at Morning and moves through the following phases:
 
-- Understand that an outpost depends on several connected systems, not one resource alone.
-- Compare the consequences of daily operations, research, exploration, construction, upgrades, and repairs.
-- Practice prioritizing immediate needs while considering delayed effects and mission risks.
-- Connect game decisions to science facts and the source material shown with each card.
-
-## How to play
-
-1. Follow the Mission Control briefing from Noe, which introduces the crew, Sols, meters, and card choices.
-2. During each active phase, wait for the three-second transmission and review the three offered cards.
-3. Choose one card to apply its effects, or skip the offer and accept the resource penalty. A disaster may interrupt the phase and present repair (FIX) cards.
-4. At night, distribute available food and water rations among the crew, review the outpost, and end the Sol.
-5. Continue through up to eight Sols. Protect all four systems and keep the crew well enough to complete the mission.
-
-### Mission systems
-
-| System | What it represents |
+| Phase | Available actions |
 | --- | --- |
-| Life Support | Air, water, and other habitat support |
-| Radiation Shielding | Protection from the space environment |
-| Power | Energy available to run the outpost |
-| Food System | Food supplies and production |
-
-All four meters start at 80 out of 100. If any meter reaches 40 or below, the mission ends early. Crew condition and nightly rations also matter; completing Sol 8 with the systems above the failure threshold completes the campaign.
-
-### Mission timeline
-
-| Phase | Card activities |
-| --- | --- |
-| Morning | Operations / daily routines |
+| Morning | Operations and daily routines |
 | Afternoon | Research and exploration |
 | Evening | Construction and upgrades |
-| Night | Rations, resource production, meter changes, and Sol review |
-| Disaster response | Repair / FIX cards |
+| Night | Assign food and water rations, then end the Sol |
+| During a disaster | Choose a repair / FIX card |
 
-Card effects can change more than one meter, and some cards schedule a later meter effect. Skipping a normal choice or a repair choice also has a cost. The engine applies these rules and tracks the mission state.
+At each card offer, the player sees three choices. Playing a card applies its meter effects; some effects are scheduled for a later Sol. Skipping an offer applies a penalty. At night, ration choices affect crew condition, while the engine also calculates resource production, irrigation, solar recovery, and system decay.
 
-## Card catalog
+## Systems and mission outcomes
 
-The active catalog contains 80 cards in [`engine/data/cards.json`](engine/data/cards.json). Each card includes its title, description, activity category, meter effects, primary-meter classification, and science-source metadata.
+All four meters start at 80/100. If any meter reaches 40 or below, the mission fails. The player must also keep the crew from reaching the engine's all-crew-unwell abort condition. Completing Sol 8 without an abort completes the mission.
 
-| Activity category | Number of cards |
+| Meter | Represents |
+| --- | --- |
+| Life Support | Air, water, and habitat support |
+| Shielding | Radiation protection |
+| Power | Energy for outpost systems |
+| Food | Food supply and production |
+
+The card interface also classifies every card by its primary system. This is a curated grouping based on the card's purpose, separate from the card's actual effects.
+
+## The card library
+
+The web app uses the 80-card catalog in [`engine/data/cards.json`](engine/data/cards.json):
+
+| Card category | Count |
 | --- | ---: |
-| Operations / daily routine | 20 |
+| Operations | 20 |
 | Research | 10 |
 | Exploration | 10 |
-| Construction / building | 10 |
+| Construction | 10 |
 | Upgrade | 10 |
-| Repair / FIX | 20 |
+| Repair | 20 |
 | **Total** | **80** |
 
-Cards are also grouped by their primary outpost system. This classification is curated from the card's purpose and context; it is not simply the meter with the largest numerical effect.
+Card facts include source metadata. When a card is played, Noe's message shows its dataset and provides an external source link when available.
 
-| Primary system | Operations | Research | Exploration | Construction | Upgrade | Repair | Total |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Life Support | 14 | 4 | 3 | 4 | 2 | 5 | 32 |
-| Shielding | 0 | 2 | 3 | 3 | 2 | 5 | 15 |
-| Power | 3 | 1 | 2 | 2 | 4 | 5 | 17 |
-| Food | 3 | 3 | 2 | 1 | 2 | 5 | 16 |
-| **Total** | **20** | **10** | **10** | **10** | **10** | **20** | **80** |
+## Science and simulation notes
 
-The card interface presents the NASA dataset and source name, and provides a source link when one is available. The catalog is the source of truth for card content; the engine validates it before use.
+The card catalog references NASA, NASA Jet Propulsion Laboratory, NASA CCMC DONKI, and research sources. The solar-particle scenario uses a historical NASA CCMC DONKI archive record mapped to a simulated mission phase. It is **not live monitoring, a Mars forecast, or a reading from the CRATER outpost**. Meter effects and hazard timing are game rules, not real mission predictions.
+
+Some metadata in the card JSON is reserved for future expansion. The current game applies meter effects, delayed meter effects, phase and repair choices, hazards, skip penalties, nightly rations, and mission outcomes; it does not implement every card field as a gameplay system.
 
 ## Screenshots
 
-**Mission briefing and outpost HUD**
+**01 - Noe introduces herself as the communicator from Earth**
 
-![CRATER mission briefing](PREVIEW_01_NOE.png)
+![Noe introduction](PREVIEW_01_NOE.png)
 
-**Three-card decision screen**
+**02 - Day and time, with progress from Sol 1 to Sol 8**
 
-![CRATER card choice](PREVIEW_06_KARTU.png)
+![Sol and time progress](PREVIEW_02_SOL.png)
 
-## Science sources and simulation limits
+**03 - Outpost meters and their critical thresholds**
 
-Card facts link to source metadata in the catalog, including NASA, NASA Jet Propulsion Laboratory, NASA CCMC DONKI, and research references. Examples include:
+![Meter thresholds](PREVIEW_03_PILAR.png)
 
-- [NASA's MOXIE oxygen-generating experiment](https://www.nasa.gov/solar-system/nasas-oxygen-generating-experiment-moxie-completes-mars-mission/)
-- [NASA's water-recovery milestone on the International Space Station](https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/)
-- [NASA/JPL report on the May 2024 Mars solar storm](https://www.jpl.nasa.gov/news/nasa-watches-mars-light-up-during-epic-solar-storm/)
-- [NASA Veggie plant-growth fact sheet](https://www.nasa.gov/wp-content/uploads/2019/04/veggie_fact_sheet_508.pdf)
+**04 - Mission tutorial**
 
-The solar-particle event used in the game is based on a historical NASA CCMC DONKI archive record and mapped to a simulated mission timeline. It is not a live data feed, a forecast for Mars, or a measurement made at the CRATER outpost. Meter changes, event timing, and outcomes are game-design values, not engineering predictions.
+![Mission tutorial](PREVIEW_04_PENJELASAN.png)
 
-The catalog preserves broader GDD metadata, but not every field currently drives a gameplay rule. The playable engine currently applies immediate and delayed meter effects, phase and repair choices, disasters, skip penalties, nightly rations, and campaign outcomes. For example, card assignment, cost, bonus, and status-effect metadata are not all implemented as full game systems.
+**05 - Waiting for an incoming transmission and card offer**
 
-## Technology
+![Incoming transmission](PREVIEW_05_MENUNGGU.png)
 
-- React and TypeScript for the interface, tutorial, card choices, and mission HUD.
-- Phaser for the Mars outpost scene and crew visuals.
-- A TypeScript game engine and JSON card catalog for game state, draws, meter changes, saves, and outcomes.
-- Vite for local development and production builds; Vitest for automated tests.
+**06 - Card display and action selection**
 
-## Run locally
+![Choose a card](PREVIEW_06_KARTU.png)
 
-Use Node.js 20.19+ or 22.12+.
+## Run the website locally
+
+Use Node.js 20.19+ or 22.12+:
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Open the local URL printed by Vite. To check the project:
+Open the local URL printed by Vite. Project checks:
 
 ```bash
 npm run typecheck
@@ -122,19 +107,16 @@ npm test
 npm run build
 ```
 
-## Project structure
+The main experience is the React/Phaser app launched by Vite. `demo.html` is a separate standalone prototype.
 
-| Path | Purpose |
+## Main project files
+
+| Path | Role |
 | --- | --- |
-| `src/App.tsx` | Main game interface, tutorial, card flow, and HUD |
-| `src/phaser/OutpostScene.ts` | Phaser outpost scene |
-| `src/mission/` | Mission briefing and ending presentation |
-| `src/bridge/` | React-to-Phaser state and event bridge |
-| `engine/data/cards.json` | Active 80-card catalog and source metadata |
-| `engine/logic/` | Game rules, phase flow, meter updates, and persistence |
-| `engine/tests/` and `tests/` | Engine, interface, and integration tests |
-| `public/assets/` | Interface, crew, outpost, and card artwork |
-
----
-
-Built for learning through play: every Sol is a chance to weigh competing needs and see how a mission decision changes the outpost.
+| `src/App.tsx` | Tutorial, mission HUD, card selection, rations, and outcome report |
+| `src/phaser/OutpostScene.ts` | Mars outpost scene and crew visuals |
+| `src/mission/` | Opening and ending cinematics |
+| `src/bridge/` | Connects game state to the Phaser scene |
+| `engine/data/cards.json` | Active card definitions and source metadata |
+| `engine/logic/` | Mission phases, draws, effects, rations, hazards, and outcomes |
+| `public/assets/` | Scene, crew, card, and audio assets |
