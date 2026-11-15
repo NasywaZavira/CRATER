@@ -1,0 +1,43 @@
+/* Scene outpost saja — HUD dan panel kartu dikerjakan oleh anggota tim lain. */
+:root {
+  font-family: system-ui, sans-serif;
+  color: #ffffff;
+  background: #100d18;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; width: 100%; height: 100%; }
+
+.outpost-desktop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #100d18;
+}
+
+/* Kunci rasio desktop 16:9; layar lain diberi letterbox tanpa merusak art. */
+.outpost-stage {
+  position: relative;
+  width: min(100vw, 177.7778dvh);
+  aspect-ratio: 16 / 9;
+  max-height: 100dvh;
+  overflow: hidden;
+  background: #24202d;
+}
+.outpost-phaser { position: absolute; inset: 0; width: 100%; height: 100%; }
+.outpost-phaser canvas { display: block; width: 100%; height: 100%; }
+.outpost-error {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  max-width: 560px;
+  padding: 12px 18px;
+  background: #411c2e;
+  color: #fff;
+  border: 1px solid #e4b9bb;
+  border-radius: 8px;
+  font-size: 14px;
+}
