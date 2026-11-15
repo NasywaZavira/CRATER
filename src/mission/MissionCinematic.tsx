@@ -79,10 +79,10 @@ export function MissionCinematic(props: MissionCinematicProps) {
             <p>Crew Resources and Trade-offs for Emergency Response</p>
           </div>
         )}
-        {frame === 'report' && (
+        {props.mode === 'ending' && frame === 'report' && (
           <div className="cinematic-report-panel" key="report">
             <h1 className="cinematic-splash">{props.result === 'success' ? 'Mission Success' : 'Mission Failure'}</h1>
-            {props.mode === 'ending' && <button type="button" className="cinematic-report-continue" onClick={() => setFrameIndex(index => Math.min(index + 1, frames.length - 1))}>CONTINUE<span aria-hidden="true"> ›</span></button>}
+            <button type="button" className="cinematic-report-continue" onClick={() => setFrameIndex(index => Math.min(index + 1, frames.length - 1))}>CONTINUE<span aria-hidden="true"> ›</span></button>
           </div>
         )}
 
