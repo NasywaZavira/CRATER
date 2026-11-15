@@ -1,31 +1,49 @@
-# CRATER (ENAM)
+# CRATER – engine kartu JSON addendum (v4)
 
-Crew Resources And Trade-offs for Emergency Response — engine kartu survival Mars
-berdasarkan `CRATER-GDD.docx`.
+Basis kode: ZIP `CRATER-feat-engine-p(1).zip`, dengan konten kartu **sepenuhnya** digantikan oleh file pengguna `cards(1).json` yang disalin tanpa edit menjadi `data/cards.json`.
 
-## Struktur Sol
+## Aturan kartu v4
 
-| Fase | Aktivitas | Aturan |
-| --- | --- | --- |
-| Pagi | Daily Routine | 9 kartu dalam 3 kelompok; ambil 1 per kelompok. Kartu dipakai langsung lewat `playNow` atau disimpan lewat `store` di Command Hand (maks 4, berlaku 1–2 Sol); sisanya hangus. |
-| Siang | Research / Exploration | 3 kartu; pilih 1, jalankan misi atau terima penalti penolakan. |
-| Sore | Building / Upgrade | 3 kartu; pilih 1, jalankan proyek atau terima penalti. |
-| Malam | Sol Evaluation | Ration, produksi, pemulihan surya, penurunan pasif, efek tertunda, cek hasil. |
+- **20 kartu**: 5 `operations`, 5 `research`, 5 `construction`, 5 `repair`.
+- Nama/teks berasal dari `title.en` dan `description.en`; `description` adalah fakta NASA singkat, bukan narasi misi lama.
+- Atur top-left label dengan `CATEGORY_LABEL` dari `types/index.ts` / `logic/index.ts`.
+- Art diminta berdasarkan `artKey`, misalnya `ops/clean-air-filter`. **File PNG terkait tidak disertakan di ZIP sumber**, jadi tidak ada gambar yang dibuat atau dimodifikasi.
+- Effects: 4 angka meter (`lifeSupport`, `shielding`, `power`, `food`); 0 berarti `—` di UI. Delta negatif/positif **dihitung bersamaan** dan di-clamp ke 0–100. Tidak ada syarat harus mampu membayar; jika turun ke 0, permainan kalah.
+- Efek tertunda hanya berasal dari `delayed`: antri hingga memasuki Sol `solSaatDimainkan + afterSols`. Contoh: card dimainkan pada Sol 1 dengan `afterSols: 1` → efek aktif setelah mengakhiri Sol 1, saat memasuki Sol 2.
+- Tidak ada lagi `costs`, `rejectionPenalty`, `requiresCrew`, `durationCycles`, buff keahlian, upgrade permanen, atau `disasterId` pada kartu.
+- `fact.sourceUrl === null` dibiarkan kosong; **tidak membuat URL sumber yang tidak diberikan**.
 
-## Sistem utama
+## Fase dan pemilihan kartu
 
-- Empat meter 0–100, awal 80: Life Support, Radiation Shielding, Power, Food System.
-- Food Ration dan Water Ration terpisah, awal 10/10, konsumsi 1 per kru per Sol.
-- Empat kru: Toria, Cirra, Corin, Sylvan. Kondisi Siap/Lelah/Tertekan/Tidak Sehat.
-- Misi 1/2/4 cycle dengan diminishing returns 100% / +50% / +25% / +10%.
-- Trait karakter, bencana 4 jenis, dek Repair 20 kartu, dan akhir Gold/Silver/Bronze.
-- Katalog 80 kartu dengan biaya, penalti, durasi, fakta, dan sumber NASA di
-  `data/cards.ts`.
+| Fase | Kategori | Penawaran | Penyelesaian |
+|---|---|---:|---|
+| Morning | `operations` = DAILY ROUTINE | 3 kartu | Pilih 1 lalu execute, atau skip |
+| Afternoon | `research` = RESEARCH | 3 kartu | Pilih 1 lalu execute, atau skip |
+| Evening | `construction` = UPGRADE | 3 kartu | Pilih 1 lalu execute, atau skip |
+| Night | Evaluasi Sol | 0 | `END_SOL` |
+| Saat bencana | `repair` = FIX | 3 kartu | `SELECT_REPAIR`, atau `SKIP_REPAIR` |
 
-## Skrip
+Pagi di GDD lama meminta 9 kartu Daily Routine, tetapi addendum hanya menyediakan **5** operations. Karena itu fase pagi v4 memakai 3 pilihan, bukan mengulang kartu 9 kali. Kategori `repair` berlaku untuk **semua** jenis bencana, karena JSON baru tidak memiliki pemetaan kartu ke `disasterId`.
+
+Bencana, pemulihan solar, decay, irigasi, 8 Sol, 4 meter, serta ration kru mengikuti kerangka GDD sejauh tidak bertentangan dengan skema kartu baru. Empat astronaut masih ada dalam state dan menerima ration malam; **kartu v4 tidak dapat memberikan bonus/penugasan kru** karena fieldnya tidak ada. Kriteria medali disederhanakan ke ambang 70/40 untuk meter; lihat `DECISIONS.md`.
+
+## File penting
+
+- `data/cards.json` — **sumber kebenaran tunggal**, 20 kartu; jangan edit `data/cards.ts` untuk mengganti data kartu.
+- `data/cards.ts` — validasi JSON dan helper UI (`localize`, `formatCardEffect`).
+- `types/index.ts` — `CardDefinition`, `MeterEffects`, `NasaFactSource`, `CATEGORY_LABEL`, state/action baru.
+- `logic/draw.ts` — 3 pilihan sesuai kategori/fase.
+- `logic/gameReducer.ts` — efek kartu, waktu Sol, bencana, ration, ending.
+- `logic/save.ts` — save v4, hidrasi ID ke kartu kanonis dari JSON.
+- `hooks/useGameState.ts` — React hook dengan API baru.
+- `MIGRATION.md` — perubahan kontrak dari engine lama untuk integrasi HUD.
+
+## Tes
 
 ```sh
-npm install
-npm test
+npm ci
 npm run typecheck
+npm test
 ```
+
+Ini **library engine**, bukan project Vite/Phaser/React lengkap. ZIP sumber memang tidak memiliki `src/App.tsx`, gambar, atau executable frontend; untuk integrasi perlu menyesuaikan pemanggil engine dengan `MIGRATION.md`.

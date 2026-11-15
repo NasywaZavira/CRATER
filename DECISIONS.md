@@ -1,76 +1,14 @@
-# DECISIONS
+# Addendum v4 – keputusan integrasi (dinyatakan eksplisit)
 
-Catatan ambiguitas yang dipertahankan/ditafsirkan tanpa menambah mekanik baru.
-
-## E1 — Command Hand
-
-- `CONFIRM_MORNING.playNow` menjalankan kartu, `store` menyimpan kartu ke
-  Command Hand dengan `remainingSols = validitySol`, sisanya hangus.
-- Kapasitas Command Hand memakai `balance.commandHandCapacity` (4).
-- `USE_STORED` boleh dipakai pada siang, sore, malam (sebelum `END_SOL`), dan
-  saat `phaseState === 'repair'`.
-- `remainingSols` dikurangi 1 pada akhir Sol; kartu dengan nilai 0 dibuang.
-
-## E2 — Daily Routine
-
-- DR-01 “misi fisik berikutnya” ditafsirkan sebagai kartu misi berkategori
-  `exploration` atau `build` yang membutuhkan kru. Bonus +1 diterapkan ke
-  meter positif utama dan buff dikonsumsi saat dipakai.
-- DR-03 dipulihkan pada malam hari setelah ration dibagikan; hanya kru dengan
-  ration makanan dan air lengkap.
-- DR-06 melindungi kru yang ditugaskan pada misi berat berikutnya; nilai 2 jika
-  Corin termasuk kru yang ditugaskan.
-- DR-08 dipindahkan dari field khusus ke `activeBuffs` dengan kind
-  `exploration-risk-reduction`.
-- DR-11 meramal seluruh fase non-malam yang tersisa di Sol yang sama.
-  `dayForecast.plan` berisi satu entri per fase, termasuk `id: null` untuk
-  fase yang dipastikan tidak mengalami bencana. `enterPhase` memakai rencana
-  tersebut tanpa roll ulang. Rencana dihapus saat Sol berganti atau saat
-  memasuki malam.
-- Save v3 lama yang menyimpan `dayForecast` sebagai satu objek `{ sol, cycle, id }`
-  dimigrasikan menjadi `{ sol, plan: [{ cycle, id }] }` saat load.
-- DR-12 memakai `requirements.minMeter` Radiation Shielding ≥ 40 dan
-  `blockedByDisaster: ['dustStorm']`.
-
-## E3 — Bencana
-
-- “Tiga fase berlalu” diimplementasikan sebagai selisih indeks fase absolut
-  minimal 3.
-- Penalti repair −10 diterapkan ke empat meter, sesuai perilaku kode lama.
-- Bencana menggantikan fase normal dan menampilkan kartu Repair.
-- Irigasi tetap dihitung pada malam ketika kebun tidak beroperasi sebagai
-  dampak lanjutan kerusakan tanaman (perilaku kode lama).
-- Penentuan “kru luar angkasa” belum ada sebelum E6; karena itu SEP mengenai
-  semua kru yang belum Tidak Sehat. Kru yang sudah Tidak Sehat tetap Tidak
-  Sehat.
-- Dampak lanjutan SEP hanya aktif pada Sol berikutnya dan jika Radiation
-  Shielding < 60.
-- Dampak lanjutan Badai Debu, Kebocoran Airlock, dan Kerusakan Tanaman
-  diterapkan pada perhitungan produksi/pemulihan Power karena secara GDD
-  mengubah angka malam tersebut, walaupun daftar urutan §2.4 menaruh dampak
-  lanjutan di langkah 6.
-
-## E4 — Malam dan Ending
-
-- Urutan penyembuhan Corin: setelah konsumsi ration dan anxiety, sebelum
-  pemulihan Lelah dari upgrade UP-07.
-- Laporan Sol dibangun sebelum pemeriksaan hasil, sehingga memuat kondisi
-  akhir malam.
-- Kegagalan meter memakai teks dari GDD §3; jika beberapa meter 0, teks
-  digabung dengan `; `.
-
-## E5 — Save
-
-- Format save menyimpan `hand`, `morningGroups`, dan
-  `activeDisaster.repairChoices` sebagai ID kartu.
-- Migrasi v2→v3 menambahkan field baru dengan default dan mengubah
-  `nextExplorationRiskReduction` menjadi `activeBuffs`.
-- Validasi memakai `commandHandCapacity` default 4; `parseSave` menerima
-  parameter kapasitas opsional.
-- Save hanya ditulis saat batas fase (`sol`, `cycle`, atau `phase` berubah).
-
-## E6 — Penyelesaian misi
-
-- E6 dilewati. `activeMissions` selalu `[]` dan efek misi tetap diterapkan saat
-  misi dimulai, sesuai perilaku kode lama. Schema tetap menyertakan field
-  tersebut agar save v3 kompatibel.
+1. **JSON terbaru mengalahkan katalog GDD yang lama**. Menghapus 80 kartu TS (6 deck) demi 20 kartu JSON (4 kategori). Nilai angka dan NASA fact berasal 1:1 dari file pengguna.
+2. **Pagi menawarkan 3 operations**, bukan 9 Daily Routine dalam tiga grup: jumlah card operations hanya 5, sehingga 9 unik tidak mungkin dan addendum tidak menyebut Command Hand.
+3. **Siang = research**, **sore = construction**, **FIX/repair muncul pada bencana**. Ini memetakan kategori baru ke fase yang paling dekat dengan GDD. Kategori perbaikan tidak lagi dikunci ke disaster tertentu karena `disasterId` tidak ada di addendum.
+4. **Memainkan kartu langsung menerapkan `effects`**, termasuk angka negatif. Tidak ada biaya terpisah, affordability check, trait, staff bonus, cooldown, misi bertahap, atau efek permanen kartu. Skip tidak memberi `rejectionPenalty` karena tidak ada field tersebut.
+5. **Delayed** berlaku tepat saat transisi Sol `playedSol + afterSols`, setelah evaluasi malam Sol sebelumnya. Pending di Sol 8 yang jatuh pada Sol 9 tidak diproses karena campaign hanya 8 Sol.
+6. **Meter** mulai 80, clamp 0–100, mencapai 0 menyebabkan Abort. Meter yang bernilai 0 pada `effects` berarti tidak berubah, dan UI menampilkannya sebagai `—`.
+7. **Lingkungan & kru**: angka recovery, decay, irigasi, produksi, kebutuhan ration malam, 4 astronaut, peluang bencana, dan dampak meter dasar tetap diambil dari GDD/engine sebelumnya. Namun interaksi trait dan buff kru dibuang dari card flow karena tidak memiliki representasi di addendum. Kondisi kru masih dipengaruhi ration malam; kartu tidak mengubah ration/condition.
+8. **Ending adaptasi**: meter 0 atau 4 kru unwell = Abort; setelah Sol 8: semua meter ≥70 = Gold, semua ≥40 = Silver, lainnya Bronze. Syarat Gold/Silver tambahan dari GDD (ration dan status astronaut) tidak diterapkan pada medali karena addendum card baru tidak mampu secara langsung memenuhi syarat-syarat itu. Hal ini perlu disetujui desainer jika ingin kembali ke aturan GDD lama.
+9. **Repair skip**: tidak diberi penalti tambahan 10, karena addendum tidak mendefinisikan penalti penolakan/biaya. Bencana tetap memiliki kerusakan dasar dari GDD.
+10. **Save v4 tidak memigrasi save v2/v3**: kartu lama (DR-/RS-/UP-/...) tidak punya padanan valid. Parser memberi error `unsupported-version` dan **tidak menghapus** save lokal lama secara otomatis.
+11. **Art** hanya key metadata `artKey` dalam JSON. ZIP engine yang diserahkan tidak punya folder sprites; tidak ada karya seni pengguna yang disentuh atau dibuat ulang.
+12. **Sumber NASA**: sourceUrl null tetap null, tidak menambahkan atau mengklaim telah memverifikasi tautan NASA.
