@@ -885,12 +885,6 @@ export default function App() {
                 </span>
               </div>
 
-              {archivalDisaster && (
-                <div className="archive-tag">
-                  {DONKI_ARCHIVE_LABEL} · MAPPED TO SIMULATED SOL
-                </div>
-              )}
-
               <div className="mobile-swipe-hint">
                 Swipe to browse all three cards
               </div>
@@ -1052,11 +1046,6 @@ export default function App() {
               >
                 PLAY AGAIN
               </button>
-
-              <small>
-                CRATER · Engine JSON v4 · NASA historical
-                archive data, not live
-              </small>
             </div>
           </div>
         )}
@@ -1068,10 +1057,6 @@ export default function App() {
         )}
       </section>
 
-      <p className="below-note">
-        CRATER · ORIGINAL CHARACTER ART · JSON ENGINE V4 ·
-        NASA ARCHIVAL DATA / NOT LIVE · 3 CARDS / 3 SECONDS
-      </p>
     </main>
   );
 
