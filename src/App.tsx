@@ -761,7 +761,7 @@ export default function App() {
                 <span aria-label="Night">☾</span>
               ) : (
                 <img
-                  src={`${BASE}assets/cycle-${game.cycle}.png`}
+                  src={`${BASE}assets/cycle-${game.cycle}.webp`}
                   alt=""
                 />
               )}
@@ -939,7 +939,7 @@ export default function App() {
             aria-label="Open Noe’s message"
           >
             <img
-              src={`${BASE}assets/guide-noe-portrait.png`}
+              src={`${BASE}assets/guide-noe-portrait.webp`}
               alt="Noe, Mission Control"
             />
 

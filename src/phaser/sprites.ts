@@ -20,7 +20,7 @@ export const BG_LOOK_KEYS = {
   evening: 'outpost-bg-evening',
   night: 'outpost-bg-night',
 } as const;
-/** Sprite kru: crew-<id>.png (id kosmonot dari engine). */
+/** Sprite kru: crew-<id>.webp (id kosmonot dari engine). */
 export const CREW_ART_KEYS = ['crew-toria', 'crew-cirra', 'crew-corin', 'crew-sylvan'] as const;
 
 /** Rasio lebar/tinggi sprite kru (3:4). */
@@ -33,7 +33,7 @@ export interface CrewView {
 }
 
 /**
- * Satu kru. Memakai PNG bila texture ada (duduk, bagian bawah disembunyikan meja);
+ * Satu kru. Memakai gambar WebP bila texture ada (duduk, bagian bawah disembunyikan meja);
  * kalau tidak, siluet shapes + nama. Kru yang bekerja (available=false) disembunyikan.
  * `size` = tinggi target sprite (px).
  */

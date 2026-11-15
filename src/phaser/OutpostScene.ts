@@ -58,10 +58,10 @@ export class OutpostScene extends Phaser.Scene {
     this.load.on(Phaser.Loader.Events.FILE_LOAD_ERROR, (file: Phaser.Loader.File) => {
       console.warn(`[CRATER] Aset gagal dimuat: ${file.key}`);
     });
-    for (const look of LOOKS) this.load.image(`mars-sky-${look}`, `mars-sky-${look}.png`);
-    this.load.image('crater-outpost-room', 'outpost-room.png');
-    this.load.image('crater-outpost-table', 'outpost-table.png');
-    for (const key of CREW_ART_KEYS) this.load.image(key, `${key}.png`);
+    for (const look of LOOKS) this.load.image(`mars-sky-${look}`, `mars-sky-${look}.webp`);
+    this.load.image('crater-outpost-room', 'outpost-room.webp');
+    this.load.image('crater-outpost-table', 'outpost-table.webp');
+    for (const key of CREW_ART_KEYS) this.load.image(key, `${key}.webp`);
   }
 
   create(): void {

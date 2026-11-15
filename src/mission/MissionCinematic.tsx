@@ -15,7 +15,7 @@ const FRAME_DURATION: Partial<Record<Frame, number>> = {
   report: 2300,
 };
 
-// Bintang CSS deterministik; seluruh file PNG karakter, termasuk NOE.png, tetap asli.
+// Bintang CSS deterministik; karakter ditampilkan dari aset WebP.
 const STARS = Array.from({ length: 235 }, (_, index) => {
   const x = (index * 73.517 + (index % 13) * 4.9) % 100;
   const y = (index * 29.743 + (index % 11) * 8.3) % 100;
@@ -89,8 +89,8 @@ export function MissionCinematic(props: MissionCinematicProps) {
         {frame === 'dialogue' && (
           <div className="cinematic-dialogue" key={props.mode}>
             <div className="cinematic-portrait-block">
-              {/* NOE.png dari ZIP enam(4) sudah termasuk bingkai dan tulisan "NOE S.". */}
-              <img src={`${import.meta.env.BASE_URL}assets/NOE.png`} alt="Noe S., Mission Control" />
+              {/* NOE.webp sudah termasuk bingkai dan tulisan "NOE S.". */}
+              <img src={`${import.meta.env.BASE_URL}assets/NOE.webp`} alt="Noe S., Mission Control" />
             </div>
             <div className="cinematic-message" aria-live="polite">
               <p key={lineIndex}>“{lines[lineIndex]}”</p>
