@@ -1,0 +1,7245 @@
+[
+  {
+    "id": "ops-ared-resistance-workout",
+    "category": "operations",
+    "title": {
+      "en": "Morning ARED Resistance Workout"
+    },
+    "description": {
+      "en": "ISS astronauts exercise about two hours a day to keep their muscles and bones strong."
+    },
+    "artKey": "ops/ared-resistance-workout",
+    "fact": {
+      "dataset": "ISS ARED",
+      "sourceName": "NASA ISS ARED – Exercising in Space",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/exercising-in-space/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -3,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-01",
+    "phase": "morning",
+    "action": "An astronaut uses a resistance machine to keep muscles and bones strong.",
+    "illustration": {
+      "en": "An astronaut using the ARED machine."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria",
+        "sylvan"
+      ]
+    },
+    "validSols": 2,
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "one",
+        "from": [
+          "tired",
+          "stressed"
+        ],
+        "to": "ready"
+      }
+    ],
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "statusEffects": [
+          {
+            "op": "cure",
+            "target": "one",
+            "from": [
+              "tired"
+            ],
+            "to": "ready"
+          }
+        ],
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "The chosen astronaut goes from Tired or Stressed to Ready. The next physical mission gets a +1 bonus. Toria can also cure one crewmate's Tired condition."
+    },
+    "costText": {
+      "en": "Cost: Power −3. Recommended: Toria or Sylvan. Duration: 1 cycle; finishes before the midday phase. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "ISS data comes from microgravity. Mars gravity is about 0.38 g."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-treadmill-cardio-sprint",
+    "category": "operations",
+    "title": {
+      "en": "Treadmill Cardio Sprint"
+    },
+    "description": {
+      "en": "Astronauts use elastic straps on the treadmill so they don't float away while running."
+    },
+    "artKey": "ops/treadmill-cardio-sprint",
+    "fact": {
+      "dataset": "ISS T2 treadmill",
+      "sourceName": "NASA ISS T2 Treadmill – Exercising in Space",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/exercising-in-space/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -4,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-02",
+    "phase": "morning",
+    "action": "An astronaut runs on a treadmill with a harness so the body stays pressed to the machine.",
+    "illustration": {
+      "en": "An astronaut running while strapped in."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin",
+        "cirra"
+      ]
+    },
+    "validSols": 2,
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "one",
+        "from": [
+          "stressed"
+        ],
+        "to": "ready"
+      }
+    ],
+    "effectText": {
+      "en": "Removes the Stressed condition. The chance of a negative trait is 15% lower for the rest of the day."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Recommended: Corin or Cirra. Duration: 1 cycle. If Corin works alone, his Anxiety chance drops from 30% to 10% today. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "The lower negative-trait chance is a game rule."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-sleep-rhythm-cabin-lights",
+    "category": "operations",
+    "title": {
+      "en": "Sleep-Rhythm Cabin Lights"
+    },
+    "description": {
+      "en": "NASA uses color-changing lights to help astronauts know when to wake up and when to sleep."
+    },
+    "artKey": "ops/sleep-rhythm-cabin-lights",
+    "fact": {
+      "dataset": "ISS sleep & lighting research",
+      "sourceName": "NASA ISS – Sleeping in Space",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/sleeping-in-space/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -2,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-03",
+    "phase": "morning",
+    "action": "The cabin lights change from blue-white to warm light as night comes.",
+    "illustration": {
+      "en": "A habitat corridor with lights that change color."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 2,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 0
+    },
+    "assignment": {
+      "required": false,
+      "recommended": [],
+      "scope": "habitat"
+    },
+    "validSols": 1,
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "upTo2",
+        "from": [
+          "tired"
+        ],
+        "to": "ready",
+        "phase": "night"
+      }
+    ],
+    "effectText": {
+      "en": "At night, up to two Tired astronauts can recover to Ready if they receive food and water. Avoids a Toria–Cirra fight today."
+    },
+    "costText": {
+      "en": "Cost: Power −2. Assignment: whole habitat, no specific astronaut. Duration: 0 cycles. Valid for 1 Sol."
+    },
+    "limitation": {
+      "en": "A Mars Sol lasts about 24 hours 39 minutes. The ISS sees about 16 sunrises in one orbital day."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-midday-short-rest",
+    "category": "operations",
+    "title": {
+      "en": "Short Rest Mid-Sol"
+    },
+    "description": {
+      "en": "Astronauts use sleeping bags fixed to the wall so they don't float around the cabin."
+    },
+    "artKey": "ops/midday-short-rest",
+    "fact": {
+      "dataset": "ISS sleep research",
+      "sourceName": "NASA – Sleeping in Space",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/sleeping-in-space/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-04",
+    "phase": "morning",
+    "action": "A tired astronaut rests in a bed attached to the habitat wall.",
+    "illustration": {
+      "en": "An astronaut resting in a wall sleeping bag."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": []
+    },
+    "validSols": 2,
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "one",
+        "from": [
+          "tired"
+        ],
+        "to": "ready"
+      }
+    ],
+    "effectText": {
+      "en": "One Tired astronaut becomes Ready again and loses the extra cooldown caused by tiredness."
+    },
+    "costText": {
+      "en": "Cost: no meters or rations; one astronaut cannot be assigned while resting. Duration: 1 cycle. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "Rest time is compressed into one cycle for gameplay."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-shared-meal-prep",
+    "category": "operations",
+    "title": {
+      "en": "Shared Meal Prep"
+    },
+    "description": {
+      "en": "Astronauts often use tortillas because bread makes crumbs that can clog the air filters."
+    },
+    "artKey": "ops/shared-meal-prep",
+    "fact": {
+      "dataset": "ISS food / CHAPEA",
+      "sourceName": "NASA – Eating in Space",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/eating-in-space/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -3,
+      "shielding": 0,
+      "food": 4
+    },
+    "gddId": "DR-05",
+    "phase": "morning",
+    "action": "The crew prepares a warm meal and eats together in the habitat kitchen.",
+    "illustration": {
+      "en": "Four astronauts eating together."
+    },
+    "rations": {
+      "food": -1,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 1,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan",
+        "corin"
+      ]
+    },
+    "validSols": 2,
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "upTo2",
+        "from": [
+          "stressed"
+        ],
+        "to": "ready"
+      }
+    ],
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "statusEffects": [
+          {
+            "op": "cure",
+            "target": "all",
+            "from": [
+              "stressed"
+            ],
+            "to": "ready"
+          }
+        ],
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Removes Stressed from up to two astronauts and gives +4 Food System. Sylvan can extend the recovery to the whole crew."
+    },
+    "costText": {
+      "en": "Cost: Power −3 and Food Ration −1. Recommended: Sylvan or Corin. Duration: 1 cycle. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "This card improves meal routine and crew mood. It does not add food mass directly."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-hydration-electrolyte-check",
+    "category": "operations",
+    "title": {
+      "en": "Hydration and Electrolyte Check"
+    },
+    "description": {
+      "en": "Water is needed for drinking, preparing food and staying clean."
+    },
+    "artKey": "ops/hydration-electrolyte-check",
+    "fact": {
+      "dataset": "ISS ECLSS",
+      "sourceName": "NASA ISS ECLSS – Water Recovery Milestone",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/"
+    },
+    "effects": {
+      "lifeSupport": 5,
+      "power": 0,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-06",
+    "phase": "morning",
+    "action": "Corin hands out drinks and records how much water each astronaut drinks.",
+    "illustration": {
+      "en": "Corin handing out drink pouches."
+    },
+    "rations": {
+      "food": 0,
+      "water": -1
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 1
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin"
+      ]
+    },
+    "validSols": 2,
+    "statusEffects": [
+      {
+        "op": "protect",
+        "target": "one",
+        "from": [
+          "tired"
+        ]
+      }
+    ],
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "statusEffects": [
+          {
+            "op": "protect",
+            "target": "two",
+            "from": [
+              "tired"
+            ]
+          }
+        ],
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +5. One astronaut is protected from becoming Tired on the next mission today. Corin can protect two astronauts."
+    },
+    "costText": {
+      "en": "Cost: Water Ration −1. Recommended: Corin. Duration: 1 cycle. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "One Water Ration unit is a simplification of the supply in the game."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-no-rinse-hygiene-condensate",
+    "category": "operations",
+    "title": {
+      "en": "No-Rinse Wash and Condensate Catch"
+    },
+    "description": {
+      "en": "Humid air can be collected and cleaned into water again."
+    },
+    "artKey": "ops/no-rinse-hygiene-condensate",
+    "fact": {
+      "dataset": "ISS ECLSS",
+      "sourceName": "NASA – Environmental Control and Life Support Systems",
+      "sourceUrl": "https://www.nasa.gov/reference/environmental-control-and-life-support-systems-eclss/"
+    },
+    "effects": {
+      "lifeSupport": 4,
+      "power": -2,
+      "shielding": 0,
+      "food": 0
+    },
+    "delayed": {
+      "afterSols": 0,
+      "phase": "night",
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 1
+      }
+    },
+    "gddId": "DR-07",
+    "phase": "morning",
+    "action": "Astronauts clean up with no-rinse products while the cabin system collects moisture from the air.",
+    "illustration": {
+      "en": "An astronaut washing near a condensate pipe."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 2,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": []
+    },
+    "validSols": 1,
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "one",
+        "from": [
+          "tired"
+        ],
+        "to": "ready"
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +4, one Tired astronaut becomes Ready, and +1 Water Ration is recovered at night."
+    },
+    "costText": {
+      "en": "Cost: Power −2. Recommended: any astronaut. Duration: 1 cycle. Valid for 1 Sol."
+    },
+    "limitation": {
+      "en": "Condensate flow on Mars must be adjusted for Mars gravity, which is different from ISS microgravity."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-eva-liner-sterilization",
+    "category": "operations",
+    "title": {
+      "en": "Sterilize the EVA Liner"
+    },
+    "description": {
+      "en": "Under a spacesuit, astronauts wear a garment with tiny water tubes that helps keep body temperature steady."
+    },
+    "artKey": "ops/eva-liner-sterilization",
+    "fact": {
+      "dataset": "Spacesuit cooling garment",
+      "sourceName": "NASA – Spacesuits",
+      "sourceUrl": "https://www.nasa.gov/reference/spacesuits/"
+    },
+    "effects": {
+      "lifeSupport": 4,
+      "power": -2,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-08",
+    "phase": "morning",
+    "action": "The crew cleans and dries the cooling garment worn inside the spacesuit.",
+    "illustration": {
+      "en": "An astronaut drying a cooling garment."
+    },
+    "rations": {
+      "food": 0,
+      "water": -1
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 2,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 1
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin",
+        "sylvan"
+      ]
+    },
+    "validSols": 2,
+    "effectText": {
+      "en": "Life Support +4. The risk of becoming Unwell on the next Exploration is 20% lower."
+    },
+    "costText": {
+      "en": "Cost: Power −2 and Water Ration −1. Recommended: Corin or Sylvan. Duration: 1 cycle. Sylvan gets +3 on his next solo Exploration. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "The 20% risk reduction is a gameplay abstraction."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-co2-cabin-pressure-check",
+    "category": "operations",
+    "title": {
+      "en": "CO₂ and Cabin Pressure Check"
+    },
+    "description": {
+      "en": "CO₂ can build up in a closed cabin, so scrubbers have to watch it and clean it."
+    },
+    "artKey": "ops/co2-cabin-pressure-check",
+    "fact": {
+      "dataset": "OSDR EDA",
+      "sourceName": "NASA OSDR Environmental Data App",
+      "sourceUrl": "https://visualization.osdr.nasa.gov/eda/"
+    },
+    "effects": {
+      "lifeSupport": 7,
+      "power": -2,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-09",
+    "phase": "morning",
+    "action": "An astronaut calibrates the air sensors to make sure the scrubber system works.",
+    "illustration": {
+      "en": "An astronaut checking an air sensor."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 2,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin",
+        "cirra"
+      ]
+    },
+    "validSols": 2,
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 2,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -2,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +7. Cirra can reduce this card's Power cost to 0."
+    },
+    "costText": {
+      "en": "Cost: Power −2. Recommended: Corin or Cirra. Duration: 1 cycle. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "OSDR EDA comes from experiment modules in spaceflight, not from a Mars habitat."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-airlock-thermal-seal-check",
+    "category": "operations",
+    "title": {
+      "en": "Airlock Thermal Seal Check"
+    },
+    "description": {
+      "en": "Nights on Mars can be very cold, and the air is much thinner than on Earth."
+    },
+    "artKey": "ops/airlock-thermal-seal-check",
+    "fact": {
+      "dataset": "Curiosity REMS",
+      "sourceName": "Curiosity REMS – Mars Pressure Data",
+      "sourceUrl": "https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/curiosity/rems_pressure.html"
+    },
+    "effects": {
+      "lifeSupport": 5,
+      "power": 3,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-10",
+    "phase": "morning",
+    "action": "Toria checks the airlock gaskets and seals so they stay tight in cold Mars nights.",
+    "illustration": {
+      "en": "Toria scanning an airlock seal."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "validSols": 2,
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 3,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +5 and Power +3. Toria raises the Life Support recovery to +8."
+    },
+    "costText": {
+      "en": "Cost: no meters, but one astronaut is locked during the task. Recommended: Toria. Duration: 1 cycle. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "Heat loss and gasket performance depend on the habitat's insulation design."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": [
+      "power"
+    ]
+  },
+  {
+    "id": "ops-weather-optical-depth-log",
+    "category": "operations",
+    "title": {
+      "en": "Weather and Optical Depth Log"
+    },
+    "description": {
+      "en": "The MEDA weather station on Perseverance watches the wind and dust in Mars' air."
+    },
+    "artKey": "ops/weather-optical-depth-log",
+    "fact": {
+      "dataset": "Perseverance MEDA",
+      "sourceName": "Perseverance MEDA – PDS Atmospheres Node",
+      "sourceUrl": "https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/PERSEVERANCE/meda.html"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-11",
+    "phase": "morning",
+    "action": "Astronauts check the sky camera and dust sensor to learn about Mars' atmosphere.",
+    "illustration": {
+      "en": "An astronaut reading an optical depth chart."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 1,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan",
+        "corin"
+      ]
+    },
+    "validSols": 1,
+    "effectText": {
+      "en": "The player learns whether a disaster will appear today and gets +4 Power."
+    },
+    "costText": {
+      "en": "Cost: Power −1. Recommended: Sylvan or Corin. Duration: 1 cycle. Valid for 1 Sol."
+    },
+    "limitation": {
+      "en": "Solar flux measured in the atmosphere is not the same as the electricity a solar panel produces."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-solar-panel-dust-brushing",
+    "category": "operations",
+    "title": {
+      "en": "Brush Dust off the Solar Panels"
+    },
+    "description": {
+      "en": "Mars dust can cover solar panels and reduce the energy they make."
+    },
+    "artKey": "ops/solar-panel-dust-brushing",
+    "fact": {
+      "dataset": "InSight Power",
+      "sourceName": "NASA JPL – InSight Power Generation",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia25284-insights-power-generation-after-landing-and-spring-2022/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 9,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-12",
+    "phase": "morning",
+    "action": "Astronauts go outside with an anti-static brush to clean dust off the solar panels.",
+    "illustration": {
+      "en": "An astronaut brushing a solar panel."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra",
+        "toria"
+      ]
+    },
+    "validSols": 2,
+    "requires": {
+      "meterMin": {
+        "shielding": 40
+      },
+      "stormActive": false
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 3,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Power +9 and the Dust-Coated Arrays penalty is removed. Cirra raises the result to +12."
+    },
+    "costText": {
+      "en": "Cost: no meters. Cannot be done if Radiation Shielding is below 40 or a storm is active. Recommended: Cirra or Toria. Duration: 1 cycle. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "InSight had no crew. Cleaning by astronauts is a game scenario and must account for EVA risk."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-hepa-air-filter-cleaning",
+    "category": "operations",
+    "title": {
+      "en": "Clean the HEPA Air Filter"
+    },
+    "description": {
+      "en": "Air filters must be cleaned regularly so air keeps flowing smoothly."
+    },
+    "artKey": "ops/hepa-air-filter-cleaning",
+    "fact": {
+      "dataset": "ISS ECLSS",
+      "sourceName": "NASA – Environmental Control and Life Support Systems",
+      "sourceUrl": "https://www.nasa.gov/reference/environmental-control-and-life-support-systems-eclss/"
+    },
+    "effects": {
+      "lifeSupport": 6,
+      "power": 3,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-13",
+    "phase": "morning",
+    "action": "An astronaut vacuums dust and particles from the habitat's air filter.",
+    "illustration": {
+      "en": "An astronaut cleaning an air filter."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": []
+    },
+    "validSols": 2,
+    "effectText": {
+      "en": "Life Support +6 and Power +3."
+    },
+    "costText": {
+      "en": "Cost: no meters, but one astronaut is locked. Recommended: any astronaut. Duration: 1 cycle. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "Mars dust is about 1–3 µm in size and differs from the household dust particles on the ISS."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": [
+      "power"
+    ]
+  },
+  {
+    "id": "ops-water-processor-valve-check",
+    "category": "operations",
+    "title": {
+      "en": "Water Processor Valve Check"
+    },
+    "description": {
+      "en": "Regular checks help find a clogged valve before the water stops flowing."
+    },
+    "artKey": "ops/water-processor-valve-check",
+    "fact": {
+      "dataset": "ISS ECLSS (NTRS)",
+      "sourceName": "NASA NTRS – ECLSS Sensor Calibration",
+      "sourceUrl": "https://ntrs.nasa.gov/api/citations/20050207456/downloads/20050207456.pdf"
+    },
+    "effects": {
+      "lifeSupport": 6,
+      "power": -2,
+      "shielding": 0,
+      "food": 0
+    },
+    "delayed": {
+      "afterSols": 0,
+      "phase": "night",
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 1
+      }
+    },
+    "gddId": "DR-14",
+    "phase": "morning",
+    "action": "Toria or Cirra checks the sensors, pumps and valves of the water recycling system.",
+    "illustration": {
+      "en": "An astronaut checking a water valve panel."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 2,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria",
+        "cirra"
+      ]
+    },
+    "validSols": 2,
+    "bonus": [
+      {
+        "astronauts": [
+          "toria",
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 2,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "conflict": {
+          "chance": 0.3,
+          "effects": {
+            "lifeSupport": 0,
+            "power": 0,
+            "shielding": -10,
+            "food": 0
+          }
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +6 and +1 Water Ration at night."
+    },
+    "costText": {
+      "en": "Cost: Power −2. Recommended: Toria or Cirra. Duration: 1 cycle. If Toria and Cirra work together, the result becomes +8 Life Support, but there is still a 30% chance they fight and Radiation Shielding drops by 10. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "The +6 meter gain is a gameplay effect, not a rise in a NASA measurement."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-battery-temperature-check",
+    "category": "operations",
+    "title": {
+      "en": "Battery Temperature Check"
+    },
+    "description": {
+      "en": "Batteries, like phone batteries, must stay warm to work well in the cold."
+    },
+    "artKey": "ops/battery-temperature-check",
+    "fact": {
+      "dataset": "Perseverance rover components",
+      "sourceName": "NASA Perseverance – Rover Components",
+      "sourceUrl": "https://science.nasa.gov/mission/mars-2020-perseverance/rover-components/"
+    },
+    "effects": {
+      "lifeSupport": -2,
+      "power": 8,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-15",
+    "phase": "morning",
+    "action": "Cirra adjusts the heaters and coolant flow of the batteries so they work in Mars nights.",
+    "illustration": {
+      "en": "Cirra checking a battery panel."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 2,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "validSols": 2,
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 2,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": -2,
+          "power": 0,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Power +8."
+    },
+    "costText": {
+      "en": "Cost: Life Support −2. Cirra removes that Life Support cost. Recommended: Cirra. Duration: 1 cycle. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "The extra +8 Power is an abstraction of better battery efficiency."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-plant-humidity-ph-check",
+    "category": "operations",
+    "title": {
+      "en": "Plant Moisture and pH Check"
+    },
+    "description": {
+      "en": "Space gardens use red and blue lights to help plants grow."
+    },
+    "artKey": "ops/plant-humidity-ph-check",
+    "fact": {
+      "dataset": "Veggie OSD-267",
+      "sourceName": "NASA OSDR – Study OSD-267",
+      "sourceUrl": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-267"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -2,
+      "shielding": 0,
+      "food": 7
+    },
+    "gddId": "DR-16",
+    "phase": "morning",
+    "action": "Sylvan checks the moisture of the growing medium and the lights in the hydroponic garden.",
+    "illustration": {
+      "en": "Sylvan checking plants under LED lights."
+    },
+    "rations": {
+      "food": 0,
+      "water": -1
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 2,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 1
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan"
+      ]
+    },
+    "validSols": 2,
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 3
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Food System +7. Sylvan raises the result to +10."
+    },
+    "costText": {
+      "en": "Cost: Power −2 and Water Ration −1. Recommended: Sylvan. Duration: 1 cycle. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "Plant care that takes weeks is compressed into one action in the simulation."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-stepwise-leaf-pruning",
+    "category": "operations",
+    "title": {
+      "en": "Step-by-Step Leaf Pruning"
+    },
+    "description": {
+      "en": "The outer leaves of lettuce can be harvested while the middle of the plant keeps growing."
+    },
+    "artKey": "ops/stepwise-leaf-pruning",
+    "fact": {
+      "dataset": "Veggie OSD-269",
+      "sourceName": "NASA OSDR – Study OSD-269",
+      "sourceUrl": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-269"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 3
+    },
+    "gddId": "DR-17",
+    "phase": "morning",
+    "action": "Sylvan cuts the outer leaves and lets the middle of the plant grow back.",
+    "illustration": {
+      "en": "Sylvan cutting lettuce leaves."
+    },
+    "rations": {
+      "food": 2,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan"
+      ]
+    },
+    "validSols": 1,
+    "requires": {
+      "meterMin": {
+        "food": 50
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 1,
+          "water": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "If Food System is at least 50, gain +2 Food Ration and +3 Food System. Sylvan produces +3 Food Ration."
+    },
+    "costText": {
+      "en": "Cost: no meters, but one astronaut is locked. Recommended: Sylvan. Duration: 1 cycle. Valid for 1 Sol."
+    },
+    "limitation": {
+      "en": "A single morning's harvest is compressed to fit the eight-Sol campaign."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-earth-mars-family-messages",
+    "category": "operations",
+    "title": {
+      "en": "Earth–Mars Family Messages"
+    },
+    "description": {
+      "en": "A message from Mars can take up to 24 minutes to reach Earth."
+    },
+    "artKey": "ops/earth-mars-family-messages",
+    "fact": {
+      "dataset": "Perseverance communications",
+      "sourceName": "NASA – Perseverance Communications",
+      "sourceUrl": "https://science.nasa.gov/mission/mars-2020-perseverance/communications/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -3,
+      "shielding": 3,
+      "food": 0
+    },
+    "gddId": "DR-18",
+    "phase": "morning",
+    "action": "Astronauts swap voice messages or photos with Earth through the communication system.",
+    "illustration": {
+      "en": "An astronaut listening to a message at the comms console."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 0
+    },
+    "assignment": {
+      "required": false,
+      "recommended": [],
+      "scope": "habitat"
+    },
+    "validSols": 2,
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "upTo2",
+        "from": [
+          "stressed"
+        ],
+        "to": "ready"
+      }
+    ],
+    "effectText": {
+      "en": "Removes Stressed from up to two astronauts and gives +3 Radiation Shielding."
+    },
+    "costText": {
+      "en": "Cost: Power −3. No astronaut needed. Duration: 0 cycles. Recommended: whole habitat. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "The Radiation Shielding boost is a game effect, not a physical effect of communication."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": [
+      "shielding"
+    ]
+  },
+  {
+    "id": "ops-recreation-and-music",
+    "category": "operations",
+    "title": {
+      "en": "Recreation and Music Time"
+    },
+    "description": {
+      "en": "Astronauts bring books, music and games to stay close as a team during a mission."
+    },
+    "artKey": "ops/recreation-and-music",
+    "fact": {
+      "dataset": "NASA HRP Behavioral Health / CHAPEA",
+      "sourceName": "NASA Human Research Program – Behavioral Health",
+      "sourceUrl": "https://www.nasa.gov/hrp/elements/bhp/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -2,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-19",
+    "phase": "morning",
+    "action": "All four astronauts play board games, listen to music, or do an activity together.",
+    "illustration": {
+      "en": "The crew playing a board game."
+    },
+    "rations": {
+      "food": -1,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 2,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 1,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 0
+    },
+    "assignment": {
+      "required": false,
+      "recommended": [],
+      "scope": "habitat"
+    },
+    "validSols": 2,
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "all",
+        "from": [
+          "stressed"
+        ],
+        "to": "ready"
+      }
+    ],
+    "effectText": {
+      "en": "Removes Stressed from the whole crew. The Toria–Cirra fight chance drops from 30% to 10% today."
+    },
+    "costText": {
+      "en": "Cost: Power −2 and Food Ration −1. No astronaut needed. Duration: 0 cycles. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "The change in fight chance is a gameplay abstraction."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "ops-personal-journal-reflection",
+    "category": "operations",
+    "title": {
+      "en": "Personal Journal and Mission Reflection"
+    },
+    "description": {
+      "en": "Journals help researchers understand what astronauts experience while living away from Earth."
+    },
+    "artKey": "ops/personal-journal-reflection",
+    "fact": {
+      "dataset": "NASA HRP Behavioral Health",
+      "sourceName": "NASA Human Research Program – Behavioral Health",
+      "sourceUrl": "https://www.nasa.gov/hrp/elements/bhp/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "DR-20",
+    "phase": "morning",
+    "action": "An astronaut writes in a journal or draws the Mars scenery to process the mission.",
+    "illustration": {
+      "en": "Sylvan writing in a journal by a habitat window."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan",
+        "corin"
+      ]
+    },
+    "validSols": 2,
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "one",
+        "from": [
+          "stressed"
+        ],
+        "to": "ready"
+      }
+    ],
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "choice": [
+          {
+            "lifeSupport": 0,
+            "power": 0,
+            "shielding": 0,
+            "food": 4
+          },
+          {
+            "lifeSupport": 0,
+            "power": 0,
+            "shielding": 4,
+            "food": 0
+          }
+        ],
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "The chosen astronaut goes from Stressed to Ready. Sylvan gives +4 Food System or +4 Radiation Shielding. Corin has no Anxiety risk when playing this card."
+    },
+    "costText": {
+      "en": "Cost: no meters, but one astronaut is locked. Recommended: Sylvan or Corin. Duration: 1 cycle. Valid for 2 Sols."
+    },
+    "limitation": {
+      "en": "Sylvan's meter bonus is a game abstraction."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "res-perchlorate-soil-wash-test",
+    "category": "research",
+    "title": {
+      "en": "Perchlorate Soil Wash Test"
+    },
+    "description": {
+      "en": "Mars soil contains natural perchlorate salts that dissolve in water."
+    },
+    "artKey": "res/perchlorate-soil-wash-test",
+    "fact": {
+      "dataset": "Phoenix WCL / Curiosity SAM",
+      "sourceName": "NASA Phoenix Mission",
+      "sourceUrl": "https://science.nasa.gov/mission/phoenix/"
+    },
+    "effects": {
+      "lifeSupport": 4,
+      "power": -4,
+      "shielding": 0,
+      "food": 10
+    },
+    "gddId": "RS-01",
+    "phase": "midday",
+    "action": "Corin and Sylvan test washing perchlorate salt out of the regolith before the soil is used for plants.",
+    "illustration": {
+      "en": "Corin and Sylvan rinsing a sample of red soil."
+    },
+    "rations": {
+      "food": 0,
+      "water": -1
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 1
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": -5
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin",
+        "sylvan"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 5
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Food System +10 and Life Support +4. Unlock: the Water cost of the Food System Upgrade drops by 1."
+    },
+    "costText": {
+      "en": "Cost: Power −4 and Water Ration −1. Rejection: Food System −5. Recommended: Corin and Sylvan. Duration: 2 cycles. Corin raises Food System to +15. Sylvan's negative group trait still applies."
+    },
+    "limitation": {
+      "en": "Washed regolith still needs nutrients such as nitrogen before it can grow plants."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": [
+      "lifeSupport"
+    ]
+  },
+  {
+    "id": "res-moxie-electrolysis-tuning",
+    "category": "research",
+    "title": {
+      "en": "MOXIE Electrolysis Tuning"
+    },
+    "description": {
+      "en": "MOXIE proved that oxygen can be made from the carbon dioxide in Mars' air."
+    },
+    "artKey": "res/moxie-electrolysis-tuning",
+    "fact": {
+      "dataset": "MOXIE (Perseverance)",
+      "sourceName": "Perseverance MOXIE – NASA Mission Report",
+      "sourceUrl": "https://www.nasa.gov/missions/mars-2020-perseverance/perseverance-rover/nasas-oxygen-generating-experiment-moxie-completes-mars-mission/"
+    },
+    "effects": {
+      "lifeSupport": 12,
+      "power": -6,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RS-02",
+    "phase": "midday",
+    "action": "Cirra and Corin adjust the MOXIE heater to split oxygen from Mars carbon dioxide.",
+    "illustration": {
+      "en": "Cirra tuning a MOXIE unit."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": -5,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin",
+        "cirra"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 6,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +12. Unlock: the Power cost of Life Support cards drops by 2."
+    },
+    "costText": {
+      "en": "Cost: Power −6. Rejection: Life Support −5. Recommended: Corin or Cirra. Duration: 2 cycles. Corin raises Life Support to +18, but if he works alone he still risks Anxiety."
+    },
+    "limitation": {
+      "en": "MOXIE is a demonstrator about 1% of the size needed. It is not an oxygen unit for the whole crew."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "res-regolith-shield-depth-study",
+    "category": "research",
+    "title": {
+      "en": "Regolith Shield Depth Study"
+    },
+    "description": {
+      "en": "A layer of Mars soil over the habitat can help protect astronauts from radiation."
+    },
+    "artKey": "res/regolith-shield-depth-study",
+    "fact": {
+      "dataset": "MSL/RAD (Curiosity)",
+      "sourceName": "NASA MSL RAD – Level 2 Data",
+      "sourceUrl": "https://data.nasa.gov/dataset/mars-science-laboratory-msl-radiation-assessment-detector-rad-level-2-observation-dosimetr"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -4,
+      "shielding": 12,
+      "food": 0
+    },
+    "gddId": "RS-03",
+    "phase": "midday",
+    "action": "Corin measures how thick the regolith must be to reduce exposure to radiation particles.",
+    "illustration": {
+      "en": "Corin measuring a regolith sample with a dosimeter."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -6,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 6,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +12. Unlock: Radiation Shielding damage from SEP events and passive decay drops by 2."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Rejection: Radiation Shielding −6. Recommended: Corin. Duration: 2 cycles. Corin raises the result to +18."
+    },
+    "limitation": {
+      "en": "Shielding performance in the game is modeled from the RAD spectrum. It is not a directly measured meter value."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": []
+  },
+  {
+    "id": "res-red-blue-led-spectrum-test",
+    "category": "research",
+    "title": {
+      "en": "Red and Blue LED Spectrum Test"
+    },
+    "description": {
+      "en": "Plants use different colors of light to help them make food through photosynthesis."
+    },
+    "artKey": "res/red-blue-led-spectrum-test",
+    "fact": {
+      "dataset": "Veggie OSD-267",
+      "sourceName": "NASA OSDR – Study OSD-267",
+      "sourceUrl": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-267"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 1,
+      "shielding": 0,
+      "food": 10
+    },
+    "gddId": "RS-04",
+    "phase": "midday",
+    "action": "Corin and Sylvan test LED mixes so plants get the light they need while using less power.",
+    "illustration": {
+      "en": "Corin and Sylvan measuring plant lights."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": -5
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin",
+        "sylvan"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 2,
+          "shielding": 0,
+          "food": 5
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Food System +10 and Power +4. Unlock: the Power cost of night irrigation and garden lights drops from 5 to 3."
+    },
+    "costText": {
+      "en": "Cost: Power −3. Rejection: Food System −5. Recommended: Corin or Sylvan. Duration: 2 cycles. Corin raises the result to +15 Food System and +6 Power."
+    },
+    "limitation": {
+      "en": "The power savings over an eight-Sol campaign are a gameplay abstraction."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": [
+      "power"
+    ]
+  },
+  {
+    "id": "res-brine-distillation-membrane-study",
+    "category": "research",
+    "title": {
+      "en": "Brine Distillation Membrane Study"
+    },
+    "description": {
+      "en": "NASA reached about 98% water recovery on the ISS by taking water back from brine."
+    },
+    "artKey": "res/brine-distillation-membrane-study",
+    "fact": {
+      "dataset": "ISS ECLSS (Brine Processor)",
+      "sourceName": "NASA ISS – Water Recovery Milestone",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/"
+    },
+    "effects": {
+      "lifeSupport": 10,
+      "power": -5,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RS-05",
+    "phase": "midday",
+    "action": "The crew tests a membrane that takes water back from thick leftover liquid.",
+    "illustration": {
+      "en": "A technician checking a brine membrane."
+    },
+    "rations": {
+      "food": 0,
+      "water": 2
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 5,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": -2
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin",
+        "toria"
+      ]
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 1
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "corin",
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 5,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 1
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +10 and Water Ration +2. Unlock: nightly Water Ration production increases by +1."
+    },
+    "costText": {
+      "en": "Cost: Power −5. Rejection: Water Ration −2. Recommended: Corin and Toria. Duration: 2 cycles. Working together they give +15 Life Support, +3 Water Ration, and avoid Corin's Anxiety."
+    },
+    "limitation": {
+      "en": "ISS membrane systems work in microgravity. Using them on Mars needs adjustment."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "res-electrostatic-panel-dust-test",
+    "category": "research",
+    "title": {
+      "en": "Electrostatic Panel Dust Test"
+    },
+    "description": {
+      "en": "An electrodynamic shield can help clean dust without a brush."
+    },
+    "artKey": "res/electrostatic-panel-dust-test",
+    "fact": {
+      "dataset": "Electrodynamic Dust Shield / InSight",
+      "sourceName": "NASA – Electrodynamic Dust Shield",
+      "sourceUrl": "https://www.nasa.gov/directorates/stmd/tech-transfer/electrodynamic-dust-shield/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RS-06",
+    "phase": "midday",
+    "action": "Cirra tests electric waves that shake Mars dust off the surface of solar panels.",
+    "illustration": {
+      "en": "Cirra testing a solar panel with electrodes."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": -5,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin",
+        "cirra"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 5,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +10. Unlock: Power losses from dust storms and later dust build-up are cut in half."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Rejection: Power −5. Recommended: Corin or Cirra. Duration: 2 cycles. Corin raises the immediate result to +15 Power."
+    },
+    "limitation": {
+      "en": "High-voltage electrodes need insulation that suits Mars' low air pressure."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "res-astronaut-blood-immune-panel",
+    "category": "research",
+    "title": {
+      "en": "Astronaut Blood and Immune Panel"
+    },
+    "description": {
+      "en": "NASA studies astronauts' blood samples to watch how the body changes during spaceflight."
+    },
+    "artKey": "res/astronaut-blood-immune-panel",
+    "fact": {
+      "dataset": "OSDR OSD-569",
+      "sourceName": "NASA OSDR – Study OSD-569",
+      "sourceUrl": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-569"
+    },
+    "effects": {
+      "lifeSupport": 6,
+      "power": -3,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RS-07",
+    "phase": "midday",
+    "action": "Corin runs blood tests to monitor the health and body response of the crew.",
+    "illustration": {
+      "en": "Corin reviewing blood test results."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      },
+      "statusEffects": [
+        {
+          "op": "set",
+          "target": "one",
+          "to": "stressed"
+        }
+      ]
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin"
+      ]
+    },
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "all",
+        "from": [
+          "tired",
+          "stressed"
+        ],
+        "to": "ready"
+      }
+    ],
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 3,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Removes Tired and Stressed from the whole crew and gives +6 Life Support. Unlock: the chance of becoming Unwell drops by 20%."
+    },
+    "costText": {
+      "en": "Cost: Power −3. Rejection: one astronaut becomes Stressed. Recommended: Corin. Duration: 1 cycle. Corin raises Life Support to +9 and has no Anxiety when playing this card."
+    },
+    "limitation": {
+      "en": "Dataset OSD-569 comes from a short low-Earth-orbit flight. The Mars health rules in the game are an abstraction."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "res-cyanobacteria-bio-mining-culture",
+    "category": "research",
+    "title": {
+      "en": "Cyanobacteria and Bio-Mining Culture"
+    },
+    "description": {
+      "en": "Tiny photosynthetic microbes helped change Earth's air long ago."
+    },
+    "artKey": "res/cyanobacteria-bio-mining-culture",
+    "fact": {
+      "dataset": "NASA Ames space biosciences",
+      "sourceName": "NASA Ames – Space Biosciences",
+      "sourceUrl": "https://www.nasa.gov/ames/research/space-biosciences/"
+    },
+    "effects": {
+      "lifeSupport": 8,
+      "power": -4,
+      "shielding": 0,
+      "food": 8
+    },
+    "gddId": "RS-08",
+    "phase": "midday",
+    "action": "Corin and Sylvan grow photosynthetic microbes in tubes to study oxygen and biomass production.",
+    "illustration": {
+      "en": "Green microorganism culture tubes."
+    },
+    "rations": {
+      "food": 0,
+      "water": -1
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 1
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": -4,
+        "power": 0,
+        "shielding": 0,
+        "food": -4
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin",
+        "sylvan"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 4,
+          "power": 0,
+          "shielding": 0,
+          "food": 4
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +8 and Food System +8. Unlock: the next Food System card also gives +2 Life Support."
+    },
+    "costText": {
+      "en": "Cost: Power −4 and Water Ration −1. Rejection: Life Support −4 and Food System −4. Recommended: Corin and Sylvan. Duration: 2 cycles. Corin raises both meters to +12."
+    },
+    "limitation": {
+      "en": "Closed biological systems that support a habitat are still experimental."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": [
+      "lifeSupport"
+    ]
+  },
+  {
+    "id": "res-astrorad-protective-polymer-analysis",
+    "category": "research",
+    "title": {
+      "en": "AstroRad Protective Polymer Analysis"
+    },
+    "description": {
+      "en": "A special Artemis I vest helps reduce the radiation that reaches important organs."
+    },
+    "artKey": "res/astrorad-protective-polymer-analysis",
+    "fact": {
+      "dataset": "Artemis I MARE",
+      "sourceName": "NASA Artemis I – Radiation Measurements",
+      "sourceUrl": "https://www.nasa.gov/missions/artemis/artemis-1/artemis-i-radiation-measurements-validate-orion-safety-for-astronauts/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -4,
+      "shielding": 14,
+      "food": 0
+    },
+    "gddId": "RS-09",
+    "phase": "midday",
+    "action": "Corin studies the hydrogen-rich polymer panels used in Artemis I radiation protection tests.",
+    "illustration": {
+      "en": "Corin checking a protective polymer panel."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -6,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 7,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +14. Unlock: astronauts cannot become Unwell from the first SEP after this technology is active."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Rejection: Radiation Shielding −6. Recommended: Corin. Duration: 2 cycles. Corin raises the result to +21."
+    },
+    "limitation": {
+      "en": "The data comes from the Orion mission around the Moon. Using it for Mars habitat shielding is a design adaptation."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": []
+  },
+  {
+    "id": "res-subsurface-ice-mapping",
+    "category": "research",
+    "title": {
+      "en": "Subsurface Ice Mapping"
+    },
+    "description": {
+      "en": "Perseverance's radar can help see the layers of rock under the surface of Mars."
+    },
+    "artKey": "res/subsurface-ice-mapping",
+    "fact": {
+      "dataset": "Perseverance RIMFAX",
+      "sourceName": "Perseverance RIMFAX – NASA PDS",
+      "sourceUrl": "https://science.nasa.gov/mission/mars-2020-perseverance/science-instruments/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 6,
+      "food": 0
+    },
+    "gddId": "RS-10",
+    "phase": "midday",
+    "action": "Corin and Cirra use ground-penetrating radar to map rock layers and possible ice under the habitat.",
+    "illustration": {
+      "en": "Corin and Cirra reading a subsurface map."
+    },
+    "rations": {
+      "food": 0,
+      "water": 2
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": -5,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 4
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin",
+        "cirra"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "corin",
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 6,
+          "shielding": 3,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -3,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Power +6, Radiation Shielding +6 and Water Ration +2. Unlock: the next Exploration card can give +1 Water Ration or +3 to a meter."
+    },
+    "costText": {
+      "en": "Cost: Power −6. Rejection: Power −5. Recommended: Corin and Cirra. Duration: 4 cycles. Their synergy cuts the Power cost by 3, gives +9 Power and +9 Radiation Shielding, and avoids a Toria–Cirra fight because they are not both assigned."
+    },
+    "limitation": {
+      "en": "The amount of ice that can be recovered from mapping is simplified for gameplay."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": [
+      "shielding"
+    ]
+  },
+  {
+    "id": "exp-shallow-subsurface-ice-dig",
+    "category": "exploration",
+    "title": {
+      "en": "Shallow Subsurface Ice Dig"
+    },
+    "description": {
+      "en": "Phoenix once dug a few centimeters into Mars soil and found water ice."
+    },
+    "artKey": "exp/shallow-subsurface-ice-dig",
+    "fact": {
+      "dataset": "Phoenix lander",
+      "sourceName": "NASA Phoenix Lander",
+      "sourceUrl": "https://science.nasa.gov/mission/phoenix/"
+    },
+    "effects": {
+      "lifeSupport": 4,
+      "power": -4,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "EX-01",
+    "phase": "midday",
+    "action": "Sylvan digs into regolith to collect buried water ice and sends it to the purification system.",
+    "illustration": {
+      "en": "Sylvan holding an ice sample in a trench."
+    },
+    "rations": {
+      "food": 0,
+      "water": 4
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": -2
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan"
+      ],
+      "solo": true
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 1
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Water Ration +4 and Life Support +4."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Rejection: Water Ration −2. Recommended: Sylvan alone. Duration: 2 cycles. Solo Sylvan gets +5 Water Ration and stays Ready."
+    },
+    "limitation": {
+      "en": "Shallow ice only exists in some places, mainly at latitudes above about 35°."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "exp-regolith-berm-and-sandbags",
+    "category": "exploration",
+    "title": {
+      "en": "Regolith for Berms and Sandbags"
+    },
+    "description": {
+      "en": "Mars soil can be used as a layer that shields a habitat from radiation."
+    },
+    "artKey": "exp/regolith-berm-and-sandbags",
+    "fact": {
+      "dataset": "MSL/RAD (Curiosity)",
+      "sourceName": "NASA MSL RAD – Shielding Data",
+      "sourceUrl": "https://data.nasa.gov/dataset/mars-science-laboratory-msl-radiation-assessment-detector-rad-level-2-observation-dosimetr"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -3,
+      "shielding": 14,
+      "food": 0
+    },
+    "gddId": "EX-02",
+    "phase": "midday",
+    "action": "Sylvan or Toria collects regolith to add protective mass to the habitat roof.",
+    "illustration": {
+      "en": "An astronaut filling sandbags with regolith."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -5,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan",
+        "toria"
+      ],
+      "solo": true
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 5,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +14."
+    },
+    "costText": {
+      "en": "Cost: Power −3. Rejection: Radiation Shielding −5. Recommended: solo Sylvan or Toria. Duration: 2 cycles. Solo Sylvan raises the result to +19 Radiation Shielding."
+    },
+    "limitation": {
+      "en": "In a real mission, hauling heavy regolith would probably need a rover or robot."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": []
+  },
+  {
+    "id": "exp-lava-tube-entrance-survey",
+    "category": "exploration",
+    "title": {
+      "en": "Lava Tube Entrance Survey"
+    },
+    "description": {
+      "en": "Caves made by old volcanic activity could become shelters on Mars."
+    },
+    "artKey": "exp/lava-tube-entrance-survey",
+    "fact": {
+      "dataset": "MRO / planetary caves",
+      "sourceName": "NASA Mars Reconnaissance Orbiter – Planetary Caves",
+      "sourceUrl": "https://science.nasa.gov/mission/mars-reconnaissance-orbiter/"
+    },
+    "effects": {
+      "lifeSupport": 6,
+      "power": -5,
+      "shielding": 16,
+      "food": 0
+    },
+    "gddId": "EX-03",
+    "phase": "midday",
+    "action": "Sylvan climbs down a volcanic cave opening to check how stable and how thick the rock above is.",
+    "illustration": {
+      "en": "Sylvan descending into a lava tube."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 5,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -5,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 4
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan"
+      ],
+      "solo": true
+    },
+    "unlocksCards": [
+      "con-lava-tube-airlock-sub-bunker"
+    ],
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 5,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +16 and Life Support +6. Unlock: the Building card BL-08 Lava Tube Sub-Bunker."
+    },
+    "costText": {
+      "en": "Cost: Power −5. Rejection: Radiation Shielding −5. Recommended: solo Sylvan. Duration: 4 cycles. Solo Sylvan gives +21 Radiation Shielding and stays Ready."
+    },
+    "limitation": {
+      "en": "The stability of a cave roof must be checked before anyone lives there."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": [
+      "lifeSupport"
+    ]
+  },
+  {
+    "id": "exp-nitrate-rich-mudstone-sample",
+    "category": "exploration",
+    "title": {
+      "en": "Nitrate-Rich Mudstone Sample"
+    },
+    "description": {
+      "en": "Curiosity found nitrate compounds in Mars rock. Nitrogen is one of the elements plants need."
+    },
+    "artKey": "exp/nitrate-rich-mudstone-sample",
+    "fact": {
+      "dataset": "Curiosity SAM",
+      "sourceName": "NASA – Curiosity Finds Biologically Useful Nitrogen",
+      "sourceUrl": "https://www.nasa.gov/missions/mars-science-laboratory/curiosity-rover/curiosity-rover-finds-biologically-useful-nitrogen-on-mars/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -4,
+      "shielding": 0,
+      "food": 12
+    },
+    "gddId": "EX-04",
+    "phase": "midday",
+    "action": "Sylvan drills into sedimentary rock to look for nitrates that could feed plants.",
+    "illustration": {
+      "en": "Sylvan taking a sedimentary rock sample."
+    },
+    "rations": {
+      "food": 1,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": -5
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan"
+      ],
+      "solo": true
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 5
+        },
+        "rations": {
+          "food": 1,
+          "water": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Food System +12 and Food Ration +1."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Rejection: Food System −5. Recommended: solo Sylvan. Duration: 2 cycles. Solo Sylvan gives +17 Food System and +2 Food Ration."
+    },
+    "limitation": {
+      "en": "Nitrate inside rock must be processed before plants can use it as nutrients."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "exp-dust-devil-survey",
+    "category": "exploration",
+    "title": {
+      "en": "Dust Devil Survey"
+    },
+    "description": {
+      "en": "Small dust devils sometimes move across Mars and can clean dust off rover panels."
+    },
+    "artKey": "exp/dust-devil-survey",
+    "fact": {
+      "dataset": "Perseverance MEDA",
+      "sourceName": "Perseverance MEDA – Science Instruments",
+      "sourceUrl": "https://science.nasa.gov/mission/mars-2020-perseverance/science-instruments/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 8,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "EX-05",
+    "phase": "midday",
+    "action": "Sylvan or Cirra watches a dust devil and records wind changes around the solar panels.",
+    "illustration": {
+      "en": "An astronaut watching a dust devil."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 2,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": -4,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan",
+        "cirra"
+      ],
+      "solo": true
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 0,
+          "power": 5,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +10 and the Dust-Coated Arrays penalty is removed."
+    },
+    "costText": {
+      "en": "Cost: Power −2. Rejection: Power −4. Recommended: solo Sylvan or Cirra. Duration: 1 cycle. Solo Sylvan gives +15 Power."
+    },
+    "limitation": {
+      "en": "How often dust devils happen depends on the landing site and the season."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "exp-hydrated-gypsum-vein-harvest",
+    "category": "exploration",
+    "title": {
+      "en": "Hydrated Gypsum Vein Harvest"
+    },
+    "description": {
+      "en": "A Mars rover found white mineral veins that hold water inside the rock."
+    },
+    "artKey": "exp/hydrated-gypsum-vein-harvest",
+    "fact": {
+      "dataset": "Mars rover mineral vein (NASA JPL)",
+      "sourceName": "NASA JPL – Mars Rover Finds Mineral Vein",
+      "sourceUrl": "https://www.jpl.nasa.gov/news/nasa-mars-rover-finds-mineral-vein-deposited-by-water/"
+    },
+    "effects": {
+      "lifeSupport": 5,
+      "power": -5,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "EX-06",
+    "phase": "midday",
+    "action": "Sylvan collects gypsum rock and heats it to release the water bound inside the mineral.",
+    "illustration": {
+      "en": "Sylvan holding a white gypsum sample."
+    },
+    "rations": {
+      "food": 0,
+      "water": 3
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 5,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": -2
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan"
+      ],
+      "solo": true
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 5,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 1
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Water Ration +3 and Life Support +5."
+    },
+    "costText": {
+      "en": "Cost: Power −5. Rejection: Water Ration −2. Recommended: solo Sylvan. Duration: 2 cycles. Solo Sylvan makes +4 Water Ration and +10 Life Support."
+    },
+    "limitation": {
+      "en": "Heating gypsum to release its water needs a lot of electrical energy."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "exp-jezero-delta-clay-survey",
+    "category": "exploration",
+    "title": {
+      "en": "Jezero Delta Clay Survey"
+    },
+    "description": {
+      "en": "Jezero Crater holds traces of an ancient river delta that Perseverance is studying."
+    },
+    "artKey": "exp/jezero-delta-clay-survey",
+    "fact": {
+      "dataset": "Perseverance SHERLOC / PIXL",
+      "sourceName": "NASA Perseverance – SHERLOC and PIXL",
+      "sourceUrl": "https://science.nasa.gov/mission/mars-2020-perseverance/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -3,
+      "shielding": 8,
+      "food": 8
+    },
+    "gddId": "EX-07",
+    "phase": "midday",
+    "action": "Sylvan collects clay from the ancient Jezero delta to study how soil holds water and signs of an old environment.",
+    "illustration": {
+      "en": "Sylvan scanning the delta layers."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -4,
+        "food": -4
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan"
+      ],
+      "solo": true
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "choice": [
+          {
+            "lifeSupport": 0,
+            "power": 0,
+            "shielding": 0,
+            "food": 5
+          },
+          {
+            "lifeSupport": 0,
+            "power": 0,
+            "shielding": 5,
+            "food": 0
+          }
+        ],
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Food System +8 and Radiation Shielding +8."
+    },
+    "costText": {
+      "en": "Cost: Power −3. Rejection: Food System −4 and Radiation Shielding −4. Recommended: solo Sylvan. Duration: 2 cycles. Solo Sylvan adds +5 to one meter of the player's choice."
+    },
+    "limitation": {
+      "en": "Clay used for plants must be processed and sterilized first."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": [
+      "shielding"
+    ]
+  },
+  {
+    "id": "exp-crater-ridge-solar-beacon-tower",
+    "category": "exploration",
+    "title": {
+      "en": "Crater-Ridge Solar Beacon Tower"
+    },
+    "description": {
+      "en": "Ingenuity used a small solar panel to charge up before flying on Mars."
+    },
+    "artKey": "exp/crater-ridge-solar-beacon-tower",
+    "fact": {
+      "dataset": "Perseverance MEDA / Ingenuity",
+      "sourceName": "NASA Ingenuity Mars Helicopter",
+      "sourceUrl": "https://science.nasa.gov/mission/ingenuity-mars-helicopter/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 8,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "EX-08",
+    "phase": "midday",
+    "action": "Sylvan or Cirra sets up a panel tower and repeater on a spot that gets more sunlight.",
+    "illustration": {
+      "en": "An astronaut setting up a solar panel tower."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": -5,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan",
+        "cirra"
+      ],
+      "solo": true
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 2,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 0,
+          "power": 5,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +12. When finished, nightly Power recovery increases by +2 for the rest of the campaign."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Rejection: Power −5. Recommended: solo Sylvan or Cirra. Duration: 2 cycles. Solo Sylvan gives +17 Power."
+    },
+    "limitation": {
+      "en": "The tower needs insulated cable connected to the habitat."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "exp-basalt-gravel-quarry",
+    "category": "exploration",
+    "title": {
+      "en": "Basalt Gravel Quarry"
+    },
+    "description": {
+      "en": "Basalt is one of the rock types found in many places on Mars."
+    },
+    "artKey": "exp/basalt-gravel-quarry",
+    "fact": {
+      "dataset": "NASA 3D-Printed Habitat Challenge",
+      "sourceName": "NASA 3D-Printed Habitat Challenge",
+      "sourceUrl": "https://www.nasa.gov/directorates/stmd/prizes-challenges-crowdsourcing-program/centennial-challenges/3d-printed-habitat-challenge/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -3,
+      "shielding": 10,
+      "food": 6
+    },
+    "gddId": "EX-09",
+    "phase": "midday",
+    "action": "Sylvan or Toria collects basalt rock for building material and habitat shielding.",
+    "illustration": {
+      "en": "An astronaut collecting basalt rock."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -5,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan",
+        "toria"
+      ],
+      "solo": true
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 5,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +10 and Food System +6. The next Building card needs 4 less Power."
+    },
+    "costText": {
+      "en": "Cost: Power −3. Rejection: Radiation Shielding −5. Recommended: solo Sylvan or Toria. Duration: 2 cycles. Solo Sylvan gives +15 Radiation Shielding."
+    },
+    "limitation": {
+      "en": "Sintering, or compacting, basalt takes a lot of heat energy."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": [
+      "food"
+    ]
+  },
+  {
+    "id": "exp-shaded-frost-collection",
+    "category": "exploration",
+    "title": {
+      "en": "Shaded Frost Collection"
+    },
+    "description": {
+      "en": "A thin layer of frost can form on the very cold surface of Mars."
+    },
+    "artKey": "exp/shaded-frost-collection",
+    "fact": {
+      "dataset": "Viking 2 / Perseverance MEDA",
+      "sourceName": "NASA Viking 2 Mission",
+      "sourceUrl": "https://science.nasa.gov/mission/viking-2/"
+    },
+    "effects": {
+      "lifeSupport": 4,
+      "power": -2,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "EX-10",
+    "phase": "midday",
+    "action": "Sylvan scrapes thin frost from shaded rocks before it evaporates.",
+    "illustration": {
+      "en": "Sylvan collecting frost from a rock."
+    },
+    "rations": {
+      "food": 0,
+      "water": 2
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 2,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": -1
+      }
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan"
+      ],
+      "solo": true
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 5,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 1
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Water Ration +2 and Life Support +4."
+    },
+    "costText": {
+      "en": "Cost: Power −2. Rejection: Water Ration −1. Recommended: solo Sylvan. Duration: 1 cycle. Solo Sylvan gets +3 Water Ration and +9 Life Support."
+    },
+    "limitation": {
+      "en": "Natural frost is very thin. The amount of water on the card is a gameplay simplification."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "con-kilopower-fission-reactor",
+    "category": "construction",
+    "title": {
+      "en": "Kilopower Fission Reactor (KRUSTY)"
+    },
+    "description": {
+      "en": "The Kilopower reactor is designed to give electricity when solar panels don't get enough light."
+    },
+    "artKey": "con/kilopower-fission-reactor",
+    "fact": {
+      "dataset": "Kilopower / KRUSTY",
+      "sourceName": "NASA NTRS – Kilopower KRUSTY",
+      "sourceUrl": "https://ntrs.nasa.gov/api/citations/20205008482/downloads/02-Kilopower%20Project_%20The%20KRUSTY%20Fission%20Power%20Experiment%20and%20Potential%20Missions.pdf"
+    },
+    "effects": {
+      "lifeSupport": 4,
+      "power": 10,
+      "shielding": -4,
+      "food": 0
+    },
+    "gddId": "BL-01",
+    "phase": "afternoon",
+    "action": "Toria builds a small fission reactor in a trench to supply power without relying on sunlight.",
+    "illustration": {
+      "en": "Toria installing a reactor with an umbrella-shaped radiator."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 8,
+      "shielding": 4,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": -5,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 4,
+      "byAstronaut": {
+        "toria": 3
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 5,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 5,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +18 and Life Support +4. The structure produces +5 Power every night and is not affected by dust."
+    },
+    "costText": {
+      "en": "Cost: Power −8 and Radiation Shielding −4. Rejection: Power −5. Recommended: Toria. Duration: 4 cycles, or 3 with Toria. Toria raises the immediate result to +23 Power. Toria and Cirra can speed it up, but have a 30% risk of conflict."
+    },
+    "limitation": {
+      "en": "The reactor needs placement and shielding designed with the help of robotic systems."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": [
+      "lifeSupport"
+    ]
+  },
+  {
+    "id": "con-sabatier-co2-reactor",
+    "category": "construction",
+    "title": {
+      "en": "Sabatier CO₂ Processing Reactor"
+    },
+    "description": {
+      "en": "A Sabatier system can turn the carbon dioxide astronauts breathe out into water."
+    },
+    "artKey": "con/sabatier-co2-reactor",
+    "fact": {
+      "dataset": "ISS Sabatier reactor",
+      "sourceName": "NASA NTRS – Sabatier Reactor",
+      "sourceUrl": "https://ntrs.nasa.gov/api/citations/20100033195/downloads/20100033195.pdf"
+    },
+    "effects": {
+      "lifeSupport": 14,
+      "power": -6,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "BL-02",
+    "phase": "afternoon",
+    "action": "Toria installs a reactor that turns carbon dioxide and hydrogen into water and methane.",
+    "illustration": {
+      "en": "Toria installing a Sabatier reactor tube."
+    },
+    "rations": {
+      "food": 0,
+      "water": 2
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": -5,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": -1
+      }
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 1
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 5,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +14 and Water Ration +2. The structure produces +1 Water Ration every night."
+    },
+    "costText": {
+      "en": "Cost: Power −6. Rejection: Life Support −5 and Water Ration −1. Recommended: Toria. Duration: 2 cycles, or 1 with Toria. Toria raises Life Support to +19."
+    },
+    "limitation": {
+      "en": "A full system for Mars needs extra processing stages for the methane."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "con-3d-printed-regolith-dome",
+    "category": "construction",
+    "title": {
+      "en": "3D-Printed Regolith Dome"
+    },
+    "description": {
+      "en": "Big printers can be used to make parts of a habitat from local material."
+    },
+    "artKey": "con/3d-printed-regolith-dome",
+    "fact": {
+      "dataset": "NASA 3D-Printed Habitat Challenge",
+      "sourceName": "NASA 3D-Printed Habitat Challenge",
+      "sourceUrl": "https://www.nasa.gov/directorates/stmd/prizes-challenges-crowdsourcing-program/centennial-challenges/3d-printed-habitat-challenge/"
+    },
+    "effects": {
+      "lifeSupport": 5,
+      "power": -8,
+      "shielding": 18,
+      "food": 0
+    },
+    "gddId": "BL-03",
+    "phase": "afternoon",
+    "action": "Toria builds a protective layer around the habitat using local material printed into thick structures.",
+    "illustration": {
+      "en": "A robot printer building layers of a red dome."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 8,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -6,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 4,
+      "byAstronaut": {
+        "toria": 3
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "passiveReduction": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 2,
+      "food": 0
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 5,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +18 and Life Support +5. The structure removes the nightly passive decay of Radiation Shielding."
+    },
+    "costText": {
+      "en": "Cost: Power −8. Rejection: Radiation Shielding −6. Recommended: Toria. Duration: 4 cycles, or 3 with Toria. Toria raises the result to +23 Radiation Shielding."
+    },
+    "limitation": {
+      "en": "The process needs a lot of energy and sorted basalt material."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": [
+      "lifeSupport"
+    ]
+  },
+  {
+    "id": "con-modular-aeroponic-tower",
+    "category": "construction",
+    "title": {
+      "en": "Modular Aeroponic Garden Tower"
+    },
+    "description": {
+      "en": "A vertical garden can use space well and bring water right to the roots."
+    },
+    "artKey": "con/modular-aeroponic-tower",
+    "fact": {
+      "dataset": "Veggie OSD-269",
+      "sourceName": "NASA OSDR – Study OSD-269",
+      "sourceUrl": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-269"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -5,
+      "shielding": 0,
+      "food": 15
+    },
+    "gddId": "BL-04",
+    "phase": "afternoon",
+    "action": "Toria builds vertical plant racks that deliver a nutrient mist to the roots.",
+    "illustration": {
+      "en": "Toria installing a vertical plant rack."
+    },
+    "rations": {
+      "food": 2,
+      "water": -2
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 5,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 2
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": -5
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ],
+      "solo": true
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 1,
+        "water": 0
+      },
+      "requires": {
+        "meterMin": {
+          "food": 60
+        }
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "solo": true,
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 5
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Food System +15 and Food Ration +2. The structure produces +1 Food Ration every night while Food System is at least 60."
+    },
+    "costText": {
+      "en": "Cost: Power −5 and Water Ration −2. Rejection: Food System −5. Recommended: Toria alone. Duration: 2 cycles, or 1 with Toria. Toria gives +20 Food System. Avoid pairing Sylvan if you don't want to trigger the Power −10 risk."
+    },
+    "limitation": {
+      "en": "Nightly harvests in the game are faster than real plant growth cycles."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "con-water-wall-shelter",
+    "category": "construction",
+    "title": {
+      "en": "Water-Wall Shelter"
+    },
+    "description": {
+      "en": "Water stored in the habitat walls can be part of radiation protection."
+    },
+    "artKey": "con/water-wall-shelter",
+    "fact": {
+      "dataset": "Artemis I MARE",
+      "sourceName": "NASA Artemis I – Radiation Measurements",
+      "sourceUrl": "https://www.nasa.gov/missions/artemis/artemis-1/artemis-i-radiation-measurements-validate-orion-safety-for-astronauts/"
+    },
+    "effects": {
+      "lifeSupport": 4,
+      "power": -3,
+      "shielding": 16,
+      "food": 0
+    },
+    "gddId": "BL-05",
+    "phase": "afternoon",
+    "action": "Toria hangs water bags on the walls of the rest area to help reduce exposure to solar particles.",
+    "illustration": {
+      "en": "A sleeping area with water bags on the walls."
+    },
+    "rations": {
+      "food": 0,
+      "water": -2
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 2
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -6,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 5,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +16 and Life Support +4. The structure reduces SEP damage to Radiation Shielding by 8."
+    },
+    "costText": {
+      "en": "Cost: Power −3 and Water Ration −2. Rejection: Radiation Shielding −6. Recommended: Toria. Duration: 2 cycles, or 1 with Toria. Toria raises the result to +21 Radiation Shielding."
+    },
+    "limitation": {
+      "en": "Water used as shielding must be processed again before it is safe to drink."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": [
+      "lifeSupport"
+    ]
+  },
+  {
+    "id": "con-high-pressure-oxygen-bank",
+    "category": "construction",
+    "title": {
+      "en": "High-Pressure Electrolysis Oxygen Bank"
+    },
+    "description": {
+      "en": "NASA uses electricity to split water and make oxygen for astronauts."
+    },
+    "artKey": "con/high-pressure-oxygen-bank",
+    "fact": {
+      "dataset": "ISS ECLSS (OGA)",
+      "sourceName": "NASA – Environmental Control and Life Support Systems",
+      "sourceUrl": "https://www.nasa.gov/reference/environmental-control-and-life-support-systems-eclss/"
+    },
+    "effects": {
+      "lifeSupport": 16,
+      "power": -6,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "BL-06",
+    "phase": "afternoon",
+    "action": "Toria installs high-pressure oxygen storage tanks to add to the air reserve.",
+    "illustration": {
+      "en": "Toria securing an oxygen tank."
+    },
+    "rations": {
+      "food": 0,
+      "water": -1
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 1
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": -5,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "passiveReduction": {
+      "lifeSupport": 1,
+      "power": 0,
+      "shielding": 0,
+      "food": 0
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 5,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +16. The structure reduces the passive decay of Life Support by 1 every night."
+    },
+    "costText": {
+      "en": "Cost: Power −6 and Water Ration −1. Rejection: Life Support −5. Recommended: Toria. Duration: 2 cycles, or 1 with Toria. Toria raises the result to +21 Life Support."
+    },
+    "limitation": {
+      "en": "High-pressure oxygen needs strict fire-safety procedures."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "con-steep-angle-solar-panels",
+    "category": "construction",
+    "title": {
+      "en": "Steep-Angle Solar Panels"
+    },
+    "description": {
+      "en": "Panels set at a tilt can help reduce dust build-up."
+    },
+    "artKey": "con/steep-angle-solar-panels",
+    "fact": {
+      "dataset": "InSight Power",
+      "sourceName": "NASA JPL – InSight Power Generation",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia25284-insights-power-generation-after-landing-and-spring-2022/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 10,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "BL-07",
+    "phase": "afternoon",
+    "action": "Toria sets up solar panels at a steeper angle so dust slides off more easily.",
+    "illustration": {
+      "en": "Toria installing a tilted solar panel."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": -5,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 3,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 5,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +14. The structure adds +3 Power to the nightly solar recovery."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Rejection: Power −5. Recommended: Toria. Duration: 2 cycles, or 1 with Toria. Toria raises the result to +19 Power."
+    },
+    "limitation": {
+      "en": "A steeper angle can reduce how much light the panel receives at certain times."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "con-lava-tube-airlock-sub-bunker",
+    "category": "construction",
+    "title": {
+      "en": "Lava Tube Airlock Sub-Bunker"
+    },
+    "description": {
+      "en": "A thick layer of rock above a cave can give protection from radiation."
+    },
+    "artKey": "con/lava-tube-airlock-sub-bunker",
+    "fact": {
+      "dataset": "MRO / planetary caves",
+      "sourceName": "NASA Mars Reconnaissance Orbiter – Planetary Caves",
+      "sourceUrl": "https://science.nasa.gov/mission/mars-reconnaissance-orbiter/"
+    },
+    "effects": {
+      "lifeSupport": 8,
+      "power": -8,
+      "shielding": 22,
+      "food": 0
+    },
+    "gddId": "BL-08",
+    "phase": "afternoon",
+    "action": "Toria seals and prepares a lava cave as an extra shelter.",
+    "illustration": {
+      "en": "A large airlock closing off a lava cave."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 8,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -5,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 4,
+      "byAstronaut": {
+        "toria": 3
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "unlockedBy": "exp-lava-tube-entrance-survey",
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 5,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +22 and Life Support +8. The structure makes the crew unable to become Unwell from SEP."
+    },
+    "costText": {
+      "en": "Cost: Power −8. Rejection: Radiation Shielding −5. Recommended: Toria. Duration: 4 cycles, or 3 with Toria. Toria raises the result to +27 Radiation Shielding."
+    },
+    "limitation": {
+      "en": "The roof and structure of the cave must be checked before using it as a shelter."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": [
+      "lifeSupport"
+    ]
+  },
+  {
+    "id": "con-closed-loop-water-tank",
+    "category": "construction",
+    "title": {
+      "en": "Closed-Loop Recycled Water Tank"
+    },
+    "description": {
+      "en": "Water vapor from plants can be collected with a condenser and processed again."
+    },
+    "artKey": "con/closed-loop-water-tank",
+    "fact": {
+      "dataset": "ISS ECLSS water recovery",
+      "sourceName": "NASA ISS – Water Recovery Milestone",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/"
+    },
+    "effects": {
+      "lifeSupport": 10,
+      "power": -4,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "BL-09",
+    "phase": "afternoon",
+    "action": "Toria builds a tank that collects used water and water vapor from the plants.",
+    "illustration": {
+      "en": "Toria connecting pipes to a closed water tank."
+    },
+    "rations": {
+      "food": 0,
+      "water": 4
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": -2
+      }
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 1
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 5,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Water Ration +4 and Life Support +10. The structure removes the Water Ration cost of garden irrigation every night."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Rejection: Water Ration −2. Recommended: Toria. Duration: 2 cycles, or 1 with Toria. Toria raises Life Support to +15."
+    },
+    "limitation": {
+      "en": "Condensate must be disinfected, for example with UV or suitable treatment, before it is used."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "con-decontamination-dust-lock",
+    "category": "construction",
+    "title": {
+      "en": "Decontamination Room and Dust Lock"
+    },
+    "description": {
+      "en": "A special room can keep dust from spacesuits out of the habitat."
+    },
+    "artKey": "con/decontamination-dust-lock",
+    "fact": {
+      "dataset": "Spacesuits / suitport concepts",
+      "sourceName": "NASA – Spacesuits",
+      "sourceUrl": "https://www.nasa.gov/reference/spacesuits/"
+    },
+    "effects": {
+      "lifeSupport": 10,
+      "power": -5,
+      "shielding": 8,
+      "food": 0
+    },
+    "gddId": "BL-10",
+    "phase": "afternoon",
+    "action": "Toria builds a transition room that removes dust from spacesuits before the crew enters the habitat.",
+    "illustration": {
+      "en": "An astronaut using an EVA suit cleaning room."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 5,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": -5,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 5,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +10 and Radiation Shielding +8. The structure removes the Tired penalty from Exploration activities."
+    },
+    "costText": {
+      "en": "Cost: Power −5. Rejection: Life Support −5. Recommended: Toria. Duration: 2 cycles, or 1 with Toria. Toria raises Life Support to +15."
+    },
+    "limitation": {
+      "en": "A suitport system needs a specially designed suit and connection."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": [
+      "shielding"
+    ]
+  },
+  {
+    "id": "upg-regenerative-fuel-cell-bank",
+    "category": "upgrade",
+    "title": {
+      "en": "Regenerative Fuel Cell Storage Bank"
+    },
+    "description": {
+      "en": "This system can use electricity to split water during the day and recombine the gases to make electricity again."
+    },
+    "artKey": "upg/regenerative-fuel-cell-bank",
+    "fact": {
+      "dataset": "NASA Glenn regenerative fuel cells",
+      "sourceName": "NASA Glenn – Regenerative Fuel Cell Storage",
+      "sourceUrl": "https://www.nasa.gov/directorates/spacetech/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 10,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "UP-01",
+    "phase": "afternoon",
+    "action": "Cirra installs hydrogen-oxygen fuel cells that can store energy for reuse.",
+    "illustration": {
+      "en": "Cirra connecting a fuel cell to the power system."
+    },
+    "rations": {
+      "food": 0,
+      "water": -1
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 1
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": -5,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 3,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 7,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -3,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +16. The upgrade adds +3 Power to the nightly recovery every night."
+    },
+    "costText": {
+      "en": "Cost: Power −6 (−3 with Cirra) and Water Ration −1. Rejection: Power −5. Recommended: Cirra. Duration: 2 cycles. With Cirra, the gross result becomes +20 Power."
+    },
+    "limitation": {
+      "en": "A round-trip efficiency of about 55% is simplified in the game calculations."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "upg-smart-microgrid-load-controller",
+    "category": "upgrade",
+    "title": {
+      "en": "Smart Microgrid Load Controller"
+    },
+    "description": {
+      "en": "A vehicle computer can switch off or dim unimportant devices to protect the main systems."
+    },
+    "artKey": "upg/smart-microgrid-load-controller",
+    "fact": {
+      "dataset": "ISS power systems",
+      "sourceName": "NASA ISS – Power Systems",
+      "sourceUrl": "https://www.nasa.gov/reference/international-space-station/"
+    },
+    "effects": {
+      "lifeSupport": 5,
+      "power": 8,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "UP-02",
+    "phase": "afternoon",
+    "action": "Cirra installs a computer that cuts power use in rooms that are not being used.",
+    "illustration": {
+      "en": "Cirra adjusting a power-use curve."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": -5,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 6,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -2,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +12 and Life Support +5. All later cards need 1 less Power, minimum 0."
+    },
+    "costText": {
+      "en": "Cost: Power −4 (−2 with Cirra). Rejection: Power −5. Recommended: Cirra. Duration: 1 cycle. With Cirra, the gross Power result is +16."
+    },
+    "limitation": {
+      "en": "This system saves energy but does not produce new energy."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": [
+      "lifeSupport"
+    ]
+  },
+  {
+    "id": "upg-brine-processor-retrofit",
+    "category": "upgrade",
+    "title": {
+      "en": "Brine Processor Assembly Retrofit"
+    },
+    "description": {
+      "en": "A brine processing module helps take water back from leftover liquid."
+    },
+    "artKey": "upg/brine-processor-retrofit",
+    "fact": {
+      "dataset": "ISS ECLSS (Brine Processor)",
+      "sourceName": "NASA ISS – Water Recovery Milestone",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/"
+    },
+    "effects": {
+      "lifeSupport": 14,
+      "power": -6,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "UP-03",
+    "phase": "afternoon",
+    "action": "Cirra installs an extra brine processing module on the water recycling system.",
+    "illustration": {
+      "en": "Cirra installing a brine processing module."
+    },
+    "rations": {
+      "food": 0,
+      "water": 3
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": -2
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 1
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 7,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -3,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +14 and Water Ration +3. The upgrade raises nightly Water Ration production from +3 to +4."
+    },
+    "costText": {
+      "en": "Cost: Power −6 (−3 with Cirra). Rejection: Water Ration −2. Recommended: Cirra. Duration: 2 cycles. Cirra gives an extra +4 Power."
+    },
+    "limitation": {
+      "en": "Hydrophobic processing bags must be replaced regularly."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "upg-controlled-spectrum-led-array",
+    "category": "upgrade",
+    "title": {
+      "en": "Controlled-Spectrum LED Array"
+    },
+    "description": {
+      "en": "Red and blue LEDs can give plants light while using electricity more efficiently."
+    },
+    "artKey": "upg/controlled-spectrum-led-array",
+    "fact": {
+      "dataset": "Veggie OSD-267 / OSD-269",
+      "sourceName": "NASA OSDR – Study OSD-267",
+      "sourceUrl": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-267"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 14
+    },
+    "gddId": "UP-04",
+    "phase": "afternoon",
+    "action": "Cirra swaps the garden lights for more efficient red and blue LEDs.",
+    "illustration": {
+      "en": "Cirra installing LED lights over the garden."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": -5
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 1,
+        "water": 0
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 6,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -2,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Food System +14 and Power +4. The upgrade adds +1 Food Ration every night and still gives a full harvest if Food System is at least 45."
+    },
+    "costText": {
+      "en": "Cost: Power −4 (−2 with Cirra). Rejection: Food System −5. Recommended: Cirra. Duration: 2 cycles. Cirra gives an extra +8 gross Power."
+    },
+    "limitation": {
+      "en": "The higher nightly harvest is sped up to fit the eight-Sol campaign."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "upg-active-electrostatic-panel-cleaner",
+    "category": "upgrade",
+    "title": {
+      "en": "Active Electrostatic Panel Cleaner"
+    },
+    "description": {
+      "en": "Electric pulses can make dust come loose from a panel's surface."
+    },
+    "artKey": "upg/active-electrostatic-panel-cleaner",
+    "fact": {
+      "dataset": "Electrodynamic Dust Shield",
+      "sourceName": "NASA – Electrodynamic Dust Shield",
+      "sourceUrl": "https://www.nasa.gov/directorates/stmd/tech-transfer/electrodynamic-dust-shield/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "UP-05",
+    "phase": "afternoon",
+    "action": "Cirra installs transparent electrodes on the solar panels so dust can be shaken off with electric pulses.",
+    "illustration": {
+      "en": "Cirra fitting transparent electrodes onto a panel."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": -5,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 7,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -3,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +12 and the Dust-Coated Arrays penalty is removed. The upgrade removes the nightly passive Power loss caused by dust."
+    },
+    "costText": {
+      "en": "Cost: Power −6 (−3 with Cirra). Rejection: Power −5. Recommended: Cirra. Duration: 2 cycles. Cirra gives +16 gross Power."
+    },
+    "limitation": {
+      "en": "The electrodes must be insulated to prevent electric sparks in Mars' low air pressure."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "upg-hydrogen-rich-polymer-lining",
+    "category": "upgrade",
+    "title": {
+      "en": "Hydrogen-Rich Polymer Lining"
+    },
+    "description": {
+      "en": "Hydrogen-rich plastic can give radiation protection with less mass than some heavy materials."
+    },
+    "artKey": "upg/hydrogen-rich-polymer-lining",
+    "fact": {
+      "dataset": "Artemis I MARE",
+      "sourceName": "NASA Artemis I – Radiation Measurements",
+      "sourceUrl": "https://www.nasa.gov/missions/artemis/artemis-1/artemis-i-radiation-measurements-validate-orion-safety-for-astronauts/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -4,
+      "shielding": 16,
+      "food": 0
+    },
+    "gddId": "UP-06",
+    "phase": "afternoon",
+    "action": "Cirra installs a layer of high-density polyethylene on the cabin walls and EVA gear.",
+    "illustration": {
+      "en": "Cirra installing polymer panels on a wall."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -6,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 6,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -2,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +16. Unlock: the safe threshold for EVA can drop from 50 to 30."
+    },
+    "costText": {
+      "en": "Cost: Power −4 (−2 with Cirra). Rejection: Radiation Shielding −6. Recommended: Cirra. Duration: 2 cycles. Cirra gives an extra +4 Power."
+    },
+    "limitation": {
+      "en": "A vest protects certain parts of the body, not the whole habitat. GCR radiation still needs other protection such as regolith."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": []
+  },
+  {
+    "id": "upg-regenerative-zeolite-co2-scrubber",
+    "category": "upgrade",
+    "title": {
+      "en": "Regenerative Zeolite CO₂ Scrubber"
+    },
+    "description": {
+      "en": "Zeolite works like a tiny sponge that catches carbon dioxide from the air."
+    },
+    "artKey": "upg/regenerative-zeolite-co2-scrubber",
+    "fact": {
+      "dataset": "ISS ECLSS (CDRA)",
+      "sourceName": "NASA ECLSS – Environmental Control and Life Support",
+      "sourceUrl": "https://www.nasa.gov/reference/environmental-control-and-life-support-systems-eclss/"
+    },
+    "effects": {
+      "lifeSupport": 15,
+      "power": -6,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "UP-07",
+    "phase": "afternoon",
+    "action": "Cirra installs two beds of zeolite mineral that take turns catching and releasing CO₂.",
+    "illustration": {
+      "en": "Cirra calibrating two zeolite tubes."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": -5,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "one",
+        "from": [
+          "tired"
+        ],
+        "to": "ready",
+        "phase": "night"
+      }
+    ],
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 7,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -3,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +15. The upgrade automatically cures the Tired condition of one astronaut every night."
+    },
+    "costText": {
+      "en": "Cost: Power −6 (−3 with Cirra). Rejection: Life Support −5. Recommended: Cirra. Duration: 2 cycles. Cirra gives an extra +4 Power."
+    },
+    "limitation": {
+      "en": "CO₂ regeneration and venting must be adapted to Mars' low-pressure conditions."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "upg-automatic-moisture-irrigation-sensors",
+    "category": "upgrade",
+    "title": {
+      "en": "Automatic Moisture and Irrigation Sensors"
+    },
+    "description": {
+      "en": "Space gardens use sensors to watch the moisture and nutrients of plants."
+    },
+    "artKey": "upg/automatic-moisture-irrigation-sensors",
+    "fact": {
+      "dataset": "Advanced Plant Habitat",
+      "sourceName": "NASA – Advanced Plant Habitat",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/advanced-plant-habitat/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -4,
+      "shielding": 0,
+      "food": 14
+    },
+    "gddId": "UP-08",
+    "phase": "afternoon",
+    "action": "Cirra installs sensors and drip hoses to control root moisture precisely.",
+    "illustration": {
+      "en": "Cirra installing a moisture sensor on a plant."
+    },
+    "rations": {
+      "food": 1,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": -5
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "nightly": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 1,
+        "water": 0
+      },
+      "requires": {
+        "meterMin": {
+          "food": 60
+        }
+      }
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 6,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -2,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Food System +14 and Food Ration +1. The upgrade adds +1 Food Ration every night if Food System is at least 60."
+    },
+    "costText": {
+      "en": "Cost: Power −4 (−2 with Cirra). Rejection: Food System −5. Recommended: Cirra. Duration: 1 cycle. Cirra gives +4 gross Power."
+    },
+    "limitation": {
+      "en": "Irrigation lines still need maintenance to prevent salt build-up."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "upg-ka-band-communications-link",
+    "category": "upgrade",
+    "title": {
+      "en": "Ka-Band Communications Link"
+    },
+    "description": {
+      "en": "A Ka-band antenna can send more data to help receive information and storm maps."
+    },
+    "artKey": "upg/ka-band-communications-link",
+    "fact": {
+      "dataset": "Deep Space Network",
+      "sourceName": "NASA Deep Space Network",
+      "sourceUrl": "https://www.nasa.gov/directorates/somd/space-communications-navigation-program/deep-space-network/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 8,
+      "food": 0
+    },
+    "gddId": "UP-09",
+    "phase": "afternoon",
+    "action": "Cirra upgrades the communication antenna so Noe can send data and warnings faster.",
+    "illustration": {
+      "en": "Cirra aiming a dish antenna."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": -4,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 6,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -2,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +8 and Power +8. During a disaster, the player picks from four Repair cards instead of three and gets four extra mitigation options."
+    },
+    "costText": {
+      "en": "Cost: Power −4 (−2 with Cirra). Rejection: Radiation Shielding −4. Recommended: Cirra. Duration: 1 cycle. Cirra gives +12 gross Power."
+    },
+    "limitation": {
+      "en": "Ka-band signals can be more sensitive to atmospheric conditions and dust that interfere with the signal path."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": [
+      "power"
+    ]
+  },
+  {
+    "id": "upg-waste-heat-circulation",
+    "category": "upgrade",
+    "title": {
+      "en": "Equipment Waste-Heat Circulation"
+    },
+    "description": {
+      "en": "Heat from computers and equipment can be piped around to help keep the inside of the habitat warm."
+    },
+    "artKey": "upg/waste-heat-circulation",
+    "fact": {
+      "dataset": "ISS ECLSS (thermal control)",
+      "sourceName": "NASA ECLSS – Thermal Control Systems",
+      "sourceUrl": "https://www.nasa.gov/reference/environmental-control-and-life-support-systems-eclss/"
+    },
+    "effects": {
+      "lifeSupport": 10,
+      "power": 6,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "UP-10",
+    "phase": "afternoon",
+    "action": "Cirra connects heat from electronics to the habitat walls and tanks so heat isn't wasted.",
+    "illustration": {
+      "en": "Heat-exchange pipes installed in a habitat wall."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "rejectPenalty": {
+      "effects": {
+        "lifeSupport": -5,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      },
+      "rations": {
+        "food": 0,
+        "water": 0
+      }
+    },
+    "duration": {
+      "cycles": 2
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "passiveReduction": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0
+    },
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 6,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -2,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +10 and Life Support +10. The upgrade removes the passive Power decay of 3 every night."
+    },
+    "costText": {
+      "en": "Cost: Power −4 (−2 with Cirra). Rejection: Life Support −5. Recommended: Cirra. Duration: 2 cycles. Cirra gives an extra +14 gross Power."
+    },
+    "limitation": {
+      "en": "On warmer days the system still needs radiators to get rid of extra heat."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": [
+      "lifeSupport"
+    ]
+  },
+  {
+    "id": "fix-electrostatic-pulse-storm-dust",
+    "category": "repair",
+    "title": {
+      "en": "Electrostatic Pulse for Storm Dust"
+    },
+    "description": {
+      "en": "During the January 2022 storm, Perseverance measured winds of about 20 m/s. An electric system can help clean dust off panels."
+    },
+    "artKey": "fix/electrostatic-pulse-storm-dust",
+    "fact": {
+      "dataset": "Electrodynamic Dust Shield / MEDA",
+      "sourceName": "NASA – Electrodynamic Dust Shield",
+      "sourceUrl": "https://www.nasa.gov/directorates/stmd/tech-transfer/electrodynamic-dust-shield/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 8,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RP-01",
+    "phase": "disaster",
+    "action": "Cirra turns on electric pulses from inside the habitat to shake dust off the solar panels.",
+    "illustration": {
+      "en": "Cirra turning on an electric cleaning panel."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 0,
+      "byAstronaut": {
+        "cirra": 1
+      }
+    },
+    "assignment": {
+      "required": false,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "hazard": "dust-storm",
+    "cancelsAftermath": true,
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 7,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -3,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +14 and cancels the Stage 3 aftermath of the dust storm."
+    },
+    "costText": {
+      "en": "Cost: Power −6. Recommended: Cirra, assignment optional. Duration: 0 cycles with no crew, or 1 cycle with Cirra. Cirra gives a gross +18 Power."
+    },
+    "limitation": {
+      "en": "High-voltage devices must be insulated in Mars' low-pressure atmosphere."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-tethered-eva-solar-panel-cleaning",
+    "category": "repair",
+    "title": {
+      "en": "Tethered EVA Solar Panel Cleaning"
+    },
+    "description": {
+      "en": "A solar panel that isn't cleaned can lose most of its ability to make electricity."
+    },
+    "artKey": "fix/tethered-eva-solar-panel-cleaning",
+    "fact": {
+      "dataset": "InSight Power",
+      "sourceName": "NASA JPL – InSight Power Generation",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia25284-insights-power-generation-after-landing-and-spring-2022/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 15,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RP-02",
+    "phase": "disaster",
+    "action": "Toria goes outside on a safety tether to clean the solar panels by hand.",
+    "illustration": {
+      "en": "Toria cleaning a solar panel on a safety tether."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "statusEffects": [
+      {
+        "op": "set",
+        "target": "all",
+        "to": "tired"
+      }
+    ],
+    "hazard": "dust-storm",
+    "cancelsAftermath": true,
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 5,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      },
+      {
+        "astronauts": [
+          "toria",
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 9,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "conflict": {
+          "chance": 0.3,
+          "effects": {
+            "lifeSupport": 0,
+            "power": 0,
+            "shielding": 0,
+            "food": 0
+          }
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Power +15 and cancels the Stage 3 aftermath. The crew who do the EVA become Tired."
+    },
+    "costText": {
+      "en": "Cost: no meters. Recommended: Toria. Duration: 2 cycles, or 1 with Toria. Toria can give +20 Power. Toria and Cirra together can produce +24 Power, but risk a 30% conflict."
+    },
+    "limitation": {
+      "en": "InSight had no crew. Manual cleaning during a storm is a game scenario and carries EVA risk."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-backup-fuel-cell-use",
+    "category": "repair",
+    "title": {
+      "en": "Use the Backup Fuel Cells"
+    },
+    "description": {
+      "en": "Fuel cells can make electricity without depending directly on sunlight."
+    },
+    "artKey": "fix/backup-fuel-cell-use",
+    "fact": {
+      "dataset": "NASA Glenn fuel cells",
+      "sourceName": "NASA Glenn – Fuel Cell Technology",
+      "sourceUrl": "https://www.nasa.gov/directorates/spacetech/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 16,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RP-03",
+    "phase": "disaster",
+    "action": "The habitat turns on hydrogen-oxygen fuel cells to make electricity while dust blocks the sunlight.",
+    "illustration": {
+      "en": "A fuel cell feeding power to a distribution panel."
+    },
+    "rations": {
+      "food": 0,
+      "water": -3
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 3
+    },
+    "duration": {
+      "cycles": 0
+    },
+    "assignment": {
+      "required": false,
+      "recommended": []
+    },
+    "hazard": "dust-storm",
+    "effectText": {
+      "en": "Power +16. The aftermath of the dust storm still applies."
+    },
+    "costText": {
+      "en": "Cost: Water Ration −3. No astronaut needed. Duration: 0 cycles."
+    },
+    "limitation": {
+      "en": "The loss of three Water Rations is an abstraction of using water reserves for the energy system."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-habitat-power-saving-mode",
+    "category": "repair",
+    "title": {
+      "en": "Habitat Power-Saving Mode"
+    },
+    "description": {
+      "en": "During a big dust storm, NASA rovers can go into a power-saving mode to protect their energy."
+    },
+    "artKey": "fix/habitat-power-saving-mode",
+    "fact": {
+      "dataset": "Mars Exploration Rovers",
+      "sourceName": "NASA – Mars Exploration Rover Mission",
+      "sourceUrl": "https://science.nasa.gov/mission/opportunity/"
+    },
+    "effects": {
+      "lifeSupport": -8,
+      "power": 14,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RP-04",
+    "phase": "disaster",
+    "action": "The Commander turns off unimportant heaters, lights and fans to keep the core systems running.",
+    "illustration": {
+      "en": "The crew in a habitat with dim lights."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 8,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 0
+    },
+    "assignment": {
+      "required": false,
+      "recommended": []
+    },
+    "hazard": "dust-storm",
+    "effectText": {
+      "en": "Power +14."
+    },
+    "costText": {
+      "en": "Cost: Life Support −8. No astronaut needed. Duration: 0 cycles."
+    },
+    "limitation": {
+      "en": "Saving power reduces the habitat's heat comfort and ventilation in the simulation."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-wind-facing-panel-stow",
+    "category": "repair",
+    "title": {
+      "en": "Wind-Facing Panel Stow"
+    },
+    "description": {
+      "en": "Tilted panels can reduce the dust that sticks to them in strong wind."
+    },
+    "artKey": "fix/wind-facing-panel-stow",
+    "fact": {
+      "dataset": "Perseverance MEDA",
+      "sourceName": "Perseverance MEDA – PDS Atmospheres Node",
+      "sourceUrl": "https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/PERSEVERANCE/meda.html"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RP-05",
+    "phase": "disaster",
+    "action": "The solar panels are tilted so less dust settles. Astronauts also record the storm conditions.",
+    "illustration": {
+      "en": "Solar panels stowed in a tilted position."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 0,
+      "byAstronaut": {
+        "cirra": 1
+      }
+    },
+    "assignment": {
+      "required": false,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "choice": [
+      {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 4
+      },
+      {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 4,
+        "food": 0
+      }
+    ],
+    "hazard": "dust-storm",
+    "cancelsAftermath": true,
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 6,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -2,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Power +10, cancels the Stage 3 aftermath, then the player picks +4 Food System or +4 Radiation Shielding."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Recommended: Cirra, assignment optional. Duration: 0 cycles with no crew, or 1 cycle with Cirra. Cirra raises the net Power recovery to +12."
+    },
+    "limitation": {
+      "en": "Panels stowed upright catch less direct light."
+    },
+    "primaryMeter": "power",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-emergency-water-wall-fill",
+    "category": "repair",
+    "title": {
+      "en": "Emergency Water-Wall Fill"
+    },
+    "description": {
+      "en": "Water placed around a shelter can help reduce exposure to protons from a solar storm."
+    },
+    "artKey": "fix/emergency-water-wall-fill",
+    "fact": {
+      "dataset": "MSL/RAD (Curiosity)",
+      "sourceName": "NASA MSL RAD – Level 2 Data",
+      "sourceUrl": "https://data.nasa.gov/dataset/mars-science-laboratory-msl-radiation-assessment-detector-rad-level-2-observation-dosimetr"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 16,
+      "food": 0
+    },
+    "gddId": "RP-06",
+    "phase": "disaster",
+    "action": "Water from the supply is pumped into protective bags around the crew shelter.",
+    "illustration": {
+      "en": "The crew sheltering in a room with water-bag walls."
+    },
+    "rations": {
+      "food": 0,
+      "water": -3
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 3
+    },
+    "duration": {
+      "cycles": 0
+    },
+    "assignment": {
+      "required": false,
+      "recommended": []
+    },
+    "hazard": "solar-particle-event",
+    "effectText": {
+      "en": "Radiation Shielding +16 and the crew is protected from becoming Unwell because of the storm."
+    },
+    "costText": {
+      "en": "Cost: Water Ration −3. No astronaut needed. Duration: 0 cycles."
+    },
+    "limitation": {
+      "en": "Three Water Rations are turned into shielding material and are not available to drink."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-emergency-regolith-sandbag-addition",
+    "category": "repair",
+    "title": {
+      "en": "Emergency Regolith Sandbag Addition"
+    },
+    "description": {
+      "en": "An extra layer of soil on the habitat roof can help protect the crew from radiation particles."
+    },
+    "artKey": "fix/emergency-regolith-sandbag-addition",
+    "fact": {
+      "dataset": "MSL/RAD (Curiosity)",
+      "sourceName": "NASA MSL RAD – Level 2 Data",
+      "sourceUrl": "https://data.nasa.gov/dataset/mars-science-laboratory-msl-radiation-assessment-detector-rad-level-2-observation-dosimetr"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 15,
+      "food": 0
+    },
+    "gddId": "RP-07",
+    "phase": "disaster",
+    "action": "Toria adds regolith sandbags to the habitat roof to make the shield thicker.",
+    "illustration": {
+      "en": "Toria lifting regolith sandbags onto the roof."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "statusEffects": [
+      {
+        "op": "set",
+        "target": "all",
+        "to": "tired"
+      }
+    ],
+    "hazard": "solar-particle-event",
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 5,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +15. The crew who work become Tired."
+    },
+    "costText": {
+      "en": "Cost: no Power or Water Ration. Recommended: Toria. Duration: 2 cycles, or 1 with Toria. Toria raises the recovery to +20 Radiation Shielding."
+    },
+    "limitation": {
+      "en": "The work is done during a lull in the storm to reduce EVA exposure."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-astrorad-vest-use",
+    "category": "repair",
+    "title": {
+      "en": "Use the AstroRad Vests"
+    },
+    "description": {
+      "en": "NASA tested a radiation-protection vest during the Artemis I mission."
+    },
+    "artKey": "fix/astrorad-vest-use",
+    "fact": {
+      "dataset": "Artemis I MARE",
+      "sourceName": "NASA Artemis I – Radiation Measurements",
+      "sourceUrl": "https://www.nasa.gov/missions/artemis/artemis-1/artemis-i-radiation-measurements-validate-orion-safety-for-astronauts/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -5,
+      "shielding": 12,
+      "food": 0
+    },
+    "gddId": "RP-08",
+    "phase": "disaster",
+    "action": "Corin hands out the protective polymer vests to all astronauts.",
+    "illustration": {
+      "en": "Corin helping the crew put on AstroRad vests."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 5,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin"
+      ]
+    },
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "all",
+        "from": [
+          "stressed",
+          "unwell"
+        ],
+        "to": "ready"
+      }
+    ],
+    "hazard": "solar-particle-event",
+    "cancelsAftermath": true,
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 3,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +12. Removes Stressed and Unwell from the whole crew and cancels the Stage 3 aftermath."
+    },
+    "costText": {
+      "en": "Cost: Power −5. Recommended: Corin. Duration: 1 cycle. Corin raises the result to +15 Radiation Shielding and has no solo Anxiety risk."
+    },
+    "limitation": {
+      "en": "The vest protects certain organs, not the whole body or the whole habitat."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-magnetic-deflector-activation",
+    "category": "repair",
+    "title": {
+      "en": "Activate the Magnetic Deflector"
+    },
+    "description": {
+      "en": "Magnetic fields can bend charged particles. NASA studies magnetic protection concepts for space missions."
+    },
+    "artKey": "fix/magnetic-deflector-activation",
+    "fact": {
+      "dataset": "NASA NIAC",
+      "sourceName": "NASA NIAC – Advanced Concepts",
+      "sourceUrl": "https://www.nasa.gov/directorates/spacetech/niac/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -12,
+      "shielding": 16,
+      "food": 0
+    },
+    "gddId": "RP-09",
+    "phase": "disaster",
+    "action": "Cirra turns on magnetic coils to form a field that can bend charged particles.",
+    "illustration": {
+      "en": "Cirra turning on the magnetic coils."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 12,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "hazard": "solar-particle-event",
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 10,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -6,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Radiation Shielding +16."
+    },
+    "costText": {
+      "en": "Cost: Power −12, or −6 with Cirra. Recommended: Cirra. Duration: 1 cycle. Cirra gives an extra +4 Power."
+    },
+    "limitation": {
+      "en": "Active magnetic shielding is still an experimental concept."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-shelter-in-core-room",
+    "category": "repair",
+    "title": {
+      "en": "Shelter in the Core Room"
+    },
+    "description": {
+      "en": "Orion astronauts can use shelves and supply bags to build a shelter in the middle of the spacecraft."
+    },
+    "artKey": "fix/shelter-in-core-room",
+    "fact": {
+      "dataset": "Artemis I / Orion storm shelter",
+      "sourceName": "NASA Artemis I – Radiation Measurements",
+      "sourceUrl": "https://www.nasa.gov/missions/artemis/artemis-1/artemis-i-radiation-measurements-validate-orion-safety-for-astronauts/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 13,
+      "food": 0
+    },
+    "gddId": "RP-10",
+    "phase": "disaster",
+    "action": "The whole crew gathers in a central room surrounded by supply racks and equipment.",
+    "illustration": {
+      "en": "The whole crew gathered in the core room."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [],
+      "scope": "crew"
+    },
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "all",
+        "from": [
+          "stressed"
+        ],
+        "to": "ready"
+      }
+    ],
+    "hazard": "solar-particle-event",
+    "effectText": {
+      "en": "Radiation Shielding +13 and removes the Stressed condition from the crew. The whole crew is locked for 1 cycle."
+    },
+    "costText": {
+      "en": "Cost: no Power or Water Ration. Assignment: whole crew automatically. Duration: 1 cycle."
+    },
+    "limitation": {
+      "en": "Activity outside the habitat stops during the peak of the proton flow."
+    },
+    "primaryMeter": "shielding",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-airlock-epoxy-patch",
+    "category": "repair",
+    "title": {
+      "en": "Airlock Epoxy Patch"
+    },
+    "description": {
+      "en": "Ultrasonic sensors can help find the sound of tiny leaks at joints."
+    },
+    "artKey": "fix/airlock-epoxy-patch",
+    "fact": {
+      "dataset": "Curiosity REMS",
+      "sourceName": "Curiosity REMS – Mars Pressure Data",
+      "sourceUrl": "https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/curiosity/rems_pressure.html"
+    },
+    "effects": {
+      "lifeSupport": 15,
+      "power": -2,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RP-11",
+    "phase": "disaster",
+    "action": "Toria looks for tiny cracks in the gasket and patches them so air doesn't leak out of the habitat.",
+    "illustration": {
+      "en": "Toria patching an airlock joint."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 2,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "hazard": "airlock-leak",
+    "cancelsAftermath": true,
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 5,
+          "power": 0,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +15 and the Stage 3 aftermath is cancelled."
+    },
+    "costText": {
+      "en": "Cost: Power −2. Recommended: Toria. Duration: 2 cycles, or 1 with Toria. Toria raises the recovery to +20 Life Support."
+    },
+    "limitation": {
+      "en": "An epoxy patch needs time to cure before the airlock is used again."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-high-temperature-moxie-cycle",
+    "category": "repair",
+    "title": {
+      "en": "High-Temperature MOXIE Cycle"
+    },
+    "description": {
+      "en": "MOXIE proved that oxygen can be made from Mars' atmosphere."
+    },
+    "artKey": "fix/high-temperature-moxie-cycle",
+    "fact": {
+      "dataset": "MOXIE (Perseverance)",
+      "sourceName": "Perseverance MOXIE – NASA Mission Report",
+      "sourceUrl": "https://www.nasa.gov/missions/mars-2020-perseverance/perseverance-rover/nasas-oxygen-generating-experiment-moxie-completes-mars-mission/"
+    },
+    "effects": {
+      "lifeSupport": 16,
+      "power": -12,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RP-12",
+    "phase": "disaster",
+    "action": "Cirra runs MOXIE at high temperature to make oxygen from Mars carbon dioxide.",
+    "illustration": {
+      "en": "Cirra turning on a MOXIE unit."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 12,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "one",
+        "from": [
+          "tired"
+        ],
+        "to": "ready"
+      }
+    ],
+    "hazard": "airlock-leak",
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 10,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -6,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +16 and one Tired astronaut becomes Ready again."
+    },
+    "costText": {
+      "en": "Cost: Power −12, or −6 with Cirra. Recommended: Cirra. Duration: 1 cycle. Cirra gives an extra +4 Power."
+    },
+    "limitation": {
+      "en": "A human base needs an oxygen system far larger than the MOXIE demonstrator."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-emergency-zeolite-bed-heating",
+    "category": "repair",
+    "title": {
+      "en": "Emergency CO₂ Zeolite Bed Heating"
+    },
+    "description": {
+      "en": "Zeolite mineral works like a sponge that catches carbon dioxide from the cabin air."
+    },
+    "artKey": "fix/emergency-zeolite-bed-heating",
+    "fact": {
+      "dataset": "OSDR EDA / ISS CDRA",
+      "sourceName": "NASA OSDR Environmental Data App",
+      "sourceUrl": "https://visualization.osdr.nasa.gov/eda/"
+    },
+    "effects": {
+      "lifeSupport": 12,
+      "power": -6,
+      "shielding": 0,
+      "food": 0
+    },
+    "gddId": "RP-13",
+    "phase": "disaster",
+    "action": "The system heats the zeolite tubes to release the trapped carbon dioxide and restart the scrubber.",
+    "illustration": {
+      "en": "Zeolite tubes giving off steam as they heat."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 6,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 0
+    },
+    "assignment": {
+      "required": false,
+      "recommended": []
+    },
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "upTo2",
+        "from": [
+          "tired"
+        ],
+        "to": "ready"
+      }
+    ],
+    "hazard": "airlock-leak",
+    "effectText": {
+      "en": "Life Support +12 and removes the Tired condition from two affected astronauts."
+    },
+    "costText": {
+      "en": "Cost: Power −6. No astronaut needed. Duration: 0 cycles."
+    },
+    "limitation": {
+      "en": "Heating for regeneration needs extra electricity."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-solid-oxygen-candle-ignition",
+    "category": "repair",
+    "title": {
+      "en": "Light the Solid Oxygen Candle"
+    },
+    "description": {
+      "en": "Space stations carry chemical devices that can release oxygen when the main systems fail."
+    },
+    "artKey": "fix/solid-oxygen-candle-ignition",
+    "fact": {
+      "dataset": "ISS ECLSS (SFOG)",
+      "sourceName": "NASA ECLSS – Environmental Control and Life Support",
+      "sourceUrl": "https://www.nasa.gov/reference/environmental-control-and-life-support-systems-eclss/"
+    },
+    "effects": {
+      "lifeSupport": 14,
+      "power": 0,
+      "shielding": 0,
+      "food": -3
+    },
+    "gddId": "RP-14",
+    "phase": "disaster",
+    "action": "Corin activates a chemical canister that releases oxygen without using electricity.",
+    "illustration": {
+      "en": "Corin watching an oxygen-generating canister."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 3,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin"
+      ]
+    },
+    "hazard": "airlock-leak",
+    "effectText": {
+      "en": "Life Support +14."
+    },
+    "costText": {
+      "en": "Cost: Food System −3. Recommended: Corin. Duration: 1 cycle. Corin has no Anxiety risk when playing this card alone."
+    },
+    "limitation": {
+      "en": "The device is single-use and gives off heat while it works."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-greenhouse-bioscrubber-ventilation",
+    "category": "repair",
+    "title": {
+      "en": "Greenhouse Bioscrubber Ventilation"
+    },
+    "description": {
+      "en": "Plants use carbon dioxide and release oxygen when they do photosynthesis."
+    },
+    "artKey": "fix/greenhouse-bioscrubber-ventilation",
+    "fact": {
+      "dataset": "Veggie OSD-267",
+      "sourceName": "NASA OSDR – Study OSD-267",
+      "sourceUrl": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-267"
+    },
+    "effects": {
+      "lifeSupport": 15,
+      "power": 0,
+      "shielding": 0,
+      "food": -6
+    },
+    "gddId": "RP-15",
+    "phase": "disaster",
+    "action": "Sylvan opens the air ducts to the garden so the plants help absorb some of the cabin CO₂.",
+    "illustration": {
+      "en": "Sylvan opening a vent to the garden."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 6,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan"
+      ]
+    },
+    "statusEffects": [
+      {
+        "op": "cure",
+        "target": "one",
+        "from": [
+          "tired"
+        ],
+        "to": "ready"
+      }
+    ],
+    "hazard": "airlock-leak",
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 3
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": -3,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Life Support +15 and one Tired astronaut becomes Ready again."
+    },
+    "costText": {
+      "en": "Cost: Food System −6, or −3 with Sylvan. Recommended: Sylvan. Duration: 1 cycle. Sylvan reduces the Food System impact to −3."
+    },
+    "limitation": {
+      "en": "A small garden only absorbs a small part of the CO₂ the whole crew makes."
+    },
+    "primaryMeter": "lifeSupport",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-rotary-brine-valve-repair",
+    "category": "repair",
+    "title": {
+      "en": "Rotary Brine Processor Valve Repair"
+    },
+    "description": {
+      "en": "A water recycling system needs pumps and valves that work well."
+    },
+    "artKey": "fix/rotary-brine-valve-repair",
+    "fact": {
+      "dataset": "ISS ECLSS",
+      "sourceName": "NASA ISS – Water Recovery Milestone",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -3,
+      "shielding": 0,
+      "food": 14
+    },
+    "gddId": "RP-16",
+    "phase": "disaster",
+    "action": "Toria repairs the pumps and valves of the water processing system so water flows normally again.",
+    "illustration": {
+      "en": "Toria replacing a valve on a water pump."
+    },
+    "rations": {
+      "food": 0,
+      "water": 2
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 3,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 2,
+      "byAstronaut": {
+        "toria": 1
+      }
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "toria"
+      ]
+    },
+    "hazard": "water-plant-circuit-failure",
+    "bonus": [
+      {
+        "astronauts": [
+          "toria"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 5
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Food System +14 and Water Ration +2."
+    },
+    "costText": {
+      "en": "Cost: Power −3. Recommended: Toria. Duration: 2 cycles, or 1 with Toria. Toria raises Food System to +19 and still gives +2 Water Ration."
+    },
+    "limitation": {
+      "en": "Fixing ISS equipment in real conditions needs special procedures and handling tools."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-hydroponic-capillary-drip-bypass",
+    "category": "repair",
+    "title": {
+      "en": "Hydroponic Capillary Drip Bypass"
+    },
+    "description": {
+      "en": "Small wicks can pull water toward plant roots without a high-pressure pump."
+    },
+    "artKey": "fix/hydroponic-capillary-drip-bypass",
+    "fact": {
+      "dataset": "Veggie OSD-269",
+      "sourceName": "NASA OSDR – Study OSD-269",
+      "sourceUrl": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-269"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -5,
+      "shielding": 0,
+      "food": 16
+    },
+    "gddId": "RP-17",
+    "phase": "disaster",
+    "action": "Sylvan connects capillary tubes straight to the growing medium so the roots get water again.",
+    "illustration": {
+      "en": "Sylvan connecting a capillary pipe to the growing medium."
+    },
+    "rations": {
+      "food": 0,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 5,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "sylvan"
+      ]
+    },
+    "hazard": "water-plant-circuit-failure",
+    "cancelsAftermath": true,
+    "bonus": [
+      {
+        "astronauts": [
+          "sylvan"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 3
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Food System +16 and the Stage 3 aftermath is cancelled, so the harvest can run tonight."
+    },
+    "costText": {
+      "en": "Cost: Power −5. Recommended: Sylvan. Duration: 1 cycle. Sylvan raises the result to +19 Food System."
+    },
+    "limitation": {
+      "en": "A capillary system works best for certain plants, including leafy vegetables."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-ultrasonic-scale-cleaning",
+    "category": "repair",
+    "title": {
+      "en": "Ultrasonic Scale Cleaning"
+    },
+    "description": {
+      "en": "Mineral scale can clog a water separator. System maintenance helps keep water recovery up."
+    },
+    "artKey": "fix/ultrasonic-scale-cleaning",
+    "fact": {
+      "dataset": "ISS ECLSS",
+      "sourceName": "NASA ECLSS – Environmental Control and Life Support",
+      "sourceUrl": "https://www.nasa.gov/reference/environmental-control-and-life-support-systems-eclss/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -10,
+      "shielding": 0,
+      "food": 14
+    },
+    "gddId": "RP-18",
+    "phase": "disaster",
+    "action": "Cirra sends ultrasonic waves to loosen mineral scale that blocks the water lines.",
+    "illustration": {
+      "en": "Cirra fitting an ultrasonic transducer onto a pipe."
+    },
+    "rations": {
+      "food": 0,
+      "water": 1
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 10,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "cirra"
+      ]
+    },
+    "hazard": "water-plant-circuit-failure",
+    "bonus": [
+      {
+        "astronauts": [
+          "cirra"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 9,
+          "shielding": 0,
+          "food": 0
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "cost": {
+          "lifeSupport": 0,
+          "power": -5,
+          "shielding": 0,
+          "food": 0,
+          "foodRation": 0,
+          "waterRation": 0
+        },
+        "fromTrait": true
+      }
+    ],
+    "effectText": {
+      "en": "Food System +14 and Water Ration +1."
+    },
+    "costText": {
+      "en": "Cost: Power −10, or −5 with Cirra. Recommended: Cirra. Duration: 1 cycle. Cirra gives +4 Power."
+    },
+    "limitation": {
+      "en": "Ultrasonic cleaning on the card is a mechanical adaptation for gameplay."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-waste-water-distillation-medical",
+    "category": "repair",
+    "title": {
+      "en": "Distill Waste Water for Medical Use"
+    },
+    "description": {
+      "en": "Recycled water on the space station is tested so it is safe to use again."
+    },
+    "artKey": "fix/waste-water-distillation-medical",
+    "fact": {
+      "dataset": "ISS ECLSS",
+      "sourceName": "NASA ISS – Water Recovery Milestone",
+      "sourceUrl": "https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -4,
+      "shielding": 0,
+      "food": 8
+    },
+    "gddId": "RP-19",
+    "phase": "disaster",
+    "action": "Corin distills used water through heating and condensation to make water that can be reused.",
+    "illustration": {
+      "en": "Corin operating a distillation device."
+    },
+    "rations": {
+      "food": 0,
+      "water": 3
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 4,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 0,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 1
+    },
+    "assignment": {
+      "required": true,
+      "recommended": [
+        "corin"
+      ]
+    },
+    "hazard": "water-plant-circuit-failure",
+    "bonus": [
+      {
+        "astronauts": [
+          "corin"
+        ],
+        "effects": {
+          "lifeSupport": 0,
+          "power": 0,
+          "shielding": 0,
+          "food": 4
+        },
+        "rations": {
+          "food": 0,
+          "water": 0
+        },
+        "fromTrait": false
+      }
+    ],
+    "effectText": {
+      "en": "Water Ration +3 and Food System +8."
+    },
+    "costText": {
+      "en": "Cost: Power −4. Recommended: Corin. Duration: 1 cycle. Corin raises Food System to +12 and has no solo Anxiety risk."
+    },
+    "limitation": {
+      "en": "Batch distillation needs a lot of energy for every liter of water."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  },
+  {
+    "id": "fix-nutrient-gel-root-flush",
+    "category": "repair",
+    "title": {
+      "en": "Nutrient Gel and Root Flush"
+    },
+    "description": {
+      "en": "Plants need nitrogen, phosphorus and potassium to grow."
+    },
+    "artKey": "fix/nutrient-gel-root-flush",
+    "fact": {
+      "dataset": "Veggie OSD-267",
+      "sourceName": "NASA OSDR – Study OSD-267",
+      "sourceUrl": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-267"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 15
+    },
+    "gddId": "RP-20",
+    "phase": "disaster",
+    "action": "The crew mixes N-P-K nutrient gel and gives it straight to the growing medium.",
+    "illustration": {
+      "en": "An astronaut pouring nutrient gel into a root container."
+    },
+    "rations": {
+      "food": -2,
+      "water": 0
+    },
+    "cost": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": 0,
+      "food": 0,
+      "foodRation": 2,
+      "waterRation": 0
+    },
+    "duration": {
+      "cycles": 0
+    },
+    "assignment": {
+      "required": false,
+      "recommended": []
+    },
+    "hazard": "water-plant-circuit-failure",
+    "effectText": {
+      "en": "Food System +15."
+    },
+    "costText": {
+      "en": "Cost: Food Ration −2. No Power or astronaut needed. Duration: 0 cycles."
+    },
+    "limitation": {
+      "en": "Two Food Rations are traded for a Food System boost as a gameplay abstraction."
+    },
+    "primaryMeter": "food",
+    "relatedMeters": []
+  }
+]
