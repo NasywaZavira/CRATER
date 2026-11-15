@@ -1,62 +1,121 @@
-/**
- * DEV HARNESS sementara untuk Akbar (App.tsx sebenarnya milik Alip).
- * Fungsinya: menguji OutpostScene + bridge dengan fixture, tanpa menunggu engine A.
- * Jangan di-merge ke main; pakai hanya di branch feat/phaser-akbar.
- */
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SceneBridge } from './bridge/SceneBridge';
-import { sceneSnapshotFixture } from './contracts/fixtures';
-import { CYCLES, type Cycle, type SceneSnapshot } from './contracts/types';
+import { sceneSnapshotFixture } from './bridge/fixtures';
+import type { Cycle, SceneSnapshot } from './bridge/scene-snapshot';
+import { MissionCinematic } from './mission/MissionCinematic';
+import type { MissionEnding } from './mission/ending';
+import './styles/outpost.css';
+
+/**
+ * DEMO SCENE PHASER (bagian Akbar). ZIP ini belum memiliki engine/kartu/meter.
+ * Intro asli terpasang; ending tersedia untuk preview melalui Shift+1..5 atau ?ending=...
+ * Saat engine diintegrasikan, panggil resolveMissionEnding(state) untuk pemicu otomatis.
+ *
+ * Kontrol asli dipertahankan: 1..4 kru tersedia/tidak, P/S/E/M fase, R reset snapshot.
+ */
+const CREW_SHORTCUT: Record<string, string> = {
+  '1': 'toria',
+  '2': 'sylvan',
+  '3': 'corin',
+  '4': 'cirra',
+};
+const PHASE_SHORTCUT: Record<string, Cycle> = {
+  p: 'morning',
+  s: 'afternoon',
+  e: 'evening',
+  m: 'night',
+};
+
+const ENDING_PREVIEW: Record<string, MissionEnding> = {
+  Digit1: 'lifeSupport',
+  Digit2: 'shielding',
+  Digit3: 'power',
+  Digit4: 'food',
+  Digit5: 'success',
+};
+
+function endingFromUrl(): MissionEnding | null {
+  const value = new URLSearchParams(window.location.search).get('ending');
+  if (value === 'lifeSupport' || value === 'shielding' || value === 'power' || value === 'food' || value === 'success') {
+    return value;
+  }
+  return null;
+}
 
 export default function App() {
-  const [day, setDay] = useState(1);
-  const [cycle, setCycle] = useState<Cycle>('morning');
-  const [mounted, setMounted] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [previewEnding] = useState<MissionEnding | null>(endingFromUrl);
+  const [stage, setStage] = useState<'intro' | 'game' | 'ending'>(() => previewEnding ? 'ending' : 'intro');
+  const [ending, setEnding] = useState<MissionEnding>(previewEnding ?? 'success');
+  const [snapshot, setSnapshot] = useState<SceneSnapshot>(sceneSnapshotFixture);
+  const [sceneError, setSceneError] = useState<string | null>(null);
 
-  const snapshot = useMemo<SceneSnapshot>(
-    () => ({ ...sceneSnapshotFixture, day, cycle, theme: cycle }),
-    [day, cycle],
-  );
+  useEffect(() => {
+    if (stage !== 'game') return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
 
-  const btn = 'min-h-11 rounded bg-stone-700 px-3 text-base active:bg-stone-600';
+      // Hanya preview ending: tidak memalsukan data engine yang belum ada di ZIP ini.
+      if (event.shiftKey && ENDING_PREVIEW[event.code]) {
+        setEnding(ENDING_PREVIEW[event.code]);
+        setStage('ending');
+        return;
+      }
+      if (event.shiftKey) return;
+
+      const key = event.key.toLowerCase();
+      const crewId = CREW_SHORTCUT[key];
+      if (crewId) {
+        setSnapshot(previous => ({
+          ...previous,
+          crew: previous.crew.map(crew =>
+            crew.id === crewId ? { ...crew, available: !crew.available } : crew,
+          ),
+        }));
+      } else if (PHASE_SHORTCUT[key]) {
+        setSnapshot(previous => ({ ...previous, cycle: PHASE_SHORTCUT[key] }));
+      } else if (key === 'r') {
+        setSnapshot(sceneSnapshotFixture);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [stage]);
+
+  const restart = () => {
+    setSnapshot(sceneSnapshotFixture);
+    setSceneError(null);
+    setStage('intro');
+  };
+
+  if (stage === 'intro') {
+    return <MissionCinematic key="mission-intro" mode="intro" onFinish={() => setStage('game')} />;
+  }
+  if (stage === 'ending') {
+    return (
+      <MissionCinematic
+        key={`mission-ending-${ending}`}
+        mode="ending"
+        result={ending}
+        threshold={0}
+        onFinish={restart}
+      />
+    );
+  }
 
   return (
-    <div className="mx-auto flex h-full max-w-3xl flex-col gap-2 p-2">
-      <div className="relative min-h-0 flex-1 overflow-hidden rounded border border-stone-700">
-        {mounted && !error && (
-          <SceneBridge
-            className="absolute inset-0"
-            snapshot={snapshot}
-            onSceneError={(m) => setError(m)}
-          />
-        )}
-        {(error || !mounted) && (
-          <div className="p-4 text-base" role="status">
-            {error ? `Phaser gagal: ${error}. Fallback HTML:` : 'Scene unmounted (tes cleanup).'}
-            <ul className="mt-2 list-disc pl-6">
-              {snapshot.crew.map((c) => (
-                <li key={c.id}>{c.role}</li>
-              ))}
-            </ul>
-          </div>
+    <main className="outpost-desktop" aria-label="CRATER Mars Outpost scene">
+      <div className="outpost-stage">
+        <SceneBridge
+          snapshot={snapshot}
+          className="outpost-phaser"
+          onSceneError={setSceneError}
+        />
+        {sceneError && (
+          <p role="alert" className="outpost-error">
+            Scene gagal dibuka: {sceneError}
+          </p>
         )}
       </div>
-
-      <div className="flex flex-wrap items-center gap-2">
-        <button className={btn} onClick={() => setDay((d) => Math.max(1, d - 1))}>Day −</button>
-        <span className="px-1">Day {day}/8</span>
-        <button className={btn} onClick={() => setDay((d) => Math.min(8, d + 1))}>Day +</button>
-        {CYCLES.map((c) => (
-          <button key={c} className={`${btn} ${c === cycle ? 'ring-2 ring-amber-400' : ''}`} onClick={() => setCycle(c)}>
-            {c}
-          </button>
-        ))}
-      </div>
-      <div className="flex flex-wrap gap-2">
-        <button className={btn} onClick={() => setMounted((m) => !m)}>{mounted ? 'Unmount' : 'Remount'} scene</button>
-        <button className={btn} onClick={() => { setError(null); setMounted(true); }}>Reset error</button>
-      </div>
-    </div>
+    </main>
   );
 }

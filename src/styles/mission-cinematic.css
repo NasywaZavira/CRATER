@@ -1,0 +1,133 @@
+/* Mission Briefing & Mission Report. Terisolasi dari CSS scene Phaser. */
+.mission-cinematic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100dvh;
+  background: #040410;
+  color: #fff;
+}
+.mission-cinematic * { box-sizing: border-box; }
+.cinematic-screen {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: min(100vw, 177.7778dvh);
+  max-height: 100dvh;
+  aspect-ratio: 16 / 9;
+  container-type: inline-size;
+  font-family: 'Courier New', Courier, monospace;
+  background: radial-gradient(ellipse at 49% 57%, #0b0b25 0%, #07091d 55%, #07081a 100%);
+}
+.cinematic-nebula {
+  position: absolute;
+  inset: -10%;
+  z-index: -1;
+  opacity: .8;
+  background:
+    radial-gradient(ellipse at 9% 92%, #43426e36, transparent 45%),
+    radial-gradient(ellipse at 92% 14%, #33376637, transparent 44%),
+    radial-gradient(ellipse at 60% 66%, #25265035, transparent 52%);
+}
+.cinematic-stars { position: absolute; inset: 0; pointer-events: none; }
+.cinematic-star {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 4px 1px #ffffff63;
+  animation: cinematic-twinkle 3.5s ease-in-out infinite alternate;
+}
+@keyframes cinematic-twinkle { from { filter: brightness(.65) } to { filter: brightness(1.65) } }
+@keyframes cinematic-enter { from { opacity: 0 } to { opacity: 1 } }
+.cinematic-blackout { position: absolute; inset: 0; z-index: 4; background: #000; animation: cinematic-enter .25s ease both; }
+.cinematic-splash {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0 5%;
+  color: #2815fc;
+  font-size: clamp(28px, 4.7cqw, 80px);
+  font-weight: 400;
+  letter-spacing: .01em;
+  text-align: center;
+  animation: cinematic-enter .7s ease both;
+}
+.cinematic-title {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5cqw;
+  padding: 5%;
+  text-align: center;
+  animation: cinematic-enter .7s ease both;
+}
+.cinematic-title h1 { font: 400 8cqw 'Courier New', monospace; letter-spacing: .17em; color: #f2f2ff; margin: 0; }
+.cinematic-title p { margin: 0; max-width: 85%; font-size: 1.6cqw; line-height: 1.5; color: #e7e6f5; }
+.cinematic-dialogue {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  align-items: center;
+  column-gap: 6.5%;
+  padding: 0 13% 0 16.5%;
+  animation: cinematic-enter .65s ease both;
+}
+.cinematic-portrait-block { width: 100%; }
+.cinematic-portrait-block img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  image-rendering: auto;
+}
+.cinematic-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: 24cqw;
+}
+.cinematic-message p {
+  margin: 0;
+  color: #fff;
+  font-size: 2.05cqw;
+  line-height: 1.48;
+  font-weight: 400;
+  overflow-wrap: break-word;
+  animation: cinematic-enter .25s ease both;
+}
+.cinematic-dialogue-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1.1cqw; margin-top: 2.8cqw; }
+.cinematic-dialogue-bottom > span { color: #bac1e5; font-size: 1cqw; white-space: nowrap; }
+.cinematic-dialogue-bottom button {
+  border: 1px solid #d9def8;
+  padding: .8cqw 1.35cqw;
+  background: #19203fbf;
+  color: #fff;
+  font: inherit;
+  font-size: 1.08cqw;
+  letter-spacing: .05em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.cinematic-dialogue-bottom button:hover, .cinematic-dialogue-bottom button:focus-visible { background: #3b4c86; outline: 2px solid #fff; outline-offset: 2px; }
+@media (max-width: 650px) {
+  .cinematic-dialogue { padding: 0 6.5%; grid-template-columns: 24% 1fr; column-gap: 4.5%; }
+  .cinematic-message p { font-size: 2.4cqw; line-height: 1.37; }
+  .cinematic-dialogue-bottom button { font-size: 1.55cqw; padding: 1cqw 1.4cqw; }
+  .cinematic-dialogue-bottom > span { font-size: 1.5cqw; }
+  .cinematic-message { min-height: 30cqw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-star, .cinematic-splash, .cinematic-title, .cinematic-dialogue, .cinematic-message p { animation: none; }
+}
