@@ -1,0 +1,478 @@
+[
+  {
+    "id": "ops-clean-air-filter",
+    "category": "operations",
+    "title": {
+      "en": "Clean Air Filter"
+    },
+    "description": {
+      "en": "About 95% of Mars' air is carbon dioxide, which astronauts can't breathe. Oxygen has to be made or recycled."
+    },
+    "artKey": "ops/clean-air-filter",
+    "fact": {
+      "dataset": "Mars atmosphere / MOXIE paper",
+      "sourceName": "Hoffman et al., Science Advances (2022), MOXIE first-year results",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9432831"
+    },
+    "effects": {
+      "lifeSupport": 10,
+      "power": -10,
+      "shielding": 0,
+      "food": 0
+    }
+  },
+  {
+    "id": "ops-power-saving",
+    "category": "operations",
+    "title": {
+      "en": "Power-Saving Mode"
+    },
+    "description": {
+      "en": "During a big dust storm in 2022, NASA switched off InSight's seismometer to save power, then turned it back on when the sky cleared."
+    },
+    "artKey": "ops/power-saving",
+    "fact": {
+      "dataset": "InSight mission",
+      "sourceName": "NASA InSight mission (reported by Astronomy.com, Dec 2022)",
+      "sourceUrl": null
+    },
+    "effects": {
+      "lifeSupport": -5,
+      "power": 10,
+      "shielding": 0,
+      "food": 0
+    }
+  },
+  {
+    "id": "ops-plan-meals",
+    "category": "operations",
+    "title": {
+      "en": "Plan the Meals"
+    },
+    "description": {
+      "en": "In August 2015, astronauts on the ISS became the first to eat vegetables grown in space: red romaine lettuce."
+    },
+    "artKey": "ops/plan-meals",
+    "fact": {
+      "dataset": "Veggie / ISS plant research",
+      "sourceName": "NASA, Veggie plant growth system",
+      "sourceUrl": null
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -5,
+      "shielding": 0,
+      "food": 10
+    }
+  },
+  {
+    "id": "ops-wash-soil",
+    "category": "operations",
+    "title": {
+      "en": "Wash the Martian Soil"
+    },
+    "description": {
+      "en": "NASA's Phoenix lander found a salt called perchlorate in Mars soil. It can be harmful in large amounts, so soil needs checking before growing food."
+    },
+    "artKey": "ops/wash-soil",
+    "fact": {
+      "dataset": "Phoenix lander",
+      "sourceName": "NASA/JPL, Phoenix mission results (Science papers, 2009); PBS NewsHour (Nov 2008)",
+      "sourceUrl": "https://www.jpl.nasa.gov/news/nasa-phoenix-results-point-to-martian-climate-cycles/"
+    },
+    "effects": {
+      "lifeSupport": -5,
+      "power": 0,
+      "shielding": 0,
+      "food": 10
+    }
+  },
+  {
+    "id": "ops-run-heaters",
+    "category": "operations",
+    "title": {
+      "en": "Run the Heaters"
+    },
+    "description": {
+      "en": "On the Martian equator at noon, it would feel like spring at your feet but winter at your head, because the thin air holds little heat."
+    },
+    "artKey": "ops/run-heaters",
+    "fact": {
+      "dataset": "Mars facts",
+      "sourceName": "NASA Science, Mars Facts",
+      "sourceUrl": "https://science.nasa.gov/mars/facts/"
+    },
+    "effects": {
+      "lifeSupport": 10,
+      "power": -15,
+      "shielding": 0,
+      "food": 0
+    }
+  },
+  {
+    "id": "con-solar-array",
+    "category": "construction",
+    "title": {
+      "en": "Solar Array Upgrade"
+    },
+    "description": {
+      "en": "NASA's InSight lander ran on solar panels. It was built for 2 years but worked for over 4, until dust piled up on its panels."
+    },
+    "artKey": "con/solar-array",
+    "fact": {
+      "dataset": "InSight mission",
+      "sourceName": "NASA InSight mission end announcement, 21 Dec 2022",
+      "sourceUrl": null
+    },
+    "effects": {
+      "lifeSupport": -5,
+      "power": 0,
+      "shielding": 0,
+      "food": -10
+    },
+    "delayed": {
+      "afterSols": 1,
+      "effects": {
+        "lifeSupport": 0,
+        "power": 20,
+        "shielding": 0,
+        "food": 0
+      }
+    }
+  },
+  {
+    "id": "con-regolith-shield",
+    "category": "construction",
+    "title": {
+      "en": "Regolith Shield"
+    },
+    "description": {
+      "en": "Curiosity measured radiation on Mars: about 0.67 millisieverts a day on the surface, similar to what astronauts get on the ISS."
+    },
+    "artKey": "con/regolith-shield",
+    "fact": {
+      "dataset": "MSL/RAD (Curiosity)",
+      "sourceName": "Hassler et al., Science (2013), doi:10.1126/science.1244797",
+      "sourceUrl": null
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -10,
+      "shielding": 20,
+      "food": -5
+    }
+  },
+  {
+    "id": "con-greenhouse",
+    "category": "construction",
+    "title": {
+      "en": "Plant Garden"
+    },
+    "description": {
+      "en": "Space chile peppers grew about 2 weeks slower than on Earth. The crew ate the first harvest on 29 October 2021."
+    },
+    "artKey": "con/greenhouse",
+    "fact": {
+      "dataset": "Plant Habitat-04 / ISS",
+      "sourceName": "NASA, \"NASA's Second Pepper Harvest Sets Record on Space Station\"",
+      "sourceUrl": "https://www.nasa.gov/missions/station/nasas-second-pepper-harvest-sets-record-on-space-station"
+    },
+    "effects": {
+      "lifeSupport": -5,
+      "power": -10,
+      "shielding": 0,
+      "food": 0
+    },
+    "delayed": {
+      "afterSols": 1,
+      "effects": {
+        "lifeSupport": 0,
+        "power": 0,
+        "shielding": 0,
+        "food": 20
+      }
+    }
+  },
+  {
+    "id": "con-small-reactor",
+    "category": "construction",
+    "title": {
+      "en": "Small Fission Reactor"
+    },
+    "description": {
+      "en": "NASA tested a small nuclear reactor called Kilopower. It can make up to 10 kilowatts for at least 10 years, and four could power an outpost."
+    },
+    "artKey": "con/small-reactor",
+    "fact": {
+      "dataset": "Kilopower / KRUSTY",
+      "sourceName": "NASA release, \"Demonstration Proves Nuclear Fission System Can Provide Space Exploration Power\" (3 May 2018)",
+      "sourceUrl": "https://nasa.gov/news-release/demonstration-proves-nuclear-fission-system-can-provide-space-exploration-power/"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 0,
+      "shielding": -5,
+      "food": -10
+    },
+    "delayed": {
+      "afterSols": 1,
+      "effects": {
+        "lifeSupport": 0,
+        "power": 30,
+        "shielding": 0,
+        "food": 0
+      }
+    }
+  },
+  {
+    "id": "con-ice-mining",
+    "category": "construction",
+    "title": {
+      "en": "Ice Mining Rig"
+    },
+    "description": {
+      "en": "NASA's Phoenix lander landed near the Martian north pole in 2008 and confirmed there is water ice just under the soil."
+    },
+    "artKey": "con/ice-mining",
+    "fact": {
+      "dataset": "Phoenix lander",
+      "sourceName": "NASA/JPL, Phoenix mission update (Sep 2008)",
+      "sourceUrl": "https://www.jpl.nasa.gov/blog/2008/9/progress-with-phoenix"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -15,
+      "shielding": 0,
+      "food": -5
+    },
+    "delayed": {
+      "afterSols": 1,
+      "effects": {
+        "lifeSupport": 20,
+        "power": 0,
+        "shielding": 0,
+        "food": 0
+      }
+    }
+  },
+  {
+    "id": "fix-water-pump",
+    "category": "repair",
+    "title": {
+      "en": "Fix Water Pump"
+    },
+    "description": {
+      "en": "The ISS recycles about 98% of its water, including sweat and urine. Each astronaut uses about a gallon a day."
+    },
+    "artKey": "fix/water-pump",
+    "fact": {
+      "dataset": "ISS ECLSS",
+      "sourceName": "NASA ECLSS water recovery release, 20 Jun 2023",
+      "sourceUrl": null
+    },
+    "effects": {
+      "lifeSupport": 15,
+      "power": -5,
+      "shielding": 0,
+      "food": 0
+    }
+  },
+  {
+    "id": "fix-dust-panels",
+    "category": "repair",
+    "title": {
+      "en": "Dust Off Solar Panels"
+    },
+    "description": {
+      "en": "When dust covered InSight's solar panels, NASA trickled dirt from its scoop on windy days so falling grains would sweep dust away."
+    },
+    "artKey": "fix/dust-panels",
+    "fact": {
+      "dataset": "InSight mission",
+      "sourceName": "NASA InSight mission end announcement, 21 Dec 2022",
+      "sourceUrl": null
+    },
+    "effects": {
+      "lifeSupport": -5,
+      "power": 15,
+      "shielding": 0,
+      "food": 0
+    }
+  },
+  {
+    "id": "fix-shield-patch",
+    "category": "repair",
+    "title": {
+      "en": "Patch the Shield"
+    },
+    "description": {
+      "en": "Curiosity's radiation detector once saw a spike on Mars caused by a burst of particles from the Sun."
+    },
+    "artKey": "fix/shield-patch",
+    "fact": {
+      "dataset": "MSL/RAD (Curiosity)",
+      "sourceName": "Hassler et al., Science (2013), doi:10.1126/science.1244797",
+      "sourceUrl": null
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -5,
+      "shielding": 15,
+      "food": -5
+    }
+  },
+  {
+    "id": "fix-co2-scrubber",
+    "category": "repair",
+    "title": {
+      "en": "Fix CO₂ Scrubber"
+    },
+    "description": {
+      "en": "On the ISS, a scrubber removes the carbon dioxide astronauts breathe out. A reactor then turns it and hydrogen into water."
+    },
+    "artKey": "fix/co2-scrubber",
+    "fact": {
+      "dataset": "ISS ECLSS",
+      "sourceName": "NASA Marshall, Environmental Control and Life Support System fact sheet",
+      "sourceUrl": "https://www.nasa.gov/wp-content/uploads/2025/08/g-657270-59-hp-environmental-control-and-life-support-system-eclss.pdf"
+    },
+    "effects": {
+      "lifeSupport": 15,
+      "power": -10,
+      "shielding": 0,
+      "food": 0
+    }
+  },
+  {
+    "id": "fix-grow-lights",
+    "category": "repair",
+    "title": {
+      "en": "Fix Grow Lights"
+    },
+    "description": {
+      "en": "Plants in NASA's Advanced Plant Habitat on the ISS grow under red, blue, green and white LED lights."
+    },
+    "artKey": "fix/grow-lights",
+    "fact": {
+      "dataset": "Advanced Plant Habitat (ISS)",
+      "sourceName": "NASA, \"Astronauts Harvest Radish Crop on International Space Station\" (Dec 2020)",
+      "sourceUrl": "https://www.nasa.gov/feature/astronauts-harvest-radish-crop-on-international-space-station"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -10,
+      "shielding": 0,
+      "food": 15
+    }
+  },
+  {
+    "id": "res-space-weather",
+    "category": "research",
+    "title": {
+      "en": "Read Space Weather Report"
+    },
+    "description": {
+      "en": "NASA's DONKI database tracks solar flares and solar storms, and estimates when a storm cloud may reach planets like Mars."
+    },
+    "artKey": "res/space-weather",
+    "fact": {
+      "dataset": "DONKI",
+      "sourceName": "NASA CCMC, DONKI (Moon-to-Mars Space Weather Analysis Office)",
+      "sourceUrl": "https://ccmc.gsfc.nasa.gov/tools/DONKI"
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -5,
+      "shielding": 10,
+      "food": 0
+    }
+  },
+  {
+    "id": "res-oxygen-test",
+    "category": "research",
+    "title": {
+      "en": "Test the Oxygen Maker"
+    },
+    "description": {
+      "en": "A tiny machine on Perseverance called MOXIE made 122 grams of oxygen from Mars' air, about what a small dog breathes in 10 hours."
+    },
+    "artKey": "res/oxygen-test",
+    "fact": {
+      "dataset": "MOXIE (Perseverance)",
+      "sourceName": "NASA MOXIE completion release, 6 Sep 2023",
+      "sourceUrl": null
+    },
+    "effects": {
+      "lifeSupport": 15,
+      "power": -15,
+      "shielding": 0,
+      "food": 0
+    }
+  },
+  {
+    "id": "res-solar-storm",
+    "category": "research",
+    "title": {
+      "en": "Track a Solar Storm"
+    },
+    "description": {
+      "en": "In May 2024 a huge solar storm hit Mars. An astronaut next to Curiosity would have received radiation equal to 30 chest X-rays."
+    },
+    "artKey": "res/solar-storm",
+    "fact": {
+      "dataset": "MSL/RAD (Curiosity), DONKI",
+      "sourceName": "NASA/JPL, \"NASA Watches Mars Light Up During Epic Solar Storm\" (10 Jun 2024)",
+      "sourceUrl": null
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": -10,
+      "shielding": 15,
+      "food": 0
+    }
+  },
+  {
+    "id": "res-plant-growth",
+    "category": "research",
+    "title": {
+      "en": "Test Plant Growth"
+    },
+    "description": {
+      "en": "NASA grew radishes on the ISS because they're ready in just 27 days. More than 180 sensors watched them grow."
+    },
+    "artKey": "res/plant-growth",
+    "fact": {
+      "dataset": "Plant Habitat-02 (ISS)",
+      "sourceName": "NASA, \"Astronauts Harvest Radish Crop on International Space Station\" (Dec 2020)",
+      "sourceUrl": "https://www.nasa.gov/feature/astronauts-harvest-radish-crop-on-international-space-station"
+    },
+    "effects": {
+      "lifeSupport": -5,
+      "power": 0,
+      "shielding": 0,
+      "food": 10
+    }
+  },
+  {
+    "id": "res-dust-storm",
+    "category": "research",
+    "title": {
+      "en": "Study the Dust Storm"
+    },
+    "description": {
+      "en": "Opportunity was built for 90 days but worked over 14 years, until a planet-wide dust storm in 2018 blocked the Sun."
+    },
+    "artKey": "res/dust-storm",
+    "fact": {
+      "dataset": "Opportunity rover",
+      "sourceName": "NASA, Opportunity mission end announcement (13 Feb 2019)",
+      "sourceUrl": null
+    },
+    "effects": {
+      "lifeSupport": 0,
+      "power": 15,
+      "shielding": 0,
+      "food": -5
+    }
+  }
+]
