@@ -1,122 +1,33 @@
-import type { Card, Cycle, DisasterId } from '../types';
-import { isCardAllowedInCycle } from './cycle';
+import type { CardCategory, CardDefinition, Cycle } from '../types';
+import { CYCLE_CATEGORIES } from './cycle';
 import { DrawError } from './errors';
 import { nextRandom } from './rng';
-
-export interface DrawHandParams {
-  cards: readonly Card[];
-  cycle: Cycle;
-  handSize: number;
-  rngState: number;
-}
-
-export interface DrawHandResult {
-  hand: Card[];
-  rngState: number;
-}
-
-export function eligibleCards(
-  cards: readonly Card[],
-  cycle: Cycle,
-): Card[] {
-  const seen = new Set<string>();
-
-  return cards
-    .filter(card => {
-      if (seen.has(card.id)) return false;
-      if (!isCardAllowedInCycle(card, cycle)) return false;
-      seen.add(card.id);
-      return true;
-    })
-    .slice()
-    .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-}
-
-function shuffleTake(
-  pool: readonly Card[],
-  count: number,
-  rngState: number,
-): DrawHandResult {
-  if (!Number.isInteger(count) || count < 0) {
-    throw new RangeError(
-      `count must be a non-negative integer, received ${count}.`,
-    );
-  }
-
-  const working = pool.slice();
+export interface DrawResult { hand: CardDefinition[]; rngState: number }
+/** Kartu unik dalam satu penawaran, dapat muncul kembali pada Sol lain. */
+export function drawFromCategory(
+  cards: readonly CardDefinition[], category: CardCategory, count: number, rngState: number,
+  cycle: Cycle = 'morning',
+): DrawResult {
+  const pool = cards.filter(c => c.category === category).slice().sort((a, b) => a.id.localeCompare(b.id));
+  if (!Number.isInteger(count) || count < 0) throw new RangeError('Card count must be non-negative integer');
+  if (pool.length < count) throw new DrawError(cycle, count, pool.length);
   let state = rngState >>> 0;
-
-  for (let i = 0; i < count; i += 1) {
+  for (let i = 0; i < count; i++) {
     const roll = nextRandom(state);
     state = roll.rngState;
-
-    const j = i + Math.floor(roll.value * (working.length - i));
-    const tmp = working[i];
-    working[i] = working[j];
-    working[j] = tmp;
+    const j = i + Math.floor(roll.value * (pool.length - i));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
   }
-
-  return { hand: working.slice(0, count), rngState: state };
+  return { hand: pool.slice(0, count), rngState: state };
 }
-
-export function drawHand({
-  cards,
-  cycle,
-  handSize,
-  rngState,
-}: DrawHandParams): DrawHandResult {
-  const pool = eligibleCards(cards, cycle);
-
-  if (pool.length < handSize) {
-    throw new DrawError({
-      cycle,
-      requested: handSize,
-      available: pool.length,
-      eligibleIds: pool.map(card => card.id),
-    });
+export function drawHand(args: { cards: readonly CardDefinition[]; cycle: Cycle; handSize: number; rngState: number }): DrawResult {
+  const category = CYCLE_CATEGORIES[args.cycle][0];
+  if (!category) {
+    if (args.handSize === 0) return { hand: [], rngState: args.rngState };
+    throw new DrawError(args.cycle, args.handSize, 0);
   }
-
-  return shuffleTake(pool, handSize, rngState);
+  return drawFromCategory(args.cards, category, args.handSize, args.rngState, args.cycle);
 }
-
-export interface MorningDrawResult {
-  groups: Card[][];
-  rngState: number;
-}
-
-/** GDD 2.1: sembilan kartu Daily Routine dalam tiga kelompok. */
-export function drawMorningGroups(
-  cards: readonly Card[],
-  groupCount: number,
-  perGroup: number,
-  rngState: number,
-): MorningDrawResult {
-  const total = groupCount * perGroup;
-  const draw = drawHand({
-    cards,
-    cycle: 'morning',
-    handSize: total,
-    rngState,
-  });
-
-  const groups: Card[][] = [];
-  for (let i = 0; i < groupCount; i += 1) {
-    groups.push(draw.hand.slice(i * perGroup, (i + 1) * perGroup));
-  }
-
-  return { groups, rngState: draw.rngState };
-}
-
-export function drawRepairChoices(
-  cards: readonly Card[],
-  disasterId: DisasterId,
-  count: number,
-  rngState: number,
-): DrawHandResult {
-  const pool = cards
-    .filter(card => card.deck === 'repair' && card.disasterId === disasterId)
-    .slice()
-    .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-
-  return shuffleTake(pool, Math.min(count, pool.length), rngState);
+export function drawRepairChoices(cards: readonly CardDefinition[], count: number, rngState: number): DrawResult {
+  return drawFromCategory(cards, 'repair', count, rngState, 'morning');
 }

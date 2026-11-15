@@ -1,24 +1,17 @@
-import type { DisasterId, MeterKey, RationKind } from '../types';
-
-export interface DisasterDamage {
-  meters: Partial<Record<MeterKey, number>>;
-  rations: Partial<Record<RationKind, number>>;
-}
-
-/** GDD §6: angka dampak langsung, dipindahkan dari reducer. */
-export const DISASTER_DAMAGE: Record<DisasterId, DisasterDamage> = {
-  dustStorm: { meters: { power: -20 }, rations: {} },
-  solarParticle: { meters: { shielding: -22 }, rations: {} },
-  airlockLeak: { meters: { lifeSupport: -20 }, rations: {} },
-  waterPlantFailure: {
-    meters: { food: -20 },
-    rations: { water: -2 },
-  },
+import type { DisasterId, MeterEffects } from '../types';
+export const DISASTER_IDS: readonly DisasterId[] = [
+  'dustStorm', 'solarParticle', 'airlockLeak', 'waterPlantFailure',
+];
+export const DISASTER_LABELS: Record<DisasterId, string> = {
+  dustStorm: 'Badai Debu',
+  solarParticle: 'Peristiwa Partikel Surya',
+  airlockLeak: 'Kebocoran Airlock',
+  waterPlantFailure: 'Kerusakan Sirkuit Air dan Tanaman',
 };
-
-/** GDD §3 dan §6: ambang Radiation Shielding untuk SEP. */
-export const SEP_UNWELL_SHIELDING_THRESHOLD = 50;
-export const SEP_FOLLOWUP_SHIELDING_THRESHOLD = 60;
-
-/** GDD §6: panel berdebu mengurangi pemulihan Power malam berikutnya. */
-export const DUST_STORM_POWER_RECOVERY_PENALTY = 5;
+/** Dampak kejadian tetap terpisah dari efek kartu JSON. */
+export const DISASTER_DAMAGE: Record<DisasterId, MeterEffects> = {
+  dustStorm: { lifeSupport: 0, shielding: 0, power: -20, food: 0 },
+  solarParticle: { lifeSupport: 0, shielding: -22, power: 0, food: 0 },
+  airlockLeak: { lifeSupport: -20, shielding: 0, power: 0, food: 0 },
+  waterPlantFailure: { lifeSupport: 0, shielding: 0, power: 0, food: -20 },
+};
