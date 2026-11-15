@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRATER — Tutorial & Tiga Kartu (Desktop)</title>
+<link rel="stylesheet" href="src/styles/outpost.css">
+<style>
+.browser-scene{position:absolute;inset:0;overflow:hidden}.browser-scene .sc-bg,.browser-scene .sc-room{position:absolute;inset:0;width:100%;height:100%}.browser-scene .sc-room{z-index:2}.browser-scene .sc-bg{z-index:1}.browser-scene .sc-crew{position:absolute;z-index:4;transform-origin:bottom center;animation:idle 3.3s ease-in-out infinite alternate;filter:drop-shadow(0 6px 6px #13131a55)}.browser-scene .char-toria{top:24.3%;left:4%;width:27%}.browser-scene .char-sylvan{top:20.4%;left:28.9%;width:21.4%;animation-delay:-1s}.browser-scene .char-corin{top:19.5%;left:49.8%;width:24%;animation-delay:-2s}.browser-scene .char-cirra{top:18.7%;left:73.8%;width:25.5%;animation-delay:-.4s}.browser-scene .sc-table{position:absolute;top:66.5%;left:0;width:100%;height:33.5%;z-index:8}.browser-scene .sc-ambient{position:absolute;inset:0;z-index:9;pointer-events:none;background:rgba(255,194,155,.07)}.sc-ambient.afternoon{background:rgba(255,230,179,.02)}.sc-ambient.evening{background:rgba(216,99,69,.17)}@keyframes idle{from{transform:translateY(0)}to{transform:translateY(-0.35cqw)}}@media(prefers-reduced-motion:reduce){.browser-scene .sc-crew{animation:none}}
+</style></head><body>
+<main class="outpost-desktop"><section id="stage" class="outpost-stage" aria-label="CRATER Mars Outpost Interactive Tutorial">
+<div class="outpost-phaser browser-scene" id="scene"></div><div id="ui"></div></section>
+<p class="below-note">CRATER · DEMO HTML MANDIRI · 5 KARAKTER ASLI · TUTORIAL NOE · TIMER 15 DETIK</p></main>
+<script>
+const METERS = [
+    { key: 'life', label: 'LIFE SUPPORT', color: '#65d2e4', symbol: '+' },
+    { key: 'power', label: 'POWER', color: '#ffc24f', symbol: 'ϟ' },
+    { key: 'shielding', label: 'SHIELDING', color: '#dcaddf', symbol: '⬡' },
+    { key: 'food', label: 'FOOD SYSTEM', color: '#84e5a9', symbol: '♜' },
+];
+// Ditulis eksplisit agar gampang diganti dengan data kartu dari engine Pocut nanti.
+const CARD_POOL = [
+    { id: 'DR-09', phase: 'morning', deck: 'Daily Routine', title: 'Periksa CO₂ Kabin', detail: 'Kalibrasi sensor udara dan pemeriksaan scrubber.', crew: 'corin', delta: { life: 7, power: -2 }, science: 'Kadar CO₂ kabin harus diawasi agar kru dapat bernapas dengan aman.', quote: 'Pembacaan CO₂ stabil. Kita bisa bernapas lebih lega.' },
+    { id: 'DR-10', phase: 'morning', deck: 'Daily Routine', title: 'Periksa Airlock', detail: 'Cek segel termal agar udara habitat tak bocor.', crew: 'toria', delta: { life: 5, power: 3 }, science: 'Tekanan atmosfer Mars sangat rendah dibandingkan Bumi.', quote: 'Tidak ada kebocoran. Semua segel terkunci rapat.' },
+    { id: 'DR-12', phase: 'morning', deck: 'Daily Routine', title: 'Bersihkan Panel Surya', detail: 'Singkirkan debu Mars dari permukaan panel.', crew: 'cirra', delta: { power: 9 }, science: 'Debu dapat mengurangi produksi energi panel surya.', quote: 'Panel sudah bersih. Aliran listrik kembali meningkat!' },
+    { id: 'DR-13', phase: 'morning', deck: 'Daily Routine', title: 'Bersihkan Filter Udara', detail: 'Rawat HEPA dan pengaliran udara habitat.', crew: 'toria', delta: { life: 6, power: 3 }, science: 'Filter harus dibersihkan secara berkala agar udara tetap mengalir.', quote: 'Udara di ruangan terasa lebih segar sekarang.' },
+    { id: 'DR-15', phase: 'morning', deck: 'Daily Routine', title: 'Cek Suhu Baterai', detail: 'Perbaiki stabilitas baterai pada suhu dingin.', crew: 'cirra', delta: { life: -2, power: 8 }, science: 'Suhu ekstrem Mars memengaruhi performa penyimpanan energi.', quote: 'Baterai aman, tetapi pendingin kabin bekerja lebih berat.' },
+    { id: 'DR-16', phase: 'morning', deck: 'Daily Routine', title: 'Rawat Kebun Hidroponik', detail: 'Periksa pH, kelembapan, dan lampu tumbuh.', crew: 'sylvan', delta: { food: 7, power: -2 }, science: 'Tanaman menggunakan pencahayaan khusus untuk fotosintesis.', quote: 'Kebun membutuhkan listrik, tetapi hasilnya bagus.' },
+    { id: 'RS-02', phase: 'afternoon', deck: 'Research', title: 'Setel MOXIE', detail: 'Uji pemisahan oksigen dari atmosfer CO₂ Mars.', crew: 'corin', delta: { life: 12, power: -6 }, science: 'MOXIE mendemonstrasikan produksi oksigen dari CO₂ Mars.', quote: 'Oksigen bertambah. Pengujian tadi memang boros daya.' },
+    { id: 'RS-03', phase: 'afternoon', deck: 'Research', title: 'Uji Pelindung Regolith', detail: 'Analisis ketebalan tanah untuk peredam radiasi.', crew: 'corin', delta: { shielding: 12, power: -4 }, science: 'Lapisan tanah Mars dapat membantu melindungi habitat dari radiasi.', quote: 'Sampel ini dapat memperkuat pelindung kita.' },
+    { id: 'RS-04', phase: 'afternoon', deck: 'Research', title: 'Uji LED Tanaman', detail: 'Cari spektrum lampu yang mendukung pertumbuhan.', crew: 'sylvan', delta: { food: 10, power: 1 }, science: 'LED merah, biru, dan hijau dipakai dalam penelitian tanaman luar angkasa.', quote: 'Tanaman merespons pencahayaan baru dengan baik.' },
+    { id: 'RS-08', phase: 'afternoon', deck: 'Research', title: 'Kultur Sianobakteri', detail: 'Uji mikroorganisme fotosintetik untuk dukungan habitat.', crew: 'corin', delta: { life: 8, food: 8, power: -4 }, science: 'Sianobakteri dapat melakukan fotosintesis.', quote: 'Progres kultur menjanjikan, meski membutuhkan energi.' },
+    { id: 'EX-02', phase: 'afternoon', deck: 'Exploration', title: 'Kumpulkan Regolith', detail: 'Cari material untuk lapisan pelindung atap.', crew: 'sylvan', delta: { shielding: 14, power: -3 }, science: 'Regolith adalah material batuan dan debu di permukaan Mars.', quote: 'Tanah yang terkumpul cukup untuk perkuatan berikutnya.' },
+    { id: 'EX-04', phase: 'afternoon', deck: 'Exploration', title: 'Survei Batuan Nitrat', detail: 'Ambil sampel batuan untuk nutrisi tanaman.', crew: 'sylvan', delta: { food: 12, power: -4 }, science: 'Mineral pada batuan Mars menjadi objek penelitian nutrisi tanaman.', quote: 'Aku menemukan sampel yang menarik untuk kebun kita.' },
+    { id: 'EX-07', phase: 'afternoon', deck: 'Exploration', title: 'Survei Delta Jezero', detail: 'Selidiki tanah liat dan pelindung alami.', crew: 'sylvan', delta: { food: 8, shielding: 8, power: -3 }, science: 'Delta Jezero menyimpan endapan dari lingkungan Mars purba.', quote: 'Lapisan ini menyimpan lebih banyak petunjuk dari dugaanku.' },
+    { id: 'BL-01', phase: 'evening', deck: 'Building', title: 'Rancang Reaktor Kilopower', detail: 'Bangun sumber listrik yang tak bergantung Matahari.', crew: 'toria', delta: { power: 10, life: 4, shielding: -4 }, science: 'Konsep Kilopower diteliti sebagai sumber energi antariksa.', quote: 'Kita memperoleh cadangan daya, tetapi pembangunan berisiko.' },
+    { id: 'BL-03', phase: 'evening', deck: 'Building', title: 'Kubah Regolith', detail: 'Bentuk penahan radiasi di sekeliling habitat.', crew: 'toria', delta: { shielding: 18, life: 5, power: -8 }, science: 'Penimbunan material dapat memberi perlindungan radiasi tambahan.', quote: 'Strukturnya kokoh. Kita lebih terlindungi sekarang.' },
+    { id: 'BL-04', phase: 'evening', deck: 'Building', title: 'Menara Aeroponik', detail: 'Rakit unit penanaman modular berkapasitas lebih tinggi.', crew: 'toria', delta: { food: 15, power: -5 }, science: 'Aeroponik adalah teknik menumbuhkan tanaman tanpa tanah.', quote: 'Kita punya ruang baru untuk menanam.' },
+    { id: 'BL-07', phase: 'evening', deck: 'Building', title: 'Panel Surya Baru', detail: 'Tambah panel dengan sudut penempatan yang lebih baik.', crew: 'toria', delta: { power: 10 }, science: 'Arah dan sudut panel menentukan paparan sinar Matahari.', quote: 'Panel terpasang. Energi bisa lebih stabil.' },
+    { id: 'UP-02', phase: 'evening', deck: 'Upgrade', title: 'Pengendali Microgrid', detail: 'Kurangi beban listrik ruangan kosong.', crew: 'cirra', delta: { power: 8, life: 5 }, science: 'Manajemen beban membantu menekan pemakaian listrik.', quote: 'Sistem kini menghemat lebih banyak energi.' },
+    { id: 'UP-04', phase: 'evening', deck: 'Upgrade', title: 'LED Spektrum Baru', detail: 'Pasang pencahayaan kebun yang lebih efisien.', crew: 'cirra', delta: { food: 14, power: 0 }, science: 'Spektrum cahaya berbeda dapat membantu pertumbuhan tanaman.', quote: 'Kebutuhan daya seimbang dan tanaman tumbuh lebih baik.' },
+    { id: 'UP-06', phase: 'evening', deck: 'Upgrade', title: 'Lapisan Polimer', detail: 'Pertebal pelindung habitat dengan bahan kaya hidrogen.', crew: 'cirra', delta: { shielding: 16, power: -4 }, science: 'Bahan kaya hidrogen diteliti untuk pengurangan paparan radiasi.', quote: 'Lapisan tambahan sudah terpasang.' },
+    { id: 'UP-07', phase: 'evening', deck: 'Upgrade', title: 'Scrubber CO₂ Baru', detail: 'Perkuat sistem penyaringan udara kabin.', crew: 'cirra', delta: { life: 15, power: -6 }, science: 'Sistem scrubber membantu mengendalikan konsentrasi CO₂.', quote: 'Sirkulasi udara bekerja lebih efektif sekarang.' },
+];
+/** Undian tiga kartu TANPA pengulangan dalam satu penawaran. */
+function drawThree(phase, random = Math.random) {
+    const pool = CARD_POOL.filter(card => card.phase === phase);
+    for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.min(i, Math.floor(random() * (i + 1)));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    return pool.slice(0, 3);
+}
+
+
+const PHASES = ['morning', 'afternoon', 'evening'];
+const PHASE_LABEL = { morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening' };
+
+const METER_KEYS = ['life', 'shielding', 'power', 'food'];
+const cap = (n) => Math.min(100, Math.max(0, n));
+function newGame(random = Math.random) {
+    return {
+        sol: 1, phase: 'morning', meters: { life: 80, shielding: 80, power: 80, food: 80 },
+        offer: drawThree('morning', random), selectedId: null, working: null,
+        ended: false, lastDelta: {}, log: [],
+    };
+}
+function pickCard(game, id) {
+    if (game.selectedId || game.ended)
+        return game;
+    const card = game.offer.find(c => c.id === id);
+    if (!card)
+        return game;
+    const meters = { ...game.meters };
+    for (const key of METER_KEYS)
+        meters[key] = cap(meters[key] + (card.delta[key] ?? 0));
+    return {
+        ...game, meters, selectedId: id, working: card.crew,
+        lastDelta: card.delta,
+        log: [...game.log, { sol: game.sol, phase: game.phase, card: id }],
+    };
+}
+/** Tiga fase ditampilkan. Setelah Evening terjadi evaluasi malam otomatis (pasif saja).
+ * Food/Water Ration, produksi malam, cooldown dan event bencana dipegang engine tim, BUKAN prototype.
+ */
+function nextCycle(game, random = Math.random) {
+    if (!game.selectedId || game.ended)
+        return game;
+    const index = PHASES.indexOf(game.phase);
+    if (index < 2) {
+        const phase = PHASES[index + 1];
+        return { ...game, phase, offer: drawThree(phase, random), selectedId: null, working: null, lastDelta: {} };
+    }
+    const meters = { ...game.meters, life: cap(game.meters.life - 3), shielding: cap(game.meters.shielding - 2), power: cap(game.meters.power - 3), food: cap(game.meters.food - 2) };
+    if (game.sol === 8 || Object.values(meters).some(value => value === 0)) {
+        return { ...game, meters, working: null, ended: true, selectedId: game.selectedId, lastDelta: {} };
+    }
+    return { ...game, sol: game.sol + 1, phase: 'morning', meters, offer: drawThree('morning', random), selectedId: null, working: null, lastDelta: {} };
+}
+function statusLabel(meters) {
+    if (Object.values(meters).some(value => value === 0))
+        return 'Misi gagal: salah satu sistem berhenti.';
+    if (Object.values(meters).every(value => value >= 70))
+        return 'Pos Mars bertahan dengan sangat baik!';
+    if (Object.values(meters).every(value => value >= 40))
+        return 'Pos Mars berhasil bertahan.';
+    return 'Pos bertahan, tetapi sistem memerlukan perbaikan.';
+}
+function selectedCard(game) {
+    return game.offer.find(card => card.id === game.selectedId);
+}
+
+
+let game = newGame();
+let mode = 'tutorial', step = 0, countdown = 15, noeOpen = true;
+const crewNames={toria:'Toria',sylvan:'Sylvan',corin:'Corin',cirra:'Cirra'};
+const phaseDialogues={morning:['Toria','Selamat pagi, Komandan. Kita mulai pemeriksaan rutin.'],afternoon:['Sylvan','Ada hal menarik yang perlu kita teliti hari ini.'],evening:['Corin','Saatnya menjaga dan memperkuat sistem habitat.']};
+const intros=[
+  'Selamat datang, Komandan! Aku Noe dari Mission Control di Bumi. Aku akan memandu kamu mengenali outpost Mars ini.',
+  'Lihat kotak SOL di kiri atas. 1/8 berarti hari pertama dari delapan hari di Mars. Setiap Sol melalui Morning, Afternoon, lalu Evening.',
+  'Keempat bar di kanan atas adalah Life Support, Shielding, Power, dan Food System. Kartu yang kamu pilih bisa menaikkan, mengurangi, atau mempertahankan nilainya.',
+  'Sebentar lagi kamu menerima tiga pilihan kartu. Setelah jeda 15 detik, pilih SATU kartu. Pilihanmu akan berdampak pada sistem dan kru. Kita mulai!'
+];
+const artMap={
+ 'Daily Routine':['☀','HABITAT ROUTINE','routine'],
+ 'Research':['⌕','RESEARCH LAB','research'],
+ 'Exploration':['⌁','MARS EXPLORATION','exploration'],
+ 'Building':['▤','CONSTRUCTION','building'],
+ 'Upgrade':['⚙','SYSTEM UPGRADE','upgrade']
+};
+const asset = f => 'public/assets/' + f;
+// URL state parameter only for QA screenshots. Normal game starts with Noe.
+const qaState = new URLSearchParams(location.search).get('state');
+if (qaState === 'sol') step=1;
+if (qaState === 'meters') step=2;
+if (qaState === 'explain') step=3;
+if (qaState === 'waiting') mode='waiting';
+if (qaState === 'cards') mode='cards';
+
+function drawScene(){
+ document.getElementById('scene').innerHTML = `<img class="sc-bg" src="${asset('mars-sky-'+game.phase+'.png')}" alt="Langit Mars"><img class="sc-room" src="${asset('outpost-room.png')}" alt="Ruang Mars Outpost">${['toria','sylvan','corin','cirra'].filter(id=>id!==game.working).map(id=>`<img class="sc-crew char-${id}" src="${asset('crew-'+id+'.png')}" alt="${crewNames[id]}">`).join('')}<img class="sc-table" src="${asset('outpost-table.png')}" alt=""><div class="sc-ambient ${game.phase}"></div>`;
+}
+function meterHtml(m){
+ const value=game.meters[m.key];
+ const delta=mode==='result'?game.lastDelta[m.key]??0:null;
+ return `<div class="meter"><div class="meter-symbol">${m.symbol}</div><div class="meter-main"><div class="meter-segments" style="--meter-color:${m.color}">${Array.from({length:12},(_,i)=>`<span class="${i<Math.round(value/100*12)?'filled':''}"></span>`).join('')}</div><div class="meter-label-line"><span>${m.label}</span><span class="meter-right">${delta!==null&&delta!==0?`<b class="${delta>0?'delta-positive':'delta-negative'}">${delta>0?'+':''}${delta}</b>`:''} ${value}/100</span></div></div></div>`;
+}
+function effectsHtml(delta){
+ return `<div class="effect-grid">${METERS.map(m=>{const v=delta[m.key]??0;return `<span class="effect ${v>0?'plus':v<0?'minus':'flat'}">${{life:'LS',shielding:'SH',power:'PW',food:'FD'}[m.key]} <b>${v===0?'—':(v>0?'+':'')+v}</b></span>`}).join('')}</div>`;
+}
+function cardThumb(card){
+ const best=Object.entries(card.delta).filter(([,v])=>typeof v==='number'&&v>0).sort((a,b)=>b[1]-a[1])[0]?.[0];
+ return best==='food'?'card-hydro.jpg':best==='shielding'?'card-shield.jpg':'card-antenna.jpg';
+}
+function cardHtml(card,i){
+ const [icon,caption,tone]=artMap[card.deck];
+ return `<button type="button" class="mission-card" data-action="select" data-id="${card.id}" aria-label="Pilih kartu ${card.title}"><div class="card-art card-art-${tone}"><img class="card-art-image" src="${asset(cardThumb(card))}" alt="Ilustrasi tugas outpost"><span class="card-art-caption">${caption}</span></div><div class="card-info"><div class="card-issue"><span>${card.deck.toUpperCase()}</span><span>${card.id}</span></div><h2 class="card-heading">${card.title}</h2><p class="card-description">${card.detail}</p>${effectsHtml(card.delta)}<div class="card-footer"><span>✧ ${crewNames[card.crew]}</span><b>0${i+1} / PILIH</b></div></div></button>`;
+}
+function drawUI(){
+ const current=selectedCard(game);
+ const isTutorial=mode==='tutorial';
+ const focus=isTutorial&&step===1?'sol':isTutorial&&step===2?'meters':'';
+ document.getElementById('stage').className = `outpost-stage ${isTutorial?'is-tutorial':''} ${focus?'focus-'+focus:''}`;
+ const guide=isTutorial?intros[step]:game.ended?statusLabel(game.meters):mode==='waiting'?`Menunggu transmisi Mission Control. Tiga kartu akan tersedia dalam ${countdown} detik. Perhatikan kondisi kru dan sistem outpost.`:mode==='cards'?`Tiga kartu sudah tiba! Pilih satu tindakan untuk ${PHASE_LABEL[game.phase]} Sol ${game.sol}. Periksa bonus dan biayanya.`:current?`${crewNames[current.crew]} mulai bertugas, jadi sementara tidak terlihat di ruangan. ${current.science}`:'Misi sedang berjalan.';
+ const dialogue=isTutorial?['Toria','Kita mulai dengan perkenalan sistem, ya?']:mode==='result'&&current?[crewNames[current.crew],current.quote]:phaseDialogues[game.phase];
+ document.getElementById('ui').innerHTML = `
+ <header class="hud-top"><div class="sol-hud"><strong class="sol-phase">${PHASE_LABEL[game.phase]}</strong><div class="sol-icon"><img src="${asset('cycle-'+game.phase+'.png')}" alt=""></div><div class="sol-counter"><strong>${game.sol}</strong> / 8 Sol</div></div><div class="meters-hud">${METERS.map(meterHtml).join('')}</div></header>
+ ${focus?`<div class="tutorial-callout callout-${focus}"><span class="tutorial-arrow" aria-hidden="true">➤</span>${focus==='sol'?'SOL menunjukkan hari di Mars. 1 / 8 berarti Sol pertama dari delapan. Setiap hari: Morning → Afternoon → Evening.':'Keempat pilar menunjukkan kondisi pos: Life Support, Shielding, Power, dan Food System. Efek kartu bisa positif, negatif, atau tetap.'}</div>`:''}
+ <div class="crew-dialogue"><strong>${dialogue[0]}:</strong><em>“${dialogue[1]}”</em></div>
+ ${!isTutorial&&!game.ended&&mode==='waiting'?`<div class="transmission-wait" role="status"><span class="transmission-pulse">◉</span><strong>MENUNGGU TRANSMISI</strong><span>3 kartu tiba dalam <b>${countdown}</b> detik</span></div>`:''}
+ ${!isTutorial&&!game.ended&&mode==='result'&&current?`<div class="result-bubble"><b>${current.title}</b><span>Keputusan tercatat · ${crewNames[current.crew]} sedang bekerja</span></div>`:''}
+ ${!isTutorial&&!game.ended&&mode==='cards'?`<section class="cards-area" aria-label="Tiga pilihan kartu"><div class="cards-topline"><span>TRANSMISI BARU · PILIH 1 KARTU</span><span>${PHASE_LABEL[game.phase].toUpperCase()} / ${String(game.sol).padStart(2,'0')}</span></div><div class="cards-grid">${game.offer.map(cardHtml).join('')}</div></section>`:''}
+ <aside class="noe-area"><button type="button" class="noe-portrait" data-action="toggle"><img src="${asset('guide-noe-portrait.png')}" alt="Noe asli"><span>NOE</span></button>${noeOpen||isTutorial?`<div class="noe-chat"><div class="noe-chat-head"><strong>MISSION CONTROL · NOE</strong>${!isTutorial?'<button type="button" data-action="toggle">×</button>':''}</div><p>${guide}</p>${isTutorial?`<div class="noe-actions"><span>${step+1} / 4</span><button type="button" data-action="tutorial">${step===3?'MULAI MISI':'LANJUT'} →</button></div>`:''}</div>`:''}</aside>
+ ${game.ended?`<div class="ending-backdrop"><div class="ending-card"><span>MISSION REPORT · SOL 8</span><h1>${statusLabel(game.meters)}</h1><p>${game.log.length} keputusan dicatat selama misi.</p><div class="end-stats">${METERS.map(m=>`<div><span>${m.label}</span><b>${game.meters[m.key]}/100</b></div>`).join('')}</div><button data-action="reset">MAIN LAGI</button><small>Prototipe HUD — sistem penuh tetap mengikuti engine tim.</small></div></div>`:''}`;
+}
+function render(){drawScene();drawUI()}
+
+document.addEventListener('click', e=>{
+ const button=e.target.closest('button[data-action]');
+ if(!button) return;
+ const action=button.dataset.action;
+ if(action==='tutorial' && mode==='tutorial'){
+   if(step<3){step++;}else{mode='waiting';countdown=15;}
+ }else if(action==='toggle'){
+   if(mode!=='tutorial')noeOpen=!noeOpen;
+ }else if(action==='select' && mode==='cards'){
+   game=pickCard(game,button.dataset.id);mode='result';noeOpen=true;
+   setTimeout(()=>{game=nextCycle(game);mode='waiting';countdown=15;render()},1800);
+ }else if(action==='reset'){
+   game=newGame();mode='tutorial';step=0;countdown=15;noeOpen=true;
+ }
+ render();
+});
+setInterval(()=>{
+ if(mode!=='waiting'||game.ended) return;
+ countdown=Math.max(0,countdown-1);
+ if(countdown===0)mode='cards';
+ render();
+},1000);
+render();
+
+</script></body></html>

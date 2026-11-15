@@ -1,0 +1,26 @@
+[
+  {
+    "id": "toria",
+    "name": "Toria",
+    "role": "mechanicalEngineer",
+    "specialty": "build"
+  },
+  {
+    "id": "cirra",
+    "name": "Cirra",
+    "role": "electricalEngineer",
+    "specialty": "upgrade"
+  },
+  {
+    "id": "corin",
+    "name": "Corin",
+    "role": "medicalOfficer",
+    "specialty": "research"
+  },
+  {
+    "id": "sylvan",
+    "name": "Sylvan",
+    "role": "botanist",
+    "specialty": "exploration"
+  }
+]

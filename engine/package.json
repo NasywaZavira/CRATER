@@ -1,0 +1,17 @@
+{
+  "name": "enam-engine",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^18.3.12",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4"
+  }
+}

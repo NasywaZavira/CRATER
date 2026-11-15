@@ -1,0 +1,18 @@
+{
+  "status": "historical_archive_not_live",
+  "dataset": "NASA CCMC DONKI SEP",
+  "events": [
+    {
+      "id": "2024-05-11T04:07:00-SEP-001",
+      "eventTimeUTC": "2024-05-11T04:07:00Z",
+      "observatory": "STEREO A",
+      "measurement": "13–100 MeV proton flux above 10^-1 pfu/MeV",
+      "associatedFlareId": "2024-05-11T01:10:00-FLR-001",
+      "notificationId": "20240511-AL-013",
+      "sourceUrl": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/Alert/30728/1",
+      "scheduledSol": 3,
+      "scheduledCycle": "afternoon",
+      "simulationNote": "Mapping archived SEP to Sol 3 afternoon is CRATER gameplay design, NOT a NASA forecast, live measurement, or prediction for Mars."
+    }
+  ]
+}
