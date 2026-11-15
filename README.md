@@ -2,6 +2,8 @@
 
 **NASA Space Apps Challenge 2026 | Build a Junior Astronaut Mission Trainer**
 
+**Play the web app:** [crater-ten.vercel.app](https://crater-ten.vercel.app/)
+
 CRATER is a playable Mars-outpost web game. The player receives messages from Mission Control, chooses actions for the crew, manages four outpost systems, and tries to complete an eight-Sol mission.
 
 ## What the website can do
