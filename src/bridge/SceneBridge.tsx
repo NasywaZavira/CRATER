@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type Phaser from 'phaser';
-import type { SceneSnapshot } from '../contracts/types';
+import type { SceneSnapshot } from './scene-snapshot';
 import { createGame } from '../phaser/config';
 import { bridge } from './typed-event-bus';
 

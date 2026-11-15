@@ -1,4 +1,4 @@
-import type { SceneSnapshot } from '../contracts/types';
+import type { SceneSnapshot } from './scene-snapshot';
 
 /** Kontrak event React <-> Phaser (Blueprint bagian 03 no. 7 + 'enam:scene-error' sebagai tambahan). */
 export interface BridgeEvents {
