@@ -1,22 +1,5 @@
-
-# Dependencies
 node_modules/
-
-# Testing
-.vitest/
-coverage/
-
-# Build
 dist/
-
-# Logs
-*.log
-
-# Environment variables / API keys
-.env
-.env.*
-!.env.example
-
-# OS files
+coverage/
+.env*
 .DS_Store
-Thumbs.db
