@@ -76,19 +76,19 @@ Some metadata in the card JSON is reserved for future expansion. The current gam
 
 **03 - Outpost meters and their critical thresholds**
 
-![Meter thresholds](PREVIEW_03_PILAR.png)
+![Meter thresholds](PREVIEW_03_METER.png)
 
 **04 - Mission tutorial**
 
-![Mission tutorial](PREVIEW_04_PENJELASAN.png)
+![Mission tutorial](PREVIEW_04_TUTORIAL.png)
 
 **05 - Waiting for an incoming transmission and card offer**
 
-![Incoming transmission](PREVIEW_05_MENUNGGU.png)
+![Incoming transmission](PREVIEW_05_INCOMING.png)
 
 **06 - Card display and action selection**
 
-![Choose a card](PREVIEW_06_KARTU.png)
+![Choose a card](PREVIEW_06_CARD.png)
 
 ## Run the website locally
 
