@@ -1,0 +1,46 @@
+{
+  "lifeSupport": {
+    "original": "public/assets/cards/original-figma/blue-life-support.png",
+    "iconCrop": "public/assets/cards/icons/lifeSupport.png",
+    "sha256Original": "b78b9a57d43f27f14cc0af0fe9aba4b52c8d50692dcb2672b0c82e0e7d5bc2b3",
+    "cropPx": [
+      420,
+      278,
+      1080,
+      850
+    ]
+  },
+  "shielding": {
+    "original": "public/assets/cards/original-figma/purple-shielding.png",
+    "iconCrop": "public/assets/cards/icons/shielding.png",
+    "sha256Original": "2c4532c9dcfb2ae2e7ba5ecae8f8b6d3cbd2d23e39569b785d0d0b8b18488362",
+    "cropPx": [
+      420,
+      278,
+      1080,
+      850
+    ]
+  },
+  "power": {
+    "original": "public/assets/cards/original-figma/yellow-power.png",
+    "iconCrop": "public/assets/cards/icons/power.png",
+    "sha256Original": "b4e6db07d63a543c9ed54808b7f592a2ad2ecc0e70bc9762f196c864891e11eb",
+    "cropPx": [
+      420,
+      278,
+      1080,
+      850
+    ]
+  },
+  "food": {
+    "original": "public/assets/cards/original-figma/green-food.png",
+    "iconCrop": "public/assets/cards/icons/food.png",
+    "sha256Original": "187298417954ee33df3f47b016f42ca8c8f563d86262445a225422f0fff6a21a",
+    "cropPx": [
+      420,
+      278,
+      1080,
+      850
+    ]
+  }
+}
